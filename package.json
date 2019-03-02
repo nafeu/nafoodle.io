@@ -1,0 +1,31 @@
+{
+  "name": "party-game-starter",
+  "version": "0.0.1",
+  "description": "Multiplayer party game boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "socketio",
+    "multiplayer",
+    "party",
+    "game"
+  ],
+  "author": "Nafeu Nasir <nafeu.nasir@gmail.com> (http://nafeu.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "1.18.3",
+    "express": "4.16.4",
+    "lodash": "4.17.11",
+    "morgan": "1.9.1",
+    "redux": "4.0.1",
+    "socket.io": "2.2.0"
+  },
+  "devDependencies": {
+    "eslint": "5.15.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.16.0"
+  }
+}

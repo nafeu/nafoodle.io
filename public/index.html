@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Party Game Starter</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+  <script type="text/javascript">
+
+    const socket = io();
+
+    socket.on('test', () => {
+      alert('Test recieved.');
+    });
+
+  </script>
+</body>
+</html>
