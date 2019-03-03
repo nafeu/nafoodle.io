@@ -8,6 +8,10 @@ module.exports = {
       console.log('Test message received');
     });
 
+    socket.on('currentState', (state) => {
+      document.body.innerHTML = `<code>${JSON.stringify(state, null, 2)}</code>`;
+    });
+
     return socket;
   },
 };
