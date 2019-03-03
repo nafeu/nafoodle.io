@@ -1,9 +1,15 @@
+const {
+  addClient,
+  removeClient,
+} = require('./actions');
+
 module.exports = {
-  use: (io) => {
+  use: (io, store) => {
     io.on('connection', (socket) => {
-      console.log(`[ socket-events.js ] ${socket.id} connected...`);
+      store.dispatch(addClient(socket.id));
+
       socket.on('disconnect', () => {
-        console.log(`[ socket-events.js ] ${socket.id} disconnected...`);
+        store.dispatch(removeClient(socket.id));
       });
     });
 
