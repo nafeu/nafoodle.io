@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const { combineReducers } = require('redux');
-const { generateUID } = require('./helpers');
+const { generateUID } = require('./../helpers');
 
 function rooms(state = [], action) {
   switch (action.type) {
@@ -8,12 +8,25 @@ function rooms(state = [], action) {
       return [
         ...state,
         {
-          id: generateUID(),
+          id: generateUID(_.map(state, 'id')),
           users: [
-            { name: action.username },
+            {
+              id: action.clientId,
+              name: action.username,
+            },
           ],
         },
       ];
+    case 'REMOVE_CLIENT':
+      state.forEach((room) => {
+        _.remove(room.users, (user) => {
+          return user.id === action.id;
+        });
+      });
+      _.remove(state, (room) => {
+        return room.users.length === 0;
+      });
+      return state;
     default:
       return state;
   }

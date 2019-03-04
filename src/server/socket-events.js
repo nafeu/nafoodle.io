@@ -1,6 +1,7 @@
 const {
   addClient,
   removeClient,
+  createRoom
 } = require('./actions');
 
 module.exports = {
@@ -11,6 +12,11 @@ module.exports = {
 
       socket.on('disconnect', () => {
         store.dispatch(removeClient(socket.id));
+        io.emit('currentState', store.getState());
+      });
+
+      socket.on('CREATE_ROOM', ({ username }) => {
+        store.dispatch(createRoom(username, socket.id));
         io.emit('currentState', store.getState());
       });
     });

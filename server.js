@@ -11,7 +11,7 @@ const io = require('socket.io')(server);
 const api = require('./src/server/api');
 const socketEvents = require('./src/server/socket-events');
 const reducers = require('./src/server/reducers');
-const { logger } = require('./src/server/helpers');
+const { logger } = require('./src/helpers');
 
 const store = createStore(reducers, applyMiddleware(logger));
 

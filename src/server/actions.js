@@ -11,10 +11,11 @@ module.exports = {
       id,
     };
   },
-  createRoom: (username) => {
+  createRoom: (username, clientId) => {
     return {
       type: 'CREATE_ROOM',
       username,
+      clientId,
     };
   },
 };
