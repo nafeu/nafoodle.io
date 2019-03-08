@@ -1,7 +1,7 @@
 const {
   addClient,
   removeClient,
-  createRoom
+  createRoom,
 } = require('./actions');
 
 module.exports = {

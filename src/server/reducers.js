@@ -4,7 +4,13 @@ const { generateUID } = require('./../helpers');
 
 function rooms(state = [], action) {
   switch (action.type) {
-    case 'CREATE_ROOM':
+    case 'CREATE_ROOM': {
+      const userInRoom = _.find(state, (room) => {
+        return _.includes(room.users.map(u => u.id), action.clientId);
+      });
+      if (userInRoom) {
+        return state;
+      }
       return [
         ...state,
         {
@@ -17,6 +23,7 @@ function rooms(state = [], action) {
           ],
         },
       ];
+    }
     case 'REMOVE_CLIENT':
       state.forEach((room) => {
         _.remove(room.users, (user) => {
