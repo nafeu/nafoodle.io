@@ -9,29 +9,10 @@ const {
 
 const {
   generateUID,
+  clientIsInARoom,
+  roomNotExists,
+  usernameInUse,
 } = require('../helpers');
-
-function clientIsInARoom(store, clientId) {
-  const state = store.getState();
-  return _.find(state.rooms, (room) => {
-    return _.includes(room.users.map(u => u.id), clientId);
-  });
-}
-
-function roomNotExists(store, roomId) {
-  const state = store.getState();
-  return !state.rooms.some(room => room.id === roomId);
-}
-
-function usernameInUse(store, roomId, username) {
-  const state = store.getState();
-  const roomToCheck = _.find(state.rooms, (room) => {
-    return room.id === roomId;
-  });
-  return _.find(roomToCheck.users, (user) => {
-    return user.username === username;
-  });
-}
 
 module.exports = {
   use: (io, store) => {
@@ -45,12 +26,12 @@ module.exports = {
       });
 
       socket.on('JOIN_ROOM', ({ username, roomId }) => {
-        if (!username || username.length < 4) {
-          socket.emit('INVALID_REQUEST', { message: 'Please enter a valid username (at least 4 characters long).' });
-        } else if (!roomId) {
+        if (!roomId) {
           socket.emit('INVALID_REQUEST', { message: 'Please enter a room.' });
         } else if (roomNotExists(store, roomId)) {
           socket.emit('INVALID_REQUEST', { message: 'Room does not exist.' });
+        } else if (!username || username.length < 4) {
+          socket.emit('INVALID_REQUEST', { message: 'Please enter a valid username (at least 4 characters long).' });
         } else if (usernameInUse(store, roomId, username)) {
           socket.emit('INVALID_REQUEST', { message: 'Username is already in use.' });
         } else if (clientIsInARoom(store, socket.id)) {

@@ -32,4 +32,8 @@ createButton.addEventListener('click', () => {
   });
 });
 
-roomInput.value = urlParams.get('room');
+const roomParam = urlParams.get('room');
+if (roomParam && roomParam.length > 0) {
+  roomInput.value = roomParam;
+  createButton.style.display = 'none';
+}
