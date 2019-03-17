@@ -18,6 +18,17 @@ function rooms(state = [], action) {
         },
       ];
     }
+    case 'JOIN_ROOM': {
+      state.forEach((room) => {
+        if (room.id === action.roomId) {
+          room.users.push({
+            id: action.clientId,
+            name: action.username,
+          });
+        }
+      });
+      return state;
+    }
     case 'REMOVE_CLIENT':
       state.forEach((room) => {
         _.remove(room.users, (user) => {

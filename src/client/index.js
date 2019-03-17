@@ -15,7 +15,7 @@ socketEvents.use(socket);
 joinButton.addEventListener('click', () => {
   socket.emit('JOIN_ROOM', {
     username: usernameInput.value,
-    room: roomInput.value,
+    roomId: roomInput.value,
   });
 });
 

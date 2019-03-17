@@ -18,4 +18,12 @@ module.exports = {
       clientId,
     };
   },
+  joinRoom: (username, roomId, clientId) => {
+    return {
+      type: 'JOIN_ROOM',
+      username,
+      roomId,
+      clientId
+    }
+  }
 };
