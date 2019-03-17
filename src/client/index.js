@@ -10,7 +10,13 @@ import {
 const PORT = process.env.PORT || 8000;
 const socket = io(`http://localhost:${PORT}`);
 
-socketEvents.use(socket);
+const client = {
+  username: null,
+  roomId: null,
+  state: 'LOBBY', // LOBBY, WAITING, IN-GAME
+};
+
+socketEvents.use(socket, client);
 
 joinButton.addEventListener('click', () => {
   socket.emit('JOIN_ROOM', {

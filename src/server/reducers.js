@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const { combineReducers } = require('redux');
-const { generateUID } = require('./../helpers');
 
 function rooms(state = [], action) {
   switch (action.type) {
@@ -8,11 +7,11 @@ function rooms(state = [], action) {
       return [
         ...state,
         {
-          id: generateUID(_.map(state, 'id')),
+          id: action.roomId,
           users: [
             {
               id: action.clientId,
-              name: action.username,
+              username: action.username,
             },
           ],
         },
@@ -23,7 +22,7 @@ function rooms(state = [], action) {
         if (room.id === action.roomId) {
           room.users.push({
             id: action.clientId,
-            name: action.username,
+            username: action.username,
           });
         }
       });
