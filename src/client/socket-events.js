@@ -17,6 +17,7 @@ export default class SocketEvents {
     socket.on('JOIN_ROOM_SUCCESS', ({ username, roomId }) => {
       client.username = username;
       client.roomId = roomId;
+      window.history.pushState(null, '', `?room=${roomId}`);
       client.state = 'WAITING';
       domEvents.renderClientState();
     });
@@ -24,6 +25,7 @@ export default class SocketEvents {
     socket.on('CREATE_ROOM_SUCCESS', ({ username, roomId }) => {
       client.username = username;
       client.roomId = roomId;
+      window.history.pushState(null, '', `?room=${roomId}`);
       client.state = 'WAITING';
       domEvents.renderClientState();
     });
