@@ -9,6 +9,7 @@ import {
 
 const PORT = process.env.PORT || 8000;
 const socket = io(`http://localhost:${PORT}`);
+const urlParams = new URLSearchParams(window.location.search);
 
 const client = {
   username: null,
@@ -30,3 +31,5 @@ createButton.addEventListener('click', () => {
     username: usernameInput.value,
   });
 });
+
+roomInput.value = urlParams.get('room');
