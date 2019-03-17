@@ -1,9 +1,13 @@
 import toastr from 'toastr';
 
-export default {
-  use: (socketConnection, connectedClient) => {
-    const socket = socketConnection;
-    const client = connectedClient;
+export default class SocketEvents {
+  constructor(socket, client) {
+    this.socket = socket;
+    this.client = client;
+  }
+
+  init() {
+    const { socket, client } = this;
 
     socket.on('connect', () => {
       console.log('Socket connection established');
@@ -28,7 +32,5 @@ export default {
     socket.on('DEBUG_STATE', (state) => {
       document.querySelector('#state').innerHTML = `<code>${JSON.stringify(state, null, 2)}</code>`;
     });
-
-    return socket;
-  },
-};
+  }
+}

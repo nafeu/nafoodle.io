@@ -5,16 +5,15 @@ import {
   roomInput,
 } from './dom-elements';
 
-const urlParams = new URLSearchParams(window.location.search);
+export default class DomEvents {
+  constructor(socket, client) {
+    this.socket = socket;
+    this.client = client;
+    this.urlParams = new URLSearchParams(window.location.search);
+  }
 
-function renderElements(state) {
-  console.log('RENDERING', state);
-}
-
-export default {
-  use: (socketConnection, connectedClient) => {
-    const socket = socketConnection;
-    const client = connectedClient;
+  init() {
+    const { socket, urlParams } = this;
 
     joinButton.addEventListener('click', () => {
       socket.emit('JOIN_ROOM', {
@@ -35,6 +34,10 @@ export default {
       createButton.style.display = 'none';
     }
 
-    renderElements(client.state);
-  },
-};
+    this.renderState();
+  }
+
+  renderState() {
+    console.log('RENDERING', this.client.state);
+  }
+}
