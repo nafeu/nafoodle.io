@@ -11,8 +11,8 @@ const client = {
   state: 'LOBBY', // LOBBY, WAITING, IN-GAME
 };
 
-const socketEvents = new SocketEvents(socket, client);
 const domEvents = new DomEvents(socket, client);
+const socketEvents = new SocketEvents(socket, client, domEvents);
 
-socketEvents.init();
 domEvents.init();
+socketEvents.init();

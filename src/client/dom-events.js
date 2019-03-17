@@ -3,6 +3,10 @@ import {
   createButton,
   usernameInput,
   roomInput,
+  lobbyArea,
+  waitingArea,
+  inGameArea,
+  clientStateAreas,
 } from './dom-elements';
 
 export default class DomEvents {
@@ -34,10 +38,27 @@ export default class DomEvents {
       createButton.style.display = 'none';
     }
 
-    this.renderState();
+    this.renderClientState();
   }
 
-  renderState() {
-    console.log('RENDERING', this.client.state);
+  renderClientState() {
+    [].forEach.call(clientStateAreas, (area) => {
+      const selectedArea = area;
+      selectedArea.style.display = 'none';
+    });
+
+    switch (this.client.state) {
+      case 'LOBBY':
+        lobbyArea.style.display = 'block';
+        break;
+      case 'WAITING':
+        waitingArea.style.display = 'block';
+        break;
+      case 'IN-GAME':
+        inGameArea.style.display = 'block';
+        break;
+      default:
+        break;
+    }
   }
 }

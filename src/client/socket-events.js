@@ -1,13 +1,14 @@
 import toastr from 'toastr';
 
 export default class SocketEvents {
-  constructor(socket, client) {
+  constructor(socket, client, domEvents) {
     this.socket = socket;
     this.client = client;
+    this.domEvents = domEvents;
   }
 
   init() {
-    const { socket, client } = this;
+    const { socket, client, domEvents } = this;
 
     socket.on('connect', () => {
       console.log('Socket connection established');
@@ -17,12 +18,14 @@ export default class SocketEvents {
       client.username = username;
       client.roomId = roomId;
       client.state = 'WAITING';
+      domEvents.renderClientState();
     });
 
     socket.on('CREATE_ROOM_SUCCESS', ({ username, roomId }) => {
       client.username = username;
       client.roomId = roomId;
       client.state = 'WAITING';
+      domEvents.renderClientState();
     });
 
     socket.on('INVALID_REQUEST', (data) => {
