@@ -1,4 +1,6 @@
-body {
-  font-family: 'Helvetica-Neue', 'Helvetica', 'Arial', sans-serif;
-  padding: 5%;
+#state {
+  position: fixed;
+  font-size: 10px;
+  bottom: 10px;
+  color: #0000003b;
 }
