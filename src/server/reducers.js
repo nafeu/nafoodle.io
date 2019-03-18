@@ -8,10 +8,12 @@ function rooms(state = [], action) {
         ...state,
         {
           id: action.roomId,
+          status: 'WAITING',
           users: [
             {
               id: action.clientId,
               username: action.username,
+              host: true,
             },
           ],
         },

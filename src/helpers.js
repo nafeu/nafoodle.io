@@ -27,17 +27,17 @@ module.exports = {
     });
     return output;
   },
-  clientIsInARoom(store, clientId) {
+  clientIsInARoom: (store, clientId) => {
     const state = store.getState();
     return _.find(state.rooms, (room) => {
       return _.includes(room.users.map(u => u.id), clientId);
     });
   },
-  roomNotExists(store, roomId) {
+  roomNotExists: (store, roomId) => {
     const state = store.getState();
     return !state.rooms.some(room => room.id === roomId);
   },
-  usernameInUse(store, roomId, username) {
+  usernameInUse: (store, roomId, username) => {
     const state = store.getState();
     const roomToCheck = _.find(state.rooms, (room) => {
       return room.id === roomId;
@@ -45,5 +45,14 @@ module.exports = {
     return _.find(roomToCheck.users, (user) => {
       return user.username === username;
     });
+  },
+  isHost: (clientId, userList) => {
+    let output = false;
+    userList.forEach((user) => {
+      if (user.id === clientId && user.host) {
+        output = true;
+      }
+    });
+    return output;
   },
 };

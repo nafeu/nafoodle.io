@@ -8,7 +8,10 @@ import {
   inGameArea,
   clientStageAreas,
   playerList,
+  startGameBtn,
 } from './dom-elements';
+
+import { isHost } from '../helpers';
 
 export default class DomEvents {
   constructor(socket, client) {
@@ -66,6 +69,9 @@ export default class DomEvents {
   renderState() {
     const { users } = this.client.state;
     playerList.innerText = `Players: ${users.map(user => user.username).join(', ')}`;
+    if (isHost(this.socket.id, users)) {
+      startGameBtn.style.display = 'block';
+    }
   }
 
   render() {

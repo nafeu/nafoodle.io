@@ -7,3 +7,4 @@ export const waitingArea = document.getElementById('waiting-area');
 export const inGameArea = document.getElementById('in-game-area');
 export const clientStageAreas = document.getElementsByClassName('client-stage-area');
 export const playerList = document.getElementById('player-list');
+export const startGameBtn = document.getElementById('start-game-btn');
