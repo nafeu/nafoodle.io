@@ -39,7 +39,12 @@ module.exports = {
         } else {
           socket.join(roomId);
           store.dispatch(joinRoom(username, roomId, socket.id));
-          socket.emit('JOIN_ROOM_SUCCESS', { username, roomId });
+          const state = store.getState();
+          const joinedRoom = _.find(state.rooms, (room) => {
+            return room.id === roomId;
+          });
+          socket.emit('JOIN_ROOM_SUCCESS', joinedRoom);
+          socket.to(roomId).emit('UPDATE_ROOM', joinedRoom);
         }
         io.emit('DEBUG_STATE', store.getState());
       });
@@ -53,7 +58,11 @@ module.exports = {
           const roomId = generateUID(_.map(store.getState().rooms, 'id'));
           socket.join(roomId);
           store.dispatch(createRoom(username, roomId, socket.id));
-          socket.emit('CREATE_ROOM_SUCCESS', { username, roomId });
+          const state = store.getState();
+          const joinedRoom = _.find(state.rooms, (room) => {
+            return room.id === roomId;
+          });
+          socket.emit('CREATE_ROOM_SUCCESS', joinedRoom);
         }
         io.emit('DEBUG_STATE', store.getState());
       });

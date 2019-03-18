@@ -6,9 +6,8 @@ const PORT = process.env.PORT || 8000;
 const socket = io(`http://localhost:${PORT}`);
 
 const client = {
-  username: null,
-  roomId: null,
-  state: 'LOBBY', // LOBBY, WAITING, IN-GAME
+  state: null,
+  stage: 'LOBBY', // LOBBY, WAITING, IN-GAME
 };
 
 const domEvents = new DomEvents(socket, client);

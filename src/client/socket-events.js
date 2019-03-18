@@ -14,20 +14,23 @@ export default class SocketEvents {
       console.log('Socket connection established');
     });
 
-    socket.on('JOIN_ROOM_SUCCESS', ({ username, roomId }) => {
-      client.username = username;
-      client.roomId = roomId;
-      window.history.pushState(null, '', `?room=${roomId}`);
-      client.state = 'WAITING';
-      domEvents.renderClientState();
+    socket.on('JOIN_ROOM_SUCCESS', (room) => {
+      window.history.pushState(null, '', `?room=${room.id}`);
+      client.state = room;
+      client.stage = 'WAITING';
+      domEvents.render();
     });
 
-    socket.on('CREATE_ROOM_SUCCESS', ({ username, roomId }) => {
-      client.username = username;
-      client.roomId = roomId;
-      window.history.pushState(null, '', `?room=${roomId}`);
-      client.state = 'WAITING';
-      domEvents.renderClientState();
+    socket.on('CREATE_ROOM_SUCCESS', (room) => {
+      window.history.pushState(null, '', `?room=${room.id}`);
+      client.state = room;
+      client.stage = 'WAITING';
+      domEvents.render();
+    });
+
+    socket.on('UPDATE_ROOM', (room) => {
+      client.state = room;
+      domEvents.renderState();
     });
 
     socket.on('INVALID_REQUEST', (data) => {

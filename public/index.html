@@ -2,23 +2,23 @@
 <html>
 <head>
   <title>Party Game Starter</title>
-  <!-- <link rel="stylesheet" type="text/css" href="lib/normalize.css"> -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="lib/toastr.min.css">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body class="container-fluid p-4">
-  <div id="lobby-area" class="client-state-area" style="display: none;">
+  <div id="lobby-area" class="client-stage-area" style="display: none;">
     <h1>Lobby</h1>
     <input id="username-input" type="text" placeholder="username"/>
     <input id="room-input" type="text" placeholder="room"/>
     <button id="join-button">Join</button>
     <button id="create-button">Create</button>
   </div>
-  <div id="waiting-area" class="client-state-area" style="display: none;">
+  <div id="waiting-area" class="client-stage-area" style="display: none;">
     <h1>Waiting</h1>
+    <div id="player-list"></div>
   </div>
-  <div id="in-game-area" class="client-state-area" style="display: none;">
+  <div id="in-game-area" class="client-stage-area" style="display: none;">
     <!-- Game is rendered here -->
     <h1>In-Game</h1>
   </div>

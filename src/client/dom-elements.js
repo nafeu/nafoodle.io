@@ -5,4 +5,5 @@ export const roomInput = document.getElementById('room-input');
 export const lobbyArea = document.getElementById('lobby-area');
 export const waitingArea = document.getElementById('waiting-area');
 export const inGameArea = document.getElementById('in-game-area');
-export const clientStateAreas = document.getElementsByClassName('client-state-area');
+export const clientStageAreas = document.getElementsByClassName('client-stage-area');
+export const playerList = document.getElementById('player-list');

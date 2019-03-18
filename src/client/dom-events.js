@@ -6,7 +6,8 @@ import {
   lobbyArea,
   waitingArea,
   inGameArea,
-  clientStateAreas,
+  clientStageAreas,
+  playerList,
 } from './dom-elements';
 
 export default class DomEvents {
@@ -38,16 +39,16 @@ export default class DomEvents {
       createButton.style.display = 'none';
     }
 
-    this.renderClientState();
+    this.renderStage();
   }
 
-  renderClientState() {
-    [].forEach.call(clientStateAreas, (area) => {
+  renderStage() {
+    [].forEach.call(clientStageAreas, (area) => {
       const selectedArea = area;
       selectedArea.style.display = 'none';
     });
 
-    switch (this.client.state) {
+    switch (this.client.stage) {
       case 'LOBBY':
         lobbyArea.style.display = 'block';
         break;
@@ -60,5 +61,15 @@ export default class DomEvents {
       default:
         break;
     }
+  }
+
+  renderState() {
+    const { users } = this.client.state;
+    playerList.innerText = `Players: ${users.map(user => user.username).join(', ')}`;
+  }
+
+  render() {
+    this.renderStage();
+    this.renderState();
   }
 }
