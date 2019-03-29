@@ -8,7 +8,7 @@ function rooms(state = [], action) {
         ...state,
         {
           id: action.roomId,
-          status: 'WAITING',
+          status: 'IN-GAME',
           users: [
             {
               id: action.clientId,

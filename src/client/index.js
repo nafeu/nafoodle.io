@@ -1,6 +1,5 @@
 import io from 'socket.io-client';
-import SocketEvents from './socket-events';
-import DomEvents from './dom-events';
+import EventManager from './event-manager';
 
 const PORT = process.env.PORT || 8000;
 const socket = io(`http://localhost:${PORT}`);
@@ -10,8 +9,6 @@ const client = {
   stage: 'LOBBY', // LOBBY, WAITING, IN-GAME
 };
 
-const domEvents = new DomEvents(socket, client);
-const socketEvents = new SocketEvents(socket, client, domEvents);
+const eventManager = new EventManager(socket, client);
 
-domEvents.init();
-socketEvents.init();
+eventManager.init();
