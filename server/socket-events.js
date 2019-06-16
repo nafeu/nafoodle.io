@@ -12,7 +12,7 @@ const {
   clientIsInARoom,
   roomNotExists,
   usernameInUse,
-} = require('../helpers');
+} = require('./helpers');
 
 module.exports = {
   use: (io, store) => {

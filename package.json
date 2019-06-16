@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack && node server.js",
-    "dev-server": "nodemon server.js",
-    "dev-client": "webpack --watch"
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "keywords": [
     "socketio",
@@ -26,12 +25,5 @@
     "socket.io": "2.2.0",
     "socket.io-client": "2.2.0",
     "toastr": "2.1.4"
-  },
-  "devDependencies": {
-    "eslint": "5.15.0",
-    "eslint-config-airbnb-base": "13.1.0",
-    "eslint-plugin-import": "2.16.0",
-    "webpack": "4.29.6",
-    "webpack-cli": "3.2.3"
   }
 }

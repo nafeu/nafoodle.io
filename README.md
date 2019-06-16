@@ -2,6 +2,21 @@
 
 Multiplayer party game starter
 
-### Setup & Use
+### Development
 
-* All your game code should exist inside `src/client/game` and `src/server/game`
+#### Server
+
+```
+nodemon index.js
+```
+
+#### Client
+
+```
+cd client
+npm start
+```
+
+### Deployment
+
+...

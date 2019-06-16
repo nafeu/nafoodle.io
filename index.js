@@ -8,10 +8,10 @@ const { createStore, applyMiddleware } = require('redux');
 const app = express();
 const server = http.Server(app);
 const io = require('socket.io')(server);
-const api = require('./src/server/api');
-const socketEvents = require('./src/server/socket-events');
-const reducers = require('./src/server/reducers');
-const { logger } = require('./src/helpers');
+const api = require('./server/api');
+const socketEvents = require('./server/socket-events');
+const reducers = require('./server/reducers');
+const { logger } = require('./server/helpers');
 
 const store = createStore(reducers, applyMiddleware(logger));
 
@@ -33,6 +33,9 @@ socketEvents.use(io, store);
 app.use(morgan('short'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(path.resolve(__dirname, 'public')));
-app.use('/dist', express.static('dist'));
+app.use(express.static(path.resolve(__dirname, 'client/build')));
 app.use('/api', api.use(io, store));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
