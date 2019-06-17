@@ -20,6 +20,10 @@ module.exports = {
       store.dispatch(addClient(socket.id));
       io.emit('DEBUG_STATE', store.getState());
 
+      socket.on('ping', () => {
+        console.log(`ping from ${socket.id}`);
+      })
+
       socket.on('disconnect', () => {
         store.dispatch(removeClient(socket.id));
         io.emit('DEBUG_STATE', store.getState());

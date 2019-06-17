@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "react-socket-io": "0.2.5"
   },
   "dependencies": {
     "react": "16.8.6",
