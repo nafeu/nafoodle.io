@@ -5,14 +5,14 @@ const {
   removeClient,
   createRoom,
   joinRoom,
-} = require('./actions');
+} = require('../store/actions');
 
 const {
   generateUID,
   clientIsInARoom,
   roomNotExists,
   usernameInUse,
-} = require('./helpers');
+} = require('../utils/helpers');
 
 module.exports = {
   use: (io, store) => {

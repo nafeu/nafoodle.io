@@ -3,23 +3,15 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const path = require('path');
 const morgan = require('morgan');
-const { createStore, applyMiddleware } = require('redux');
 
 const app = express();
 const server = http.Server(app);
 const io = require('socket.io')(server);
-const api = require('./server/api');
-const socketEvents = require('./server/socket-events');
-const reducers = require('./server/reducers');
-const { logger } = require('./server/helpers');
-
-const store = createStore(reducers, applyMiddleware(logger));
+const api = require('./server/api/v1');
+const socketEvents = require('./server/socket');
+const store = require('./server/store');
 
 const PORT = process.env.PORT || 8000;
-
-/*
- * Configurations
- */
 
 server.listen(PORT, () => {
   const { port } = server.address();
