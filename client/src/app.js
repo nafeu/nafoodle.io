@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './app.css';
+import './vendor/toastr.css';
 import Home from './pages/home';
 import About from './pages/about';
 import { SocketContext, Socket, Event } from 'react-socket-io';
 import { MainContext, MainContextProvider } from "./context/main";
+import toastr from 'toastr';
 
 const uri = `http://localhost:${process.env.PORT || 8000}`;
 const options = { transports: ['websocket'] };
@@ -40,6 +42,7 @@ function App() {
 
   const handleConnect = () => {
     setClientId(socket.id);
+    toastr.success('Connected to server.');
   }
 
   return (
