@@ -6,19 +6,21 @@ function Home() {
   const { state, dispatch } = useContext(MainContext);
   const socket = useContext(SocketContext);
 
-  const sendMessage = () => dispatch({ type: 'SEND_MESSAGE' });
+  const testConnection = () => {
+    socket.emit('TEST_CONNECTION', state.testConnectionCount + 1);
+    return dispatch({ type: 'TEST_CONNECTION' });
+  };
 
-  const handleMessage = () => {
-    socket.emit('message');
-    sendMessage();
+  const handleTestConnection = () => {
+    testConnection();
   }
 
   return (
     <React.Fragment>
       <h2>Home</h2>
-      <p>This is the homepage to {state.clientId} which messaged the server {state.messageCount} times.</p>
-      <button onClick={handleMessage}>
-        Send Message
+      <p>This is the homepage. You are connected as {state.clientId} which tested the server connection {state.testConnectionCount} times.</p>
+      <button onClick={handleTestConnection}>
+        Test connection
       </button>
     </React.Fragment>
   );
