@@ -7,8 +7,8 @@ function Home() {
   const socket = useContext(SocketContext);
 
   const testConnection = () => {
-    socket.emit('TEST_CONNECTION', state.testConnectionCount + 1);
-    return dispatch({ type: 'TEST_CONNECTION' });
+    socket.emit('testConnection', state.testConnectionCount + 1);
+    return dispatch({ type: 'testConnection' });
   };
 
   const handleTestConnection = () => {

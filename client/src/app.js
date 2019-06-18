@@ -36,7 +36,7 @@ function App() {
   const { dispatch } = useContext(MainContext);
   const socket = useContext(SocketContext);
 
-  const setClientId = clientId => dispatch({ type: 'SET_CLIENT_ID', payload: clientId });
+  const setClientId = clientId => dispatch({ type: 'setClientId', payload: clientId });
 
   const handleConnect = () => {
     setClientId(socket.id);

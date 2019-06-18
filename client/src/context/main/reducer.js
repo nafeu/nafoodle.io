@@ -5,12 +5,12 @@ export const initialState = {
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case 'TEST_CONNECTION':
+    case 'testConnection':
       return {
         ...state,
         testConnectionCount: state.testConnectionCount + 1
       };
-    case 'SET_CLIENT_ID':
+    case 'setClientId':
       return {
         ...state,
         clientId: action.payload
