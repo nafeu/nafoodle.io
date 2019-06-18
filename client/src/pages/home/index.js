@@ -1,44 +1,35 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect, useCallback } from 'react';
 import { SocketContext, Event } from 'react-socket-io';
+import { MainContext } from '../../context/main';
 
 function Home() {
-  const [state, setState] = useState({
-    clientId: null,
-    pingCount: 0,
-  });
-
+  const { state, dispatch } = useContext(MainContext);
   const socket = useContext(SocketContext);
 
+  const sendMessage = () => dispatch({ type: 'SEND_MESSAGE' });
+  const setClientId = useCallback(clientId => dispatch({ type: 'SET_CLIENT_ID', payload: clientId }), [dispatch]);
+
   useEffect(() => {
-    if (socket) {
-      setState({
-        ...state,
-        clientId: socket.id
-      });
+    if (state.clientId === null && socket) {
+      setClientId(socket.id);
     }
-  }, [socket]);
+  }, [state.clientId, socket, setClientId]);
 
   const handleConnect = () => {
-    setState({
-      ...state,
-      clientId: socket.id
-    });
+    setClientId(socket.id);
   }
 
-  const handlePing = () => {
-    socket.emit('ping');
-    setState({
-      ...state,
-      pingCount: state.pingCount + 1,
-    });
+  const handleMessage = () => {
+    socket.emit('message');
+    sendMessage();
   }
 
   return (
     <div>
       <h2>Home</h2>
-      <p>This is the homepage to {state.clientId} which pinged the server {state.pingCount} times.</p>
-      <button onClick={handlePing}>
-        Ping
+      <p>This is the homepage to {state.clientId} which messaged the server {state.messageCount} times.</p>
+      <button onClick={handleMessage}>
+        Send Message
       </button>
       <Event event='connect' handler={handleConnect} />
     </div>
