@@ -45,6 +45,18 @@ function App() {
     toastr.success('Connected to server.');
   }
 
+  const handleDisconnect = () => {
+    toastr.error('Disconnected from server.');
+  }
+
+  const handleReconnectAttempt = () => {
+    toastr.warning('Attempting to reconnect to server...');
+  }
+
+  const handleReconnectFailed = () => {
+    toastr.error('Please check your connection.', 'Cannot reach the server right now.');
+  }
+
   return (
     <Router>
       <React.Fragment>
@@ -53,6 +65,9 @@ function App() {
         <Route path="/about" component={About} />
       </React.Fragment>
       <Event event='connect' handler={handleConnect} />
+      <Event event='disconnect' handler={handleDisconnect} />
+      <Event event='reconnect_attempt' handler={handleReconnectAttempt} />
+      <Event event='reconnect_failed' handler={handleReconnectFailed} />
     </Router>
   )
 }
