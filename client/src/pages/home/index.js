@@ -7,15 +7,6 @@ function Home() {
   const { state, dispatch } = useContext(MainContext);
   const socket = useContext(SocketContext);
 
-  const testConnection = () => {
-    socket.emit('testConnection', state.testConnectionCount + 1);
-    return dispatch({ type: 'testConnection' });
-  };
-
-  const handleTestConnection = () => {
-    testConnection();
-  }
-
   const handleChangeUsername = (event) => {
     dispatch({ type: 'updateUsername', payload: event.target.value });
   }
@@ -28,18 +19,57 @@ function Home() {
     toastr.warning(message);
   }
 
+  const handleJoinRoom = (joinedRoom) => {
+    dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
+  }
+
+  const {
+    clientId,
+    username,
+    joinedRoom
+  } = state;
+
   return (
     <React.Fragment>
-      <h2>Home</h2>
-      <p>This is the homepage. You are connected as {state.clientId} which tested the server connection {state.testConnectionCount} times.</p>
-      <input placeholder="Enter username" type="text" value={state.username} onChange={handleChangeUsername} />
+      {joinedRoom ? (
+        <Game joinedRoom={joinedRoom} />
+      ) : (
+        <Lobby
+          clientId={clientId}
+          username={username}
+          handleChangeUsername={handleChangeUsername}
+          handleCreateRoom={handleCreateRoom}
+        />
+      )}
+      <Event event='invalidRequest' handler={handleInvalidRequest} />
+      <Event event='createRoomSuccess' handler={handleJoinRoom} />
+    </React.Fragment>
+  );
+}
+
+function Lobby({
+  clientId,
+  username,
+  handleChangeUsername,
+  handleCreateRoom
+}) {
+  return (
+    <React.Fragment>
+      <h2>Lobby</h2>
+      <p>You are connected with clientId: {clientId}</p>
+      <input placeholder="Enter username" type="text" value={username} onChange={handleChangeUsername} />
       <button onClick={handleCreateRoom}>
         Create Room
       </button>
-      <button onClick={handleTestConnection}>
-        Test Connection
-      </button>
-      <Event event='invalidRequest' handler={handleInvalidRequest} />
+    </React.Fragment>
+  );
+}
+
+function Game({ joinedRoom }) {
+  return (
+    <React.Fragment>
+      <h2>Game</h2>
+      <p>{JSON.stringify(joinedRoom)}</p>
     </React.Fragment>
   );
 }

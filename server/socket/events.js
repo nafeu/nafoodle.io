@@ -22,10 +22,6 @@ module.exports = {
       store.dispatch(addClient(socket.id));
       io.emit('debugState', store.getState());
 
-      socket.on('testConnection', (testConnectionCount) => {
-        console.log(`Test connection ${testConnectionCount} from ${socket.id}`);
-      })
-
       socket.on('disconnect', () => {
         store.dispatch(removeClient(socket.id));
         io.emit('debugState', store.getState());

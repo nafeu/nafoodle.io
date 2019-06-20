@@ -1,17 +1,12 @@
 export const initialState = {
   clientId: '',
-  testConnectionCount: 0,
   username: '',
   roomId: '',
+  joinedRoom: null,
 };
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case 'testConnection':
-      return {
-        ...state,
-        testConnectionCount: state.testConnectionCount + 1
-      };
     case 'updateClientId':
       return {
         ...state,
@@ -26,6 +21,12 @@ export const reducer = (state, action) => {
       return {
         ...state,
         roomId: action.payload
+      };
+    case 'updateJoinedRoom':
+      return {
+        ...state,
+        roomId: action.payload.id,
+        joinedRoom: action.payload
       };
     default:
       return state;
