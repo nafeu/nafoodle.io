@@ -1,11 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { SocketContext, Event } from 'react-socket-io';
 import { MainContext } from '../../context/main';
 import toastr from 'toastr';
 
-function Home() {
+function Home(props) {
   const { state, dispatch } = useContext(MainContext);
   const socket = useContext(SocketContext);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomId = urlParams.get('room');
+    if (roomId) {
+      dispatch({ type: 'updateRoomId', payload: roomId});
+    }
+  }, [dispatch])
 
   const handleChangeUsername = (event) => {
     dispatch({ type: 'updateUsername', payload: event.target.value });
@@ -28,10 +36,16 @@ function Home() {
   }
 
   const handleCreateRoomSuccess = (joinedRoom) => {
+    props.history.push({
+      search: `?room=${joinedRoom.id}`
+    });
     dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
   }
 
   const handleJoinRoomSuccess = (joinedRoom) => {
+    props.history.push({
+      search: `?room=${joinedRoom.id}`
+    });
     dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
   }
 
@@ -41,6 +55,7 @@ function Home() {
 
   const {
     clientId,
+    roomId,
     username,
     joinedRoom
   } = state;
@@ -52,6 +67,7 @@ function Home() {
       ) : (
         <Lobby
           username={username}
+          roomId={roomId}
           changeUsername={handleChangeUsername}
           changeRoomId={handleChangeRoomId}
           joinRoom={handleJoinRoom}
@@ -93,7 +109,7 @@ function Game({ clientId, joinedRoom }) {
   return (
     <React.Fragment>
       <h2>Game</h2>
-      <p><strong>Room:</strong> {joinedRoom.id}</p>
+      <p><strong>Link:</strong> {window.location.host}/?room={joinedRoom.id}</p>
       <p><strong>Status:</strong> {joinedRoom.status}</p>
       <p><strong>Users:</strong></p>
       <ul>
