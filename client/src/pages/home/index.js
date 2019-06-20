@@ -35,6 +35,10 @@ function Home() {
     dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
   }
 
+  const handleUpdateRoom = (joinedRoom) => {
+    dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
+  }
+
   const {
     clientId,
     username,
@@ -44,10 +48,9 @@ function Home() {
   return (
     <React.Fragment>
       {joinedRoom ? (
-        <Game joinedRoom={joinedRoom} />
+        <Game clientId={clientId} joinedRoom={joinedRoom} />
       ) : (
         <Lobby
-          clientId={clientId}
           username={username}
           changeUsername={handleChangeUsername}
           changeRoomId={handleChangeRoomId}
@@ -58,12 +61,12 @@ function Home() {
       <Event event='invalidRequest' handler={handleInvalidRequest} />
       <Event event='createRoomSuccess' handler={handleCreateRoomSuccess} />
       <Event event='joinRoomSuccess' handler={handleJoinRoomSuccess} />
+      <Event event='updateRoom' handler={handleUpdateRoom} />
     </React.Fragment>
   );
 }
 
 function Lobby({
-  clientId,
   username,
   roomId,
   changeUsername,
@@ -74,7 +77,6 @@ function Lobby({
   return (
     <React.Fragment>
       <h2>Lobby</h2>
-      <p>You are connected with clientId: {clientId}</p>
       <input placeholder="Enter username" type="text" value={username} onChange={changeUsername} />
       <input placeholder="Enter room id" type="text" value={roomId} onChange={changeRoomId} />
       <button onClick={joinRoom}>
@@ -87,7 +89,7 @@ function Lobby({
   );
 }
 
-function Game({ joinedRoom }) {
+function Game({ clientId, joinedRoom }) {
   return (
     <React.Fragment>
       <h2>Game</h2>
@@ -96,7 +98,7 @@ function Game({ joinedRoom }) {
       <p><strong>Users:</strong></p>
       <ul>
         {joinedRoom.users.map((user, index) => (
-          <li key={index}>{user.id} - {user.username}{user.host ? ' - host' : ''}</li>
+          <li key={index}>{clientId === user.id ? '(you) ' : ''}{user.username}{user.host ? ' is the host.' : ''}</li>
         ))}
       </ul>
     </React.Fragment>

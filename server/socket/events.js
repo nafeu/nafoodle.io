@@ -20,11 +20,9 @@ module.exports = {
   use: (io, store) => {
     io.on('connection', (socket) => {
       store.dispatch(addClient(socket.id));
-      io.emit('debugState', store.getState());
 
       socket.on('disconnect', () => {
         store.dispatch(removeClient(socket.id));
-        io.emit('debugState', store.getState());
       });
 
       socket.on('joinRoom', ({ username, roomId }) => {
@@ -47,8 +45,6 @@ module.exports = {
           socket.emit('joinRoomSuccess', joinedRoom);
           socket.to(roomId).emit('updateRoom', joinedRoom);
         }
-
-        io.emit('debugState', store.getState());
       });
 
       socket.on('createRoom', ({ username }) => {
@@ -70,8 +66,6 @@ module.exports = {
           });
           socket.emit('createRoomSuccess', joinedRoom);
         }
-
-        io.emit('debugState', store.getState());
       });
     });
 

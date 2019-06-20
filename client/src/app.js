@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './app.css';
 import './vendor/toastr.css';
@@ -37,6 +37,22 @@ function Navigation() {
 function App() {
   const { dispatch } = useContext(MainContext);
   const socket = useContext(SocketContext);
+
+  useEffect(() => {
+    const onevent = socket.onevent;
+
+    socket.onevent = function (packet) {
+        const args = packet.data || [];
+        onevent.call(this, packet);
+        packet.data = ["*"].concat(args);
+        onevent.call(this, packet);
+    };
+
+    socket.on("*",function(event,data) {
+      console.log(event);
+      console.log(data);
+    });
+  }, [socket]);
 
   const setClientId = clientId => dispatch({ type: 'updateClientId', payload: clientId });
 

@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const app = express();
 const server = http.Server(app);
 const io = require('socket.io')(server);
+
 const api = require('./server/api/v1');
 const socketEvents = require('./server/socket');
 const store = require('./server/store');
