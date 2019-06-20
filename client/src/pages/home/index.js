@@ -11,6 +11,14 @@ function Home() {
     dispatch({ type: 'updateUsername', payload: event.target.value });
   }
 
+  const handleChangeRoomId = (event) => {
+    dispatch({ type: 'updateRoomId', payload: event.target.value });
+  }
+
+  const handleJoinRoom = () => {
+    socket.emit('joinRoom', { username: state.username, roomId: state.roomId });
+  }
+
   const handleCreateRoom = () => {
     socket.emit('createRoom', { username: state.username });
   }
@@ -19,7 +27,11 @@ function Home() {
     toastr.warning(message);
   }
 
-  const handleJoinRoom = (joinedRoom) => {
+  const handleCreateRoomSuccess = (joinedRoom) => {
+    dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
+  }
+
+  const handleJoinRoomSuccess = (joinedRoom) => {
     dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
   }
 
@@ -38,11 +50,14 @@ function Home() {
           clientId={clientId}
           username={username}
           changeUsername={handleChangeUsername}
+          changeRoomId={handleChangeRoomId}
+          joinRoom={handleJoinRoom}
           createRoom={handleCreateRoom}
         />
       )}
       <Event event='invalidRequest' handler={handleInvalidRequest} />
-      <Event event='createRoomSuccess' handler={handleJoinRoom} />
+      <Event event='createRoomSuccess' handler={handleCreateRoomSuccess} />
+      <Event event='joinRoomSuccess' handler={handleJoinRoomSuccess} />
     </React.Fragment>
   );
 }
@@ -50,7 +65,10 @@ function Home() {
 function Lobby({
   clientId,
   username,
+  roomId,
   changeUsername,
+  changeRoomId,
+  joinRoom,
   createRoom
 }) {
   return (
@@ -58,6 +76,10 @@ function Lobby({
       <h2>Lobby</h2>
       <p>You are connected with clientId: {clientId}</p>
       <input placeholder="Enter username" type="text" value={username} onChange={changeUsername} />
+      <input placeholder="Enter room id" type="text" value={roomId} onChange={changeRoomId} />
+      <button onClick={joinRoom}>
+        Join Room
+      </button>
       <button onClick={createRoom}>
         Create Room
       </button>
