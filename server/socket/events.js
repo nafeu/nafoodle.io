@@ -56,7 +56,7 @@ module.exports = {
       });
 
       socket.on('createRoom', ({ username }) => {
-        const message = validateJoinRoom({
+        const message = validateCreateRoom({
           username,
           store,
           socket

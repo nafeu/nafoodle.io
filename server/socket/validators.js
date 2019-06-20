@@ -6,6 +6,7 @@ const {
 } = require('../utils/helpers');
 
 const MIN_USERNAME_LENGTH = 4;
+const MAX_USERNAME_LENGTH = 15;
 
 module.exports = {
   validateJoinRoom: ({ roomId, store, username, socket }) => {
@@ -17,8 +18,16 @@ module.exports = {
       return 'Room does not exist.';
     }
 
-    if (!username || username.length < 4) {
+    if (!username) {
+      return 'Please enter a username.';
+    }
+
+    if (username.length < MIN_USERNAME_LENGTH) {
       return 'Please enter a valid username (at least 4 characters long).';
+    }
+
+    if (username.length > MAX_USERNAME_LENGTH) {
+      return 'Username is too long (max 15 characters long).';
     }
 
     if (usernameInUse(store, roomId, username)) {
@@ -31,8 +40,16 @@ module.exports = {
   },
 
   validateCreateRoom: ({ username, store, socket }) => {
-    if (!username || username.length < MIN_USERNAME_LENGTH) {
-      return `Please enter a valid username (at least ${MIN_USERNAME_LENGTH} characters long).`;
+    if (!username) {
+      return 'Please enter a username.';
+    }
+
+    if (username.length < MIN_USERNAME_LENGTH) {
+      return 'Please enter a valid username (at least 4 characters long).';
+    }
+
+    if (username.length > MAX_USERNAME_LENGTH) {
+      return 'Username is too long (max 15 characters long).';
     }
 
     if (clientIsInARoom(store, socket.id)) {
