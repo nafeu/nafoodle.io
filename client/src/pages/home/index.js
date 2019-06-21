@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SocketContext, Event } from 'react-socket-io';
 import { MainContext } from '../../context/main';
 import toastr from 'toastr';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 function Home(props) {
   const { state, dispatch } = useContext(MainContext);
@@ -106,10 +107,22 @@ function Lobby({
 }
 
 function Game({ clientId, joinedRoom }) {
+  const joinableLink = `${window.location.host}/?room=${joinedRoom.id}`;
+  const [copied, setCopied] = useState(false);
+
   return (
     <React.Fragment>
       <h2>Game</h2>
-      <p><strong>Link:</strong> {window.location.host}/?room={joinedRoom.id}</p>
+      <p>
+        <strong>Link: </strong>
+        <CopyToClipboard text={joinableLink}
+          onCopy={() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 500);
+          }}>
+          <span>{copied ? 'Copied to clipboard!' : joinableLink}</span>
+        </CopyToClipboard>
+      </p>
       <p><strong>Status:</strong> {joinedRoom.status}</p>
       <p><strong>Users:</strong></p>
       <ul>

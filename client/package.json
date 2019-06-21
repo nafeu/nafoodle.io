@@ -7,9 +7,13 @@
     "react-socket-io": "0.2.5"
   },
   "dependencies": {
+    "keyboardjs": "^2.5.1",
     "react": "16.8.6",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "16.8.6",
     "react-router-dom": "5.0.1",
+    "react-use": "^9.7.0",
+    "rebound": "^0.1.0",
     "toastr": "^2.1.4"
   },
   "scripts": {
