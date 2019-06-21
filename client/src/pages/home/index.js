@@ -1,8 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { SocketContext, Event } from 'react-socket-io';
 import { MainContext } from '../../context/main';
 import toastr from 'toastr';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+import Game from './game';
+import Lobby from './lobby';
 
 function Home(props) {
   const { state, dispatch } = useContext(MainContext);
@@ -79,57 +81,6 @@ function Home(props) {
       <Event event='createRoomSuccess' handler={handleCreateRoomSuccess} />
       <Event event='joinRoomSuccess' handler={handleJoinRoomSuccess} />
       <Event event='updateRoom' handler={handleUpdateRoom} />
-    </React.Fragment>
-  );
-}
-
-function Lobby({
-  username,
-  roomId,
-  changeUsername,
-  changeRoomId,
-  joinRoom,
-  createRoom
-}) {
-  return (
-    <React.Fragment>
-      <h2>Lobby</h2>
-      <input placeholder="Enter username" type="text" value={username} onChange={changeUsername} />
-      <input placeholder="Enter room id" type="text" value={roomId} onChange={changeRoomId} />
-      <button onClick={joinRoom}>
-        Join Room
-      </button>
-      <button onClick={createRoom}>
-        Create Room
-      </button>
-    </React.Fragment>
-  );
-}
-
-function Game({ clientId, joinedRoom }) {
-  const joinableLink = `${window.location.host}/?room=${joinedRoom.id}`;
-  const [copied, setCopied] = useState(false);
-
-  return (
-    <React.Fragment>
-      <h2>Game</h2>
-      <p>
-        <strong>Link: </strong>
-        <CopyToClipboard text={joinableLink}
-          onCopy={() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 500);
-          }}>
-          <span>{copied ? 'Copied to clipboard!' : joinableLink}</span>
-        </CopyToClipboard>
-      </p>
-      <p><strong>Status:</strong> {joinedRoom.status}</p>
-      <p><strong>Users:</strong></p>
-      <ul>
-        {joinedRoom.users.map((user, index) => (
-          <li key={index}>{clientId === user.id ? '(you) ' : ''}{user.username}{user.host ? ' is the host.' : ''}</li>
-        ))}
-      </ul>
     </React.Fragment>
   );
 }
