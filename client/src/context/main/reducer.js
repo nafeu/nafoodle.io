@@ -28,6 +28,12 @@ export const reducer = (state, action) => {
         roomId: action.payload.id,
         joinedRoom: action.payload
       };
+    case 'resetRoom':
+      return {
+        ...state,
+        roomId: '',
+        joinedRoom: null
+      }
     default:
       return state;
   }

@@ -27,4 +27,10 @@ module.exports = {
       clientId,
     };
   },
+  leaveRoom: (id) => {
+    return {
+      type: 'LEAVE_ROOM',
+      id,
+    }
+  }
 };

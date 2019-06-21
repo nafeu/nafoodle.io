@@ -55,4 +55,20 @@ module.exports = {
     });
     return output;
   },
+  getRoomById: (store, roomId) => {
+    const state = store.getState();
+    return _.find(state.rooms, (room) => {
+      return room.id === roomId;
+    });
+  },
+  getRoomIdByClientId: (store, clientId) => {
+    const state = store.getState();
+    const room = _.find(state.rooms, (room) => {
+      return _.includes(room.users.map(u => u.id), clientId);;
+    });
+    if (room) {
+      return room.id;
+    }
+    return null;
+  },
 };

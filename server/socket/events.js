@@ -5,10 +5,13 @@ const {
   removeClient,
   createRoom,
   joinRoom,
+  leaveRoom,
 } = require('../store/actions');
 
 const {
   generateUID,
+  getRoomById,
+  getRoomIdByClientId,
 } = require('../utils/helpers');
 
 const {
@@ -22,7 +25,12 @@ module.exports = {
       store.dispatch(addClient(socket.id));
 
       socket.on('disconnect', () => {
+        const roomId = getRoomIdByClientId(store, socket.id);
         store.dispatch(removeClient(socket.id));
+        const updatedRoom = getRoomById(store, roomId);
+        if (updatedRoom) {
+          socket.to(roomId).emit('updateRoom', updatedRoom);
+        }
       });
 
       socket.on('joinRoom', ({ username, roomId }) => {
@@ -65,6 +73,15 @@ module.exports = {
             return room.id === roomId;
           });
           socket.emit('createRoomSuccess', joinedRoom);
+        }
+      });
+
+      socket.on('leaveRoom', (roomId) => {
+        store.dispatch(leaveRoom(socket.id));
+        const state = store.getState();
+        const updatedRoom = getRoomById(store, roomId);
+        if (updatedRoom) {
+          socket.to(roomId).emit('updateRoom', updatedRoom);
         }
       });
     });

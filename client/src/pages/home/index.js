@@ -34,6 +34,14 @@ function Home(props) {
     socket.emit('createRoom', { username: state.username });
   }
 
+  const handleLeaveRoom = () => {
+    socket.emit('leaveRoom', { roomId: state.roomId });
+    props.history.push({
+      search: ''
+    });
+    dispatch({ type: 'resetRoom' });
+  }
+
   const handleInvalidRequest = ({ message }) => {
     toastr.warning(message);
   }
@@ -66,7 +74,11 @@ function Home(props) {
   return (
     <React.Fragment>
       {joinedRoom ? (
-        <Game clientId={clientId} joinedRoom={joinedRoom} />
+        <Game
+          clientId={clientId}
+          joinedRoom={joinedRoom}
+          leaveRoom={handleLeaveRoom}
+        />
       ) : (
         <Lobby
           username={username}

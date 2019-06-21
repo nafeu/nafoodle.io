@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-function Game({ clientId, joinedRoom }) {
+function Game({
+  clientId,
+  joinedRoom,
+  leaveRoom,
+}) {
   const joinableLink = `${window.location.host}/?room=${joinedRoom.id}`;
   const [copied, setCopied] = useState(false);
 
@@ -25,6 +29,9 @@ function Game({ clientId, joinedRoom }) {
           <li key={index}>{clientId === user.id ? '(you) ' : ''}{user.username}{user.host ? ' is the host.' : ''}</li>
         ))}
       </ul>
+      <button onClick={leaveRoom}>
+        Leave Room
+      </button>
     </React.Fragment>
   );
 }

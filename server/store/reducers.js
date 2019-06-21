@@ -30,6 +30,17 @@ function rooms(state = [], action) {
       });
       return state;
     }
+    case 'LEAVE_ROOM': {
+      state.forEach((room) => {
+        _.remove(room.users, (user) => {
+          return user.id === action.id;
+        });
+      });
+      _.remove(state, (room) => {
+        return room.users.length === 0;
+      });
+      return state;
+    }
     case 'REMOVE_CLIENT':
       state.forEach((room) => {
         _.remove(room.users, (user) => {
