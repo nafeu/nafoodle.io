@@ -8,27 +8,6 @@ export const generateUID = (ids) => {
   return uid;
 }
 
-export const logger = ({ getState }) => {
-  return next => (action) => {
-    console.log('--- DISPATCH ---');
-    console.log(JSON.stringify(action, null, 2));
-    const returnValue = next(action);
-    console.log('--- UPDATED STATE ---');
-    console.log(JSON.stringify(getState(), null, 2));
-    return returnValue;
-  };
-}
-
-export const fieldsNotEmpty = (fields) => {
-  let output = true;
-  fields.forEach((field) => {
-    if (field.value === '') {
-      output = false;
-    }
-  });
-  return output;
-}
-
 export const clientIsInARoom = (store, clientId) => {
   const state = store.getState();
   return _.find(state.rooms, (room) => {
@@ -77,11 +56,4 @@ export const getRoomIdByClientId = (store, clientId) => {
     return room.id;
   }
   return null;
-}
-
-export const updateRoom = (store, socket, roomId) => {
-  const updatedRoom = getRoomById(store, roomId);
-  if (updatedRoom) {
-    socket.to(roomId).emit('updateRoom', updatedRoom);
-  }
 }
