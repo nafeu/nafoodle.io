@@ -9,8 +9,9 @@ const server = http.Server(app);
 const io = require('socket.io')(server);
 
 const api = require('./server/api/v1');
-const socketEvents = require('./server/socket');
+const realtime = require('./server/socket');
 const store = require('./server/store');
+const { addClient } = require('./server/store/actions');
 
 const PORT = process.env.PORT || 8000;
 
@@ -21,7 +22,10 @@ server.listen(PORT, () => {
 
 io.set('heartbeat timeout', 4000);
 io.set('heartbeat interval', 2000);
-socketEvents.use(io, store);
+io.on('connection', (socket) => {
+  store.dispatch(addClient(socket.id));
+  realtime.use({ io, socket, store });
+});
 
 app.use(morgan('short'));
 app.use(bodyParser.urlencoded({ extended: true }));
