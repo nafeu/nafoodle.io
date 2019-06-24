@@ -5,6 +5,7 @@ function Game({
   clientId,
   joinedRoom,
   leaveRoom,
+  leaveHostlessRoom,
 }) {
   const joinableLink = `${window.location.host}/?room=${joinedRoom.id}`;
   const [copied, setCopied] = useState(false);

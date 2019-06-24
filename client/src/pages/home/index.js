@@ -64,6 +64,15 @@ function Home(props) {
     dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
   }
 
+  const handleHostHasLeft = () => {
+    socket.emit('leaveRoom', { roomId: state.roomId });
+    props.history.push({
+      search: ''
+    });
+    dispatch({ type: 'resetRoom' });
+    toastr.warning('The host has left the game.');
+  }
+
   const {
     clientId,
     roomId,
@@ -78,6 +87,7 @@ function Home(props) {
           clientId={clientId}
           joinedRoom={joinedRoom}
           leaveRoom={handleLeaveRoom}
+          leaveHostlessRoom={handleHostHasLeft}
         />
       ) : (
         <Lobby
@@ -93,6 +103,7 @@ function Home(props) {
       <Event event='createRoomSuccess' handler={handleCreateRoomSuccess} />
       <Event event='joinRoomSuccess' handler={handleJoinRoomSuccess} />
       <Event event='updateRoom' handler={handleUpdateRoom} />
+      <Event event='hostHasLeft' handler={handleHostHasLeft} />
     </React.Fragment>
   );
 }

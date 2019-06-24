@@ -1,5 +1,11 @@
+import { hasNoHost } from '../utils/helpers';
+
 export const emitUpdateRoom = ({ socket, roomId, updatedRoom }) => {
-  socket.to(roomId).emit('updateRoom', updatedRoom);
+  if (hasNoHost(updatedRoom)) {
+    socket.to(roomId).emit('hostHasLeft');
+  } else {
+    socket.to(roomId).emit('updateRoom', updatedRoom);
+  }
 }
 
 export const emitInvalidRequest = ({ socket, message }) => {

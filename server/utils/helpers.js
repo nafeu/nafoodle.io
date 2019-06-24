@@ -50,10 +50,14 @@ export const getRoomById = (store, roomId) => {
 export const getRoomIdByClientId = (store, clientId) => {
   const state = store.getState();
   const room = _.find(state.rooms, (room) => {
-    return _.includes(room.users.map(u => u.id), clientId);;
+    return _.includes(room.users.map(u => u.id), clientId);
   });
   if (room) {
     return room.id;
   }
   return null;
+}
+
+export const hasNoHost = (room) => {
+  return !_.includes(room.users.map(u => u.host), true);
 }
