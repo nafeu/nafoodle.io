@@ -1,26 +1,26 @@
-const _ = require('lodash');
+import _ from 'lodash';
 
-const {
+import {
   addClient,
   removeClient,
   createRoom,
   joinRoom,
   leaveRoom,
-} = require('../store/actions');
+} from '../store/actions';
 
-const {
+import {
   generateUID,
   getRoomById,
   getRoomIdByClientId,
   updateRoom,
-} = require('../utils/helpers');
+} from '../utils/helpers';
 
-const {
+import {
   validateJoinRoom,
   validateCreateRoom,
-} = require('./validators');
+} from './validators';
 
-module.exports.handleDisconnect = ({ socket, store }) => {
+export const handleDisconnect = ({ socket, store }) => {
   return () => {
     const roomId = getRoomIdByClientId(store, socket.id);
     store.dispatch(removeClient(socket.id));
@@ -28,7 +28,7 @@ module.exports.handleDisconnect = ({ socket, store }) => {
   }
 }
 
-module.exports.handleJoinRoom = ({ socket, store }) => {
+export const handleJoinRoom = ({ socket, store }) => {
   return ({ username, roomId }) => {
     const message = validateJoinRoom({
       roomId,
@@ -49,7 +49,7 @@ module.exports.handleJoinRoom = ({ socket, store }) => {
   }
 }
 
-module.exports.handleCreateRoom = ({ socket, store }) => {
+export const handleCreateRoom = ({ socket, store }) => {
   return ({ username }) => {
     const message = validateCreateRoom({
       username,
@@ -69,7 +69,7 @@ module.exports.handleCreateRoom = ({ socket, store }) => {
   }
 }
 
-module.exports.handleLeaveRoom = ({ socket, store }) => {
+export const handleLeaveRoom = ({ socket, store }) => {
   return ({ roomId }) => {
     socket.leave(roomId);
     store.dispatch(leaveRoom(socket.id));

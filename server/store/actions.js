@@ -1,18 +1,18 @@
-const addClient = (id) => {
+export const addClient = (id) => {
   return {
     type: 'ADD_CLIENT',
     id,
   };
 }
 
-const removeClient = (id) => {
+export const removeClient = (id) => {
   return {
     type: 'REMOVE_CLIENT',
     id,
   };
 }
 
-const createRoom = (username, roomId, clientId) => {
+export const createRoom = (username, roomId, clientId) => {
   return {
     type: 'CREATE_ROOM',
     username,
@@ -21,7 +21,7 @@ const createRoom = (username, roomId, clientId) => {
   };
 }
 
-const joinRoom = (username, roomId, clientId) => {
+export const joinRoom = (username, roomId, clientId) => {
   return {
     type: 'JOIN_ROOM',
     username,
@@ -30,17 +30,9 @@ const joinRoom = (username, roomId, clientId) => {
   };
 }
 
-const leaveRoom = (id) => {
+export const leaveRoom = (id) => {
   return {
     type: 'LEAVE_ROOM',
     id,
   }
 }
-
-module.exports = {
-  addClient,
-  removeClient,
-  createRoom,
-  joinRoom,
-  leaveRoom,
-};

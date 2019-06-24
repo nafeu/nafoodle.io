@@ -1,9 +1,9 @@
-const handlers = require('./handlers');
+import * as events from './events';
 
-module.exports.use = (connection) => {
+export default function connectRealtimeServices(connection) {
   const { socket } = connection;
-  socket.on('disconnect', handlers.handleDisconnect(connection));
-  socket.on('joinRoom', handlers.handleJoinRoom(connection));
-  socket.on('createRoom', handlers.handleCreateRoom(connection));
-  socket.on('leaveRoom', handlers.handleLeaveRoom(connection));
+  socket.on('disconnect', events.handleDisconnect(connection));
+  socket.on('joinRoom', events.handleJoinRoom(connection));
+  socket.on('createRoom', events.handleCreateRoom(connection));
+  socket.on('leaveRoom', events.handleLeaveRoom(connection));
 }

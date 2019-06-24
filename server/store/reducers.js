@@ -1,5 +1,5 @@
-const _ = require('lodash');
-const { combineReducers } = require('redux');
+import _ from 'lodash';
+import { combineReducers } from 'redux';
 
 function rooms(state = [], action) {
   switch (action.type) {
@@ -67,9 +67,7 @@ function clients(state = [], action) {
   }
 }
 
-const reducers = combineReducers({
+export default combineReducers({
   rooms,
   clients,
 });
-
-module.exports = reducers;

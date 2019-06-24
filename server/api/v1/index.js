@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 
 const api = express.Router();
 
-module.exports = {
+export default {
   use: (io) => {
     api.get('/test', (req, res) => {
       io.emit('test');
