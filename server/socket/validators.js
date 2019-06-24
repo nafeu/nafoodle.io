@@ -3,7 +3,12 @@ import {
   clientIsInARoom,
   roomNotExists,
   usernameInUse,
+  roomHasPlayers,
 } from '../utils/helpers';
+
+import {
+  MAX_PLAYERS_PER_MATCH
+} from '../game';
 
 const MIN_USERNAME_LENGTH = 4;
 const MAX_USERNAME_LENGTH = 15;
@@ -35,6 +40,10 @@ export const validateJoinRoom = ({ roomId, store, username, socket }) => {
 
   if (clientIsInARoom(store, socket.id)) {
     return 'User already in a room.';
+  }
+
+  if (roomHasPlayers(store, roomId, MAX_PLAYERS_PER_MATCH)) {
+    return 'Room is full.';
   }
 }
 

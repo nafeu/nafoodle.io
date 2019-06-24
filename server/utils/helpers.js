@@ -61,3 +61,14 @@ export const getRoomIdByClientId = (store, clientId) => {
 export const hasNoHost = (room) => {
   return !_.includes(room.users.map(u => u.host), true);
 }
+
+export const roomHasPlayers = (store, roomId, count) => {
+  const room = getRoomById(store, roomId);
+  if (room) {
+    if (count) {
+      return room.users.length === count;
+    }
+    return room.users.length > 0;
+  }
+  return null;
+}

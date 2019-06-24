@@ -1,6 +1,11 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
 
+import {
+  roomStatus,
+  getRoomStatus,
+} from '../game';
+
 function rooms(state = [], action) {
   switch (action.type) {
     case 'CREATE_ROOM': {
@@ -8,7 +13,7 @@ function rooms(state = [], action) {
         ...state,
         {
           id: action.roomId,
-          status: 'IN-GAME',
+          status: roomStatus.WAITING_FOR_PLAYERS,
           users: [
             {
               id: action.clientId,
@@ -26,12 +31,16 @@ function rooms(state = [], action) {
             id: action.clientId,
             username: action.username,
           });
+          room.status = getRoomStatus(room);
         }
       });
       return state;
     }
     case 'LEAVE_ROOM': {
       state.forEach((room) => {
+        if (_.includes(room.users.map(u => u.id), action.id)) {
+          room.status = getRoomStatus(room);
+        }
         _.remove(room.users, (user) => {
           return user.id === action.id;
         });
@@ -43,6 +52,9 @@ function rooms(state = [], action) {
     }
     case 'REMOVE_CLIENT':
       state.forEach((room) => {
+        if (_.includes(room.users.map(u => u.id), action.id)) {
+          room.status = getRoomStatus(room);
+        }
         _.remove(room.users, (user) => {
           return user.id === action.id;
         });
