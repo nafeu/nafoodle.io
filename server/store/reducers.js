@@ -66,7 +66,7 @@ function rooms(state = [], action) {
     case 'START_GAME':
       state.forEach((room) => {
         if (room.id === action.roomId) {
-          room.status = 'PLAYING';
+          room.status = 'IN_GAME';
         }
       });
       return state;

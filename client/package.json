@@ -7,16 +7,18 @@
     "react-socket-io": "0.2.5"
   },
   "dependencies": {
-    "@inlet/react-pixi": "1.2.17",
     "keyboardjs": "^2.5.1",
-    "pixi.js": "5.2.1",
     "react": "16.8.6",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "16.8.6",
+    "react-flexbox-grid": "2.1.2",
+    "react-jss": "10.1.1",
     "react-router-dom": "5.0.1",
+    "react-spring": "8.0.27",
     "react-use": "^9.7.0",
     "rebound": "^0.1.0",
-    "toastr": "^2.1.4"
+    "toastr": "^2.1.4",
+    "typeface-roboto-mono": "0.0.75"
   },
   "scripts": {
     "start": "react-scripts start",

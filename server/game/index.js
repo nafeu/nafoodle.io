@@ -4,6 +4,7 @@ export const MAX_PLAYERS_PER_MATCH = 2;
 export const roomStatus = {
   WAITING_FOR_PLAYERS: 'WAITING',
   READY: 'READY',
+  IN_GAME: 'IN_GAME',
 }
 
 export const getRoomStatus = (room) => {
