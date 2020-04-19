@@ -34,6 +34,10 @@ function Home(props) {
     socket.emit('createRoom', { username: state.username });
   }
 
+  const handleStartGame = () => {
+    socket.emit('startGame', { username: state.username, roomId: state.roomId });
+  }
+
   const handleLeaveRoom = () => {
     socket.emit('leaveRoom', { roomId: state.roomId });
     props.history.push({
@@ -50,6 +54,10 @@ function Home(props) {
     props.history.push({
       search: `?room=${joinedRoom.id}`
     });
+    dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
+  }
+
+  const handleStartGameSuccess = (joinedRoom) => {
     dispatch({ type: 'updateJoinedRoom', payload: joinedRoom });
   }
 
@@ -88,6 +96,7 @@ function Home(props) {
           joinedRoom={joinedRoom}
           leaveRoom={handleLeaveRoom}
           leaveHostlessRoom={handleHostHasLeft}
+          startGame={handleStartGame}
         />
       ) : (
         <Lobby
@@ -101,6 +110,7 @@ function Home(props) {
       )}
       <Event event='invalidRequest' handler={handleInvalidRequest} />
       <Event event='createRoomSuccess' handler={handleCreateRoomSuccess} />
+      <Event event='startGameSuccess' handler={handleStartGameSuccess} />
       <Event event='joinRoomSuccess' handler={handleJoinRoomSuccess} />
       <Event event='updateRoom' handler={handleUpdateRoom} />
       <Event event='hostHasLeft' handler={handleHostHasLeft} />

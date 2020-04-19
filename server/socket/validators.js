@@ -4,10 +4,12 @@ import {
   roomNotExists,
   usernameInUse,
   roomHasPlayers,
+  clientIsHostOfRoom
 } from '../utils/helpers';
 
 import {
-  MAX_PLAYERS_PER_MATCH
+  MAX_PLAYERS_PER_MATCH,
+  MIN_PLAYERS_PER_MATCH
 } from '../game';
 
 const MIN_USERNAME_LENGTH = 4;
@@ -62,5 +64,15 @@ export const validateCreateRoom = ({ username, store, socket }) => {
 
   if (clientIsInARoom(store, socket.id)) {
     return 'User already in a room.';
+  }
+}
+
+export const validateStartGame = ({ username, roomId, store, socket }) => {
+  if (!roomHasPlayers(store, roomId, MIN_PLAYERS_PER_MATCH)) {
+    return `Need at least ${MIN_PLAYERS_PER_MATCH} players to start game.`
+  }
+
+  if (!clientIsHostOfRoom(store, roomId, socket.id)) {
+    return 'Only the host may start the game.';
   }
 }

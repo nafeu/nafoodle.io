@@ -36,3 +36,12 @@ export const leaveRoom = (id) => {
     id,
   }
 }
+
+export const startGame = (username, roomId, clientId) => {
+  return {
+    type: 'START_GAME',
+    username,
+    roomId,
+    clientId,
+  };
+}

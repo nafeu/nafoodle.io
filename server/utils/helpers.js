@@ -15,6 +15,23 @@ export const clientIsInARoom = (store, clientId) => {
   });
 }
 
+export const clientIsHostOfRoom = (store, roomId, clientId) => {
+  const state = store.getState();
+
+  let output = false;
+  const roomToCheck = _.find(state.rooms, (room) => {
+    return room.id === roomId;
+  });
+
+  roomToCheck.users.forEach((user) => {
+    if (user.id === clientId && user.host) {
+      output = true;
+    }
+  });
+
+  return output;
+}
+
 export const roomNotExists = (store, roomId) => {
   const state = store.getState();
   return !state.rooms.some(room => room.id === roomId);

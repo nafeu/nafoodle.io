@@ -63,6 +63,13 @@ function rooms(state = [], action) {
         return room.users.length === 0;
       });
       return state;
+    case 'START_GAME':
+      state.forEach((room) => {
+        if (room.id === action.roomId) {
+          room.status = 'PLAYING';
+        }
+      });
+      return state;
     default:
       return state;
   }

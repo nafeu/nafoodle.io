@@ -6,6 +6,7 @@ import {
   createRoom,
   joinRoom,
   leaveRoom,
+  startGame
 } from '../store/actions';
 
 import {
@@ -17,6 +18,7 @@ import {
 import {
   validateJoinRoom,
   validateCreateRoom,
+  validateStartGame
 } from './validators';
 
 import {
@@ -24,6 +26,7 @@ import {
   emitInvalidRequest,
   emitJoinRoomSuccess,
   emitCreateRoomSuccess,
+  emitStartGameSuccess
 } from './emits';
 
 export const handleDisconnect = ({ socket, store }) => {
@@ -73,6 +76,25 @@ export const handleCreateRoom = ({ socket, store }) => {
       store.dispatch(createRoom(username, roomId, socket.id));
       const createdRoom = getRoomById(store, roomId);
       emitCreateRoomSuccess({ socket, createdRoom });
+    }
+  }
+}
+
+export const handleStartGame = ({ socket, store }) => {
+  return ({ username, roomId }) => {
+    const message = validateStartGame({
+      username,
+      roomId,
+      store,
+      socket
+    });
+
+    if (message) {
+      emitInvalidRequest({ socket, message });
+    } else {
+      store.dispatch(startGame(username, roomId, socket.id));
+      const startedGameRoom = getRoomById(store, roomId);
+      emitStartGameSuccess({ socket, roomId, startedGameRoom });
     }
   }
 }

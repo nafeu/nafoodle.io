@@ -20,3 +20,8 @@ export const emitJoinRoomSuccess = ({ socket, roomId, joinedRoom }) => {
 export const emitCreateRoomSuccess = ({ socket, createdRoom }) => {
   socket.emit('createRoomSuccess', createdRoom);
 }
+
+export const emitStartGameSuccess = ({ socket, roomId, startedGameRoom }) => {
+  socket.emit('startGameSuccess', startedGameRoom);
+  socket.to(roomId).emit('updateRoom', startedGameRoom);
+}
