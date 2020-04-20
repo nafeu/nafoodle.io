@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { SocketContext } from 'react-socket-io';
 import { MainContext } from '../../../../context/main';
+import { getPlayers, getGameInfo } from '../services';
 
 function PlayArea({
   joinedRoom
@@ -22,9 +23,8 @@ function PlayArea({
     });
   }
 
-  const { activePlayerIndex, players, phase, results } = joinedRoom.gameState;
-
-  const isYourTurn = (phase === 'TURN' && players[activePlayerIndex].id === state.clientId);
+  const { playerOne, playerTwo } = getPlayers(joinedRoom.gameState);
+  const { isYourTurn, results, phase } = getGameInfo(joinedRoom.gameState, state);
 
   return (
     <div>
@@ -38,8 +38,8 @@ function PlayArea({
         </div>
       )}
 
-      <p>{players[0].username} {players[0].move ? 'has made their decision.' : 'is picking...'}</p>
-      <p>{players[1].username} {players[1].move ? 'has made their decision.' : 'is picking...'}</p>
+      <p>{playerOne.username} {playerOne.move ? 'has made their decision.' : 'is picking...'}</p>
+      <p>{playerTwo.username} {playerTwo.move ? 'has made their decision.' : 'is picking...'}</p>
 
       <p>{results}</p>
 
