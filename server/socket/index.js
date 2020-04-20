@@ -7,4 +7,5 @@ export default function connectRealtimeServices(connection) {
   socket.on('createRoom', events.handleCreateRoom(connection));
   socket.on('leaveRoom', events.handleLeaveRoom(connection));
   socket.on('startGame', events.handleStartGame(connection));
+  socket.on('playerInput', events.handlePlayerInput(connection));
 }

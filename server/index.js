@@ -36,4 +36,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
 
+export const getIo = () => {
+  return io;
+}
+
 export default app;

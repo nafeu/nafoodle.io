@@ -1,10 +1,12 @@
 import { hasNoHost } from '../utils/helpers';
+import { getIo } from '../index';
 
 export const emitUpdateRoom = ({ socket, roomId, updatedRoom }) => {
-  if (hasNoHost(updatedRoom)) {
+    if (hasNoHost(updatedRoom)) {
     socket.to(roomId).emit('hostHasLeft');
   } else {
-    socket.to(roomId).emit('updateRoom', updatedRoom);
+    const io = getIo();
+    io.in(roomId).emit('updateRoom', updatedRoom);
   }
 }
 

@@ -4,6 +4,8 @@ import { combineReducers } from 'redux';
 import {
   roomStatus,
   getRoomStatus,
+  getNewGameState,
+  DEFAULT_GAME_STATE
 } from '../game';
 
 function rooms(state = [], action) {
@@ -21,6 +23,7 @@ function rooms(state = [], action) {
               host: true,
             },
           ],
+          gameState: DEFAULT_GAME_STATE
         },
       ];
     }
@@ -67,6 +70,13 @@ function rooms(state = [], action) {
       state.forEach((room) => {
         if (room.id === action.roomId) {
           room.status = 'IN_GAME';
+        }
+      });
+      return state;
+    case 'PLAYER_INPUT':
+      state.forEach((room) => {
+        if (room.id === action.roomId) {
+          room.gameState = getNewGameState(room.gameState, action.input);
         }
       });
       return state;

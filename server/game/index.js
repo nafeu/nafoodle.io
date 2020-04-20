@@ -1,5 +1,9 @@
-export const MIN_PLAYERS_PER_MATCH = 2;
-export const MAX_PLAYERS_PER_MATCH = 2;
+export const MIN_PLAYERS_PER_MATCH = 1;
+export const MAX_PLAYERS_PER_MATCH = 4;
+
+export const DEFAULT_GAME_STATE = {
+  count: 1
+}
 
 export const roomStatus = {
   WAITING_FOR_PLAYERS: 'WAITING',
@@ -20,4 +24,14 @@ export const getRoomStatus = (room) => {
     }
   }
   return room.status;
+}
+
+export const getNewGameState = (state, input) => {
+  const newState = { ...state }
+
+  const { count } = input;
+
+  newState.count = newState.count + 1;
+
+  return newState;
 }

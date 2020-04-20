@@ -6,7 +6,8 @@ import {
   createRoom,
   joinRoom,
   leaveRoom,
-  startGame
+  startGame,
+  processPlayerInput
 } from '../store/actions';
 
 import {
@@ -103,6 +104,16 @@ export const handleLeaveRoom = ({ socket, store }) => {
   return ({ roomId }) => {
     socket.leave(roomId);
     store.dispatch(leaveRoom(socket.id));
+    const updatedRoom = getRoomById(store, roomId);
+    if (updatedRoom) {
+      emitUpdateRoom({ socket, roomId, updatedRoom });
+    }
+  }
+}
+
+export const handlePlayerInput = ({ socket, store }) => {
+  return ({ roomId, input }) => {
+    store.dispatch(processPlayerInput(roomId, input));
     const updatedRoom = getRoomById(store, roomId);
     if (updatedRoom) {
       emitUpdateRoom({ socket, roomId, updatedRoom });

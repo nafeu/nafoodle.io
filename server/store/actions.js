@@ -45,3 +45,11 @@ export const startGame = (username, roomId, clientId) => {
     clientId,
   };
 }
+
+export const processPlayerInput = (roomId, input) => {
+  return {
+    type: 'PLAYER_INPUT',
+    roomId,
+    input,
+  };
+}

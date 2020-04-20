@@ -89,3 +89,22 @@ export const roomHasPlayers = (store, roomId, count) => {
   }
   return null;
 }
+
+export const roomHasMinPlayers = (store, roomId, count) => {
+  const room = getRoomById(store, roomId);
+  if (room) {
+    if (count) {
+      return room.users.length >= count;
+    }
+    return room.users.length > 0;
+  }
+  return false;
+}
+
+export const roomInGame = (store, roomId) => {
+  const room = getRoomById(store, roomId);
+  if (room) {
+    return room.status === 'IN_GAME';
+  }
+  return false;
+}

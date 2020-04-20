@@ -4,6 +4,8 @@ import {
   roomNotExists,
   usernameInUse,
   roomHasPlayers,
+  roomHasMinPlayers,
+  roomInGame,
   clientIsHostOfRoom
 } from '../utils/helpers';
 
@@ -47,6 +49,10 @@ export const validateJoinRoom = ({ roomId, store, username, socket }) => {
   if (roomHasPlayers(store, roomId, MAX_PLAYERS_PER_MATCH)) {
     return 'Room is full.';
   }
+
+  if (roomInGame(store, roomId)) {
+    return 'Game in progress.';
+  }
 }
 
 export const validateCreateRoom = ({ username, store, socket }) => {
@@ -68,7 +74,7 @@ export const validateCreateRoom = ({ username, store, socket }) => {
 }
 
 export const validateStartGame = ({ username, roomId, store, socket }) => {
-  if (!roomHasPlayers(store, roomId, MIN_PLAYERS_PER_MATCH)) {
+  if (!roomHasMinPlayers(store, roomId, MIN_PLAYERS_PER_MATCH)) {
     return `Need at least ${MIN_PLAYERS_PER_MATCH} players to start game.`
   }
 
