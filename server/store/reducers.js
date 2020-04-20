@@ -5,7 +5,7 @@ import {
   roomStatus,
   getRoomStatus,
   getNewGameState,
-  DEFAULT_GAME_STATE
+  getDefaultGameState
 } from '../game';
 
 function rooms(state = [], action) {
@@ -23,7 +23,7 @@ function rooms(state = [], action) {
               host: true,
             },
           ],
-          gameState: DEFAULT_GAME_STATE
+          gameState: {}
         },
       ];
     }
@@ -70,6 +70,7 @@ function rooms(state = [], action) {
       state.forEach((room) => {
         if (room.id === action.roomId) {
           room.status = 'IN_GAME';
+          room.gameState = getDefaultGameState(room.users);
         }
       });
       return state;

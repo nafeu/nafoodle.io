@@ -87,7 +87,7 @@ function App() {
 
   const handleConnect = () => {
     setClientId(socket.id);
-    toastr.success('Connected to server.');
+    // toastr.success('Connected to server.');
   }
 
   const handleDisconnect = () => {
