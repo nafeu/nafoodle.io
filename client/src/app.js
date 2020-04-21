@@ -4,6 +4,7 @@ import './app.css';
 import './vendor/toastr.css';
 import Home from './pages/home';
 import About from './pages/about';
+import Sandbox from './pages/sandbox';
 import { SocketContext, Socket, Event } from 'react-socket-io';
 import { MainContext, MainContextProvider } from './context/main';
 import theme from './context/theme';
@@ -91,11 +92,11 @@ function App() {
   }
 
   const handleDisconnect = () => {
-    toastr.error('Disconnected from server.');
+    // toastr.error('Disconnected from server.');
   }
 
   const handleReconnectAttempt = () => {
-    toastr.warning('Attempting to reconnect to server...');
+    // toastr.warning('Attempting to reconnect to server...');
   }
 
   const handleReconnectFailed = () => {
@@ -108,6 +109,7 @@ function App() {
         <Navigation/>
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
+        <Route path="/sandbox" component={Sandbox} />
       </React.Fragment>
       <Event event='connect' handler={handleConnect} />
       <Event event='disconnect' handler={handleDisconnect} />

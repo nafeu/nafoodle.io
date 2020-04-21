@@ -5,7 +5,8 @@ import { MainContext } from '../../../../context/main';
 import { getPlayers, getGameInfo, getCard } from '../services';
 
 const ONE_SECOND = 1000;
-const STATE_DELAY = ONE_SECOND;
+const TWO_SECONDS = 2000;
+const THREE_SECONDS = 3000;
 
 function PlayArea({
   joinedRoom
@@ -14,6 +15,7 @@ function PlayArea({
   const socket = useContext(SocketContext);
 
   const { phase, youAreHost, results, isYourTurn } = getGameInfo(joinedRoom.gameState, state);
+  const { playerOne, playerTwo, activePlayer, you } = getPlayers(joinedRoom.gameState, state);
 
   const goToNextPhase = () => {
     socket.emit('playerInput', {
@@ -27,23 +29,23 @@ function PlayArea({
   useEffect(() => {
     if (youAreHost) {
       if (phase === 'START') {
-        setTimeout(goToNextPhase, STATE_DELAY);
+        setTimeout(goToNextPhase, ONE_SECOND);
       }
 
       if (phase === 'TURN') {
-        setTimeout(goToNextPhase, STATE_DELAY);
+        setTimeout(goToNextPhase, ONE_SECOND);
       }
 
       if (phase === 'DRAW') {
-        setTimeout(goToNextPhase, STATE_DELAY);
+        setTimeout(goToNextPhase, ONE_SECOND);
       }
 
       if (phase === 'END') {
-        setTimeout(goToNextPhase, STATE_DELAY);
+        setTimeout(goToNextPhase, ONE_SECOND);
       }
 
       if (phase === 'MATCH') {
-        setTimeout(goToNextPhase, STATE_DELAY);
+        setTimeout(goToNextPhase, THREE_SECONDS);
       }
     }
   }, [phase, youAreHost]);
@@ -65,10 +67,8 @@ function PlayArea({
         action: 'NEW_GAME'
       },
       roomId: joinedRoom.id
-    })
+    });
   }
-
-  const { playerOne, playerTwo, activePlayer, you } = getPlayers(joinedRoom.gameState, state);
 
   return (
     <div>

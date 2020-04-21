@@ -1,0 +1,58 @@
+.sandbox-container {
+  position: absolute;
+  width: 98%;
+  height: 95%;
+  margin: 1%;
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+.sandbox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hand-container {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 10px;
+}
+
+.hand {
+  display: inline-block;
+}
+
+.card-container {
+  display: flex;
+}
+
+.card {
+  width: 75px;
+  background-color: white;
+  text-align: center;
+  height: 125px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-weight: bolder;
+  font-size: 0.75em;
+  border: 2px solid black;
+  transition: 250ms ease-out all;
+}
+
+.card:hover {
+  background-color: yellow;
+  cursor: pointer;
+}
+
+.card:active {
+  opacity: 0;
+}
+
+.card-content {
+  padding-bottom: 20px;
+}
