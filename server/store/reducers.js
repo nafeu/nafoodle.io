@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import {
   roomStatus,
   getRoomStatus,
-  getNewGameState,
+  getNextGameState,
   getDefaultGameState
 } from '../game';
 
@@ -15,7 +15,7 @@ function rooms(state = [], action) {
         ...state,
         {
           id: action.roomId,
-          status: roomStatus.WAITING_FOR_PLAYERS,
+          status: 'WAITING',
           users: [
             {
               id: action.clientId,
@@ -77,7 +77,7 @@ function rooms(state = [], action) {
     case 'PLAYER_INPUT':
       state.forEach((room) => {
         if (room.id === action.roomId) {
-          room.gameState = getNewGameState(room.gameState, action.input);
+          room.gameState = getNextGameState(room.gameState, action.input);
         }
       });
       return state;
