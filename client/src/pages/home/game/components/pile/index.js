@@ -69,7 +69,7 @@ function Pile({
 
   return (
     <div className={classes.pileContainer} style={{ transform }}>
-      {_.map(pile, (cardId, index) => {
+      {_.map(pile, ({ cardId, id }, index) => {
           const card = getCard(cardId);
           const playerIndex = player && player === 'top' ? index + 100 : index;
           const rotation = (randomNumbers[playerIndex] * (maxRandomRotation * 2)) - maxRandomRotation;
@@ -78,6 +78,7 @@ function Pile({
 
           return (
             <div
+              key={id}
               className={classes.pileCard}
               style={{
                 transform: `rotateZ(${rotation}deg) translate(${xDisplacement}px, ${yDisplacement}px)`,

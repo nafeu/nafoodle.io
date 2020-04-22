@@ -58,8 +58,8 @@ function Hand({ hand, position, hidden, owner, handleCardClick, canClick }) {
           {_.map(hand, (card, index) => {
             return (
               <Card
-                key={`${index}-${card}`}
-                card={getCard(card)}
+                key={`${card.id}`}
+                card={getCard(card.cardId)}
                 index={index}
                 count={hand.length}
                 hidden={!owner}

@@ -6,10 +6,20 @@ import Board from '../home/game/components/board';
 import Deck from '../home/game/components/deck';
 import Pile from '../home/game/components/pile';
 
-function Sandbox() {
-  const [handA, setHandA] = useState(3);
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 
-  const handASet = _.map(_.range(handA), i => 1);
+function Sandbox() {
+  const [handA, setHandA] = useState([
+    {
+      id: uuidv4(),
+      cardId: 1
+    }
+  ]);
 
   const handleOwnerCardClick = (card, index) => {
     console.log(`Card is ${JSON.stringify(card)} with index of ${index}`)
@@ -22,44 +32,44 @@ function Sandbox() {
   return (
     <React.Fragment>
       <Board>
-        <button onClick={() => setHandA(handA + 1)}>Pick Up</button>
-        <button onClick={() => setHandA(handA > 0 ? handA - 1 : 0)}>Drop</button>
+        <button onClick={() => setHandA([...handA, { id: uuidv4(), cardId: _.random(0, 2) }])}>Pick Up</button>
+        <button onClick={() => setHandA(handA.length > 0 ? handA.slice(0, handA.length - 1) : [])}>Drop</button>
         <Hand
-          hand={handASet}
+          hand={handA}
           owner={true}
           handleCardClick={handleOwnerCardClick}
           canClick={true}
         />
         <Hand
-          hand={handASet}
+          hand={handA}
           owner={false}
           position={'top'}
           handleCardClick={handleOpponentCardClick}
         />
         <Hand
-          hand={handASet}
+          hand={handA}
           owner={false}
           position={'left'}
           handleCardClick={handleOpponentCardClick}
         />
         <Hand
-          hand={handASet}
+          hand={handA}
           owner={false}
           position={'right'}
           handleCardClick={handleOpponentCardClick}
         />
         <Deck
-          deck={_.map(_.range(50), i => 0)}
+          deck={handA}
           position={'middle'}
         />
         <Pile
-          pile={handASet}
+          pile={handA}
           position={'middle'}
           player={'top'}
           messiness={5}
         />
         <Pile
-          pile={handASet}
+          pile={handA}
           position={'middle'}
           player={'bottom'}
           messiness={5}

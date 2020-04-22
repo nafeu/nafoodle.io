@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { isLastPlayer, getPlayers } from './helpers';
+import { isLastPlayer, getPlayers, generateDeck } from './helpers';
 
 export const MIN_PLAYERS_PER_MATCH = 2;
 export const MAX_PLAYERS_PER_MATCH = 2;
@@ -35,7 +35,7 @@ export const getDefaultGameState = (users) => {
 
   const playerCount = players.length;
 
-  const deck = _.map(_.range(20), card => _.random(0, 2));
+  const deck = generateDeck(20);
   const handStart = 3;
 
   players.forEach(player => {

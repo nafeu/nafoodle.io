@@ -72,6 +72,7 @@ function Deck({
           const distance = index * 0.1;
           return (
             <div
+              key={card.id}
               className={classes.deckCard}
               style={{
                 right: `${distance}px`,
