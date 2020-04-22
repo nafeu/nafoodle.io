@@ -5,20 +5,20 @@ import { useSpring, animated, config, useTransition } from 'react-spring';
 
 const useStyles = createUseStyles(theme => ({
   card: {
-    width: "75px",
+    width: `${theme.cardWidth}px`,
     backgroundColor: theme.colorPrimary,
-    textAlign: "center",
-    height: "125px",
+    height: `${theme.cardHeight}px`,
+    color: theme.colorDark,
+    border: `2px solid ${theme.colorDark}`,
     borderRadius: "5px",
+    position: "relative",
+    textAlign: "center",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    color: theme.colorDark,
     fontWeight: "bolder",
     fontSize: "0.75em",
-    border: `2px solid ${theme.colorDark}`,
     transition: "250ms ease-out transform",
-    position: "relative",
     cursor: "pointer"
   },
   cardContent: {
@@ -35,7 +35,8 @@ function Card({
   count,
   hidden,
   owner,
-  handleClick
+  handleClick,
+  canClick
 }) {
   const theme = useTheme();
   const classes = useStyles({ theme });

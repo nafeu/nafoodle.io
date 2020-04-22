@@ -30,6 +30,7 @@ export const getPlayers = (gameState, localState) => {
   output['allPlayers'] = players;
   output['activePlayer'] = players[activePlayerIndex];
   output['you'] = _.find(players, player => player.id === clientId);
+  output['opponent'] = _.find(players, player => player.id !== clientId);
 
   return output;
 }

@@ -4,6 +4,9 @@ import { SocketContext } from 'react-socket-io';
 import { MainContext } from '../../../../context/main';
 import { getPlayers, getGameInfo, getCard } from '../services';
 
+import Hand from '../components/hand';
+import Board from '../components/board';
+
 const ONE_SECOND = 1000;
 const TWO_SECONDS = 2000;
 const THREE_SECONDS = 3000;
@@ -15,7 +18,7 @@ function PlayArea({
   const socket = useContext(SocketContext);
 
   const { phase, youAreHost, results, isYourTurn } = getGameInfo(joinedRoom.gameState, state);
-  const { playerOne, playerTwo, activePlayer, you } = getPlayers(joinedRoom.gameState, state);
+  const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(joinedRoom.gameState, state);
 
   const goToNextPhase = () => {
     socket.emit('playerInput', {
@@ -70,38 +73,67 @@ function PlayArea({
     });
   }
 
+  const handleOwnerCardClick = (card, index) => {
+    if (isYourTurn) {
+      handlePlayCard(card.id, index);
+    }
+  }
+
+  const handleOpponentCardClick = (card, index) => {
+    console.log(`Opponents card with index of ${index}`)
+  }
+
   return (
-    <div>
-      <h2>{phase}</h2>
-      <h3>
-        {phase === 'START' && ('Game will start shortly...')}
-        {phase === 'TURN' && (`It is ${activePlayer.username}'s turn.`)}
-        {phase === 'DRAW' && (`${activePlayer.username} is drawing cards.`)}
-        {phase === 'ACTION' && (`${activePlayer.username} is now deciding what card to play.`)}
-        {phase === 'END' && (`${activePlayer.username} has picked a card.`)}
-        {phase === 'MATCH' && (`${playerOne.username} plays ${getCard(playerOne.action).name}, ${playerTwo.username} plays ${getCard(playerTwo.action).name}, ${results.message}.`)}
-        {phase === 'RESULTS' && (`${results.winner}`)}
-      </h3>
-      {_.map(you.hand, (cardId, index) => {
-        const { name } = getCard(cardId);
+    <React.Fragment>
+      <Board>
+        <Hand
+          hand={you.hand}
+          owner={true}
+          handleCardClick={handleOwnerCardClick}
+          canClick={isYourTurn}
+        />
+        <Hand
+          hand={opponent.hand}
+          owner={false}
+          position={'top'}
+          handleCardClick={handleOpponentCardClick}
+        />
+      </Board>
+    </React.Fragment>
+  );
 
-        if (isYourTurn) {
-          return (
-            <button onClick={() => handlePlayCard(cardId, index)}>{name}</button>
-          );
-        }
+  // return (
+  //   <div>
+  //     <h2>{phase}</h2>
+  //     <h3>
+  //       {phase === 'START' && ('Game will start shortly...')}
+  //       {phase === 'TURN' && (`It is ${activePlayer.username}'s turn.`)}
+  //       {phase === 'DRAW' && (`${activePlayer.username} is drawing cards.`)}
+  //       {phase === 'ACTION' && (`${activePlayer.username} is now deciding what card to play.`)}
+  //       {phase === 'END' && (`${activePlayer.username} has picked a card.`)}
+  //       {phase === 'MATCH' && (`${playerOne.username} plays ${getCard(playerOne.action).name}, ${playerTwo.username} plays ${getCard(playerTwo.action).name}, ${results.message}.`)}
+  //       {phase === 'RESULTS' && (`${results.winner}`)}
+  //     </h3>
+  //     {_.map(you.hand, (cardId, index) => {
+  //       const { name } = getCard(cardId);
 
-        return (
-          <button disabled>{name}</button>
-        );
-      })}
-      <p>{playerOne.username}'s HP: {playerOne.hp}</p>
-      <p>{playerTwo.username}'s HP: {playerTwo.hp}</p>
-      {phase === 'RESULTS' && youAreHost && (
-        <button onClick={handleNewGame}>Play again.</button>
-      )}
-    </div>
-  )
+  //       if (isYourTurn) {
+  //         return (
+  //           <button onClick={() => handlePlayCard(cardId, index)}>{name}</button>
+  //         );
+  //       }
+
+  //       return (
+  //         <button disabled>{name}</button>
+  //       );
+  //     })}
+  //     <p>{playerOne.username}'s HP: {playerOne.hp}</p>
+  //     <p>{playerTwo.username}'s HP: {playerTwo.hp}</p>
+  //     {phase === 'RESULTS' && youAreHost && (
+  //       <button onClick={handleNewGame}>Play again.</button>
+  //     )}
+  //   </div>
+  // );
 }
 
 export default PlayArea;

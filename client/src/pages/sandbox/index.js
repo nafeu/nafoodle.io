@@ -3,6 +3,8 @@ import _ from 'lodash';
 
 import Hand from '../home/game/components/hand';
 import Board from '../home/game/components/board';
+import Deck from '../home/game/components/deck';
+import Pile from '../home/game/components/pile';
 
 function Sandbox() {
   const [handA, setHandA] = useState(3);
@@ -25,12 +27,22 @@ function Sandbox() {
           hand={handASet}
           owner={true}
           handleCardClick={handleOwnerCardClick}
+          canClick={true}
         />
         <Hand
           hand={handASet}
           owner={false}
           position={'top'}
           handleCardClick={handleOpponentCardClick}
+        />
+        <Deck
+          deck={_.map(_.range(50), i => 0)}
+          position={'middle'}
+        />
+        <Pile
+          pile={_.map(_.range(5), card => _.random(0, 2))}
+          position={'middle'}
+          messiness={5}
         />
       </Board>
     </React.Fragment>

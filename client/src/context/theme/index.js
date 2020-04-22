@@ -17,7 +17,9 @@ const theme = {
     default: "10px",
     cozy: "5px"
   },
-  borderRadius: "10px"
+  borderRadius: "10px",
+  cardHeight: 125 * 1.25,
+  cardWidth: 75 * 1.25
 }
 
 export default theme;
