@@ -3,7 +3,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import _ from 'lodash';
 import { getCard } from '../../services';
 import { getRandomNumbers } from '../../../../../utils/helpers';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated, useTransition } from 'react-spring';
 
 const randomNumbers = getRandomNumbers(1000);
 const DEFAULT_MESSINESS = 5;
@@ -59,30 +59,36 @@ function Pile({
     transform = `translateY(${theme.cardHeight * 0.66}px)`;
   }
 
-  const [{ yMotion, cardOpacity }] = useSpring(() => ({
-    cardOpacity: 1,
-    from: {
-      cardOpacity: 0,
-    },
-    config: { mass: 1, tension: 500, friction: 60 }
-  }));
+  const indexedPile = _.map(pile, (card, index) => {
+    return {
+      ...card,
+      index
+    }
+  });
+
+  const transitions = useTransition(indexedPile, card => card.id, {
+    from: { opacity: 0, motion: player === 'bottom' ? -100 : 100 },
+    enter: { opacity: 1, motion: 0 },
+    leave: { opacity: 0, motion: player === 'bottom' ? -100 : 100 }
+  });
 
   return (
     <div className={classes.pileContainer} style={{ transform }}>
-      {_.map(pile, ({ cardId, id }, index) => {
-          const card = getCard(cardId);
-          const playerIndex = player && player === 'top' ? index + 100 : index;
+      {transitions.map(({ item, props, key }) => {
+          const card = getCard(item.cardId);
+          const playerIndex = player && player === 'top' ? item.index + 100 : item.index;
           const rotation = (randomNumbers[playerIndex] * (maxRandomRotation * 2)) - maxRandomRotation;
           const xDisplacement = (randomNumbers[playerIndex] * maxDisplacement) * (randomNumbers[playerIndex] > 0.5 ? -1 : 1);
           const yDisplacement = (randomNumbers[playerIndex] * maxDisplacement) * (randomNumbers[playerIndex] > 0.5 ? -1 : 1);
 
           return (
-            <div
-              key={id}
+            <animated.div
+              key={key}
               className={classes.pileCard}
               style={{
                 transform: `rotateZ(${rotation}deg) translate(${xDisplacement}px, ${yDisplacement}px)`,
-                opacity: cardOpacity.interpolate(v => v),
+                opacity: props.opacity,
+                bottom: props.motion,
               }}
             >
                 <div
@@ -92,7 +98,7 @@ function Pile({
                   }}>
                     {card.name}
                 </div>
-            </div>
+            </animated.div>
           );
         })
       }
