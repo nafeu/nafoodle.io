@@ -15,18 +15,18 @@ const useStyles = createUseStyles(theme => ({
     top: "50%",
     left: "75px",
     position: "absolute",
-    transform: "translate(-50%, -50%) rotateZ(90deg)"
+    transform: "translate(-50%, -50%) rotateZ(-90deg)"
   },
   handContainerRight: {
     top: "50%",
     left: "calc(100% - 75px)",
     position: "absolute",
-    transform: "translate(-50%, -50%) rotateZ(-90deg)"
+    transform: "translate(-50%, -50%) rotateZ(90deg)"
   },
   handContainerTop: {
     left: "50%",
     position: "absolute",
-    transform: "translateX(-50%) rotateZ(180deg)"
+    transform: "translateX(-50%)"
   },
   hand: {
     display: "inline-block"
@@ -63,7 +63,7 @@ function Hand({ hand, position, hidden, owner, handleCardClick, canClick }) {
                 index={index}
                 count={hand.length}
                 hidden={!owner}
-                handleClick={handleCardClick}
+                handleCardClick={handleCardClick}
                 owner={owner}
                 canClick={canClick}
               />

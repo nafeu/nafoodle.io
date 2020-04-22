@@ -28,7 +28,8 @@ export const getDefaultGameState = (users) => {
       action: null,
       actionCount: 0,
       hp: 20,
-      hand: []
+      hand: [],
+      pile: []
     };
   });
 
@@ -165,7 +166,9 @@ export const moveFromPhaseAction = (gameState, input) => {
   if (input.action === 'PLAY_CARD') {
     nextGameState.players[gameState.activePlayerIndex].action = input.cardId;
     nextGameState.players[gameState.activePlayerIndex].actionCount += 1;
-    nextGameState.players[gameState.activePlayerIndex].hand.splice(input.index, 1);
+    nextGameState.players[gameState.activePlayerIndex].pile.push(
+      nextGameState.players[gameState.activePlayerIndex].hand.splice(input.index, 1)[0]
+    );
 
     if (nextGameState.players[gameState.activePlayerIndex].actionCount === gameState.actionLimit) {
       nextGameState = goToPhaseEnd(nextGameState, input);

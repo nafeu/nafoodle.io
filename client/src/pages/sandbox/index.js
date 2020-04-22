@@ -22,7 +22,8 @@ function Sandbox() {
   return (
     <React.Fragment>
       <Board>
-        <button onClick={() => setHandA(handA + 1)}>Hand A</button>
+        <button onClick={() => setHandA(handA + 1)}>Pick Up</button>
+        <button onClick={() => setHandA(handA > 0 ? handA - 1 : 0)}>Drop</button>
         <Hand
           hand={handASet}
           owner={true}
@@ -35,13 +36,32 @@ function Sandbox() {
           position={'top'}
           handleCardClick={handleOpponentCardClick}
         />
+        <Hand
+          hand={handASet}
+          owner={false}
+          position={'left'}
+          handleCardClick={handleOpponentCardClick}
+        />
+        <Hand
+          hand={handASet}
+          owner={false}
+          position={'right'}
+          handleCardClick={handleOpponentCardClick}
+        />
         <Deck
           deck={_.map(_.range(50), i => 0)}
           position={'middle'}
         />
         <Pile
-          pile={_.map(_.range(5), card => _.random(0, 2))}
+          pile={handASet}
           position={'middle'}
+          player={'top'}
+          messiness={5}
+        />
+        <Pile
+          pile={handASet}
+          position={'middle'}
+          player={'bottom'}
           messiness={5}
         />
       </Board>

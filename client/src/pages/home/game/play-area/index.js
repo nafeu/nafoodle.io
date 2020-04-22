@@ -5,6 +5,8 @@ import { MainContext } from '../../../../context/main';
 import { getPlayers, getGameInfo, getCard } from '../services';
 
 import Hand from '../components/hand';
+import Deck from '../components/deck';
+import Pile from '../components/pile';
 import Board from '../components/board';
 
 const ONE_SECOND = 1000;
@@ -17,7 +19,7 @@ function PlayArea({
   const { state } = useContext(MainContext);
   const socket = useContext(SocketContext);
 
-  const { phase, youAreHost, results, isYourTurn } = getGameInfo(joinedRoom.gameState, state);
+  const { phase, youAreHost, results, isYourTurn, deck } = getGameInfo(joinedRoom.gameState, state);
   const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(joinedRoom.gameState, state);
 
   const goToNextPhase = () => {
@@ -92,11 +94,27 @@ function PlayArea({
           handleCardClick={handleOwnerCardClick}
           canClick={isYourTurn}
         />
+        <Pile
+          pile={you.pile}
+          position={'middle'}
+          player={'bottom'}
+          messiness={5}
+        />
         <Hand
           hand={opponent.hand}
           owner={false}
           position={'top'}
           handleCardClick={handleOpponentCardClick}
+        />
+        <Pile
+          pile={opponent.pile}
+          position={'middle'}
+          player={'top'}
+          messiness={5}
+        />
+        <Deck
+          deck={deck}
+          position={'middle'}
         />
       </Board>
     </React.Fragment>

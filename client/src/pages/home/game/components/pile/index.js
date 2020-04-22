@@ -3,6 +3,7 @@ import { createUseStyles, useTheme } from 'react-jss';
 import _ from 'lodash';
 import { getCard } from '../../services';
 import { getRandomNumbers } from '../../../../../utils/helpers';
+import { useSpring, animated } from 'react-spring';
 
 const randomNumbers = getRandomNumbers(1000);
 const DEFAULT_MESSINESS = 5;
@@ -41,7 +42,8 @@ const useStyles = createUseStyles(theme => ({
 function Pile({
   pile,
   position,
-  messiness
+  messiness,
+  player
 }) {
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -49,21 +51,46 @@ function Pile({
   const maxRandomRotation = messiness ? messiness : DEFAULT_MESSINESS;
   const maxDisplacement = messiness ? (messiness * MESSINESS_DISPLACEMENT) : (DEFAULT_MESSINESS * MESSINESS_DISPLACEMENT);
 
+  let transform = "";
+
+  if (player === 'top') {
+    transform = `translateY(${-theme.cardHeight * 0.66}px)`;
+  } else if (player === 'bottom') {
+    transform = `translateY(${theme.cardHeight * 0.66}px)`;
+  }
+
+  const [{ yMotion, cardOpacity }] = useSpring(() => ({
+    cardOpacity: 1,
+    from: {
+      cardOpacity: 0,
+    },
+    config: { mass: 1, tension: 500, friction: 60 }
+  }));
+
   return (
-    <div className={classes.pileContainer}>
+    <div className={classes.pileContainer} style={{ transform }}>
       {_.map(pile, (cardId, index) => {
           const card = getCard(cardId);
-          const rotation = (randomNumbers[index] * (maxRandomRotation * 2)) - maxRandomRotation;
-          const xDisplacement = (randomNumbers[index] * maxDisplacement) * (randomNumbers[index] > 0.5 ? -1 : 1);
-          const yDisplacement = (randomNumbers[index] * maxDisplacement) * (randomNumbers[index] > 0.5 ? -1 : 1);
+          const playerIndex = player && player === 'top' ? index + 100 : index;
+          const rotation = (randomNumbers[playerIndex] * (maxRandomRotation * 2)) - maxRandomRotation;
+          const xDisplacement = (randomNumbers[playerIndex] * maxDisplacement) * (randomNumbers[playerIndex] > 0.5 ? -1 : 1);
+          const yDisplacement = (randomNumbers[playerIndex] * maxDisplacement) * (randomNumbers[playerIndex] > 0.5 ? -1 : 1);
+
           return (
             <div
               className={classes.pileCard}
               style={{
-                transform: `rotateZ(${rotation}deg) translate(${xDisplacement}px, ${yDisplacement}px)`
+                transform: `rotateZ(${rotation}deg) translate(${xDisplacement}px, ${yDisplacement}px)`,
+                opacity: cardOpacity.interpolate(v => v),
               }}
             >
-                <div className={classes.pileCardContent}>{card.name}</div>
+                <div
+                  className={classes.pileCardContent}
+                  style={{
+                    transform: player && player === 'top' ? "rotateZ(180deg)" : '',
+                  }}>
+                    {card.name}
+                </div>
             </div>
           );
         })

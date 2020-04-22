@@ -50,6 +50,7 @@ export const getGameInfo = (gameState, localState) => {
     phase,
     activePlayerIndex,
     players,
+    deck,
     results
   } = gameState;
 
@@ -59,7 +60,8 @@ export const getGameInfo = (gameState, localState) => {
     phase,
     results,
     isYourTurn: phase === 'ACTION' && players[activePlayerIndex].id === clientId,
-    youAreHost: isHost(clientId, players)
+    youAreHost: isHost(clientId, players),
+    deck
   }
 
   return output;
