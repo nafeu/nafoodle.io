@@ -36,7 +36,7 @@ const useStyles = createUseStyles(theme => ({
   },
 }));
 
-function Hand({ hand, position, hidden }) {
+function Hand({ hand, position, hidden, owner, handleCardClick }) {
   const classes = useStyles();
 
   const getPositionClass = (position) => {
@@ -62,7 +62,9 @@ function Hand({ hand, position, hidden }) {
                 card={getCard(card)}
                 index={index}
                 count={hand.length}
-                hidden={hidden}
+                hidden={!owner}
+                handleClick={handleCardClick}
+                owner={owner}
               />
             )
           })}
