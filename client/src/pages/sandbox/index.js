@@ -5,6 +5,7 @@ import Hand from '../home/game/components/hand';
 import Board from '../home/game/components/board';
 import Deck from '../home/game/components/deck';
 import Pile from '../home/game/components/pile';
+import PlayerInfo from '../home/game/components/player-info';
 
 function uuidv4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -20,6 +21,16 @@ function Sandbox() {
       cardId: 1
     }
   ]);
+
+  const player = {
+    id: 'a',
+    username: 'Nafeu',
+    action: null,
+    actionCount: 0,
+    hp: 20,
+    hand: [handA],
+    pile: []
+  }
 
   const handleOwnerCardClick = (card, index) => {
     console.log(`Card is ${JSON.stringify(card)} with index of ${index}`)
@@ -73,6 +84,21 @@ function Sandbox() {
           position={'middle'}
           player={'bottom'}
           messiness={5}
+        />
+        <PlayerInfo
+          player={player}
+        />
+        <PlayerInfo
+          player={player}
+          position={'left'}
+        />
+        <PlayerInfo
+          player={player}
+          position={'right'}
+        />
+        <PlayerInfo
+          player={player}
+          position={'top'}
         />
       </Board>
     </React.Fragment>
