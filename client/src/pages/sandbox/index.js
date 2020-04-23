@@ -25,6 +25,15 @@ function Sandbox() {
 
   const [alert, setAlert] = useState(false);
 
+  const showAlert = (aliveMs) => {
+    if (!alert) {
+      setAlert(true);
+      setTimeout(() => {
+        setAlert(false);
+      }, aliveMs);
+    }
+  }
+
   const player = {
     id: 'a',
     username: 'Nafeu',
@@ -48,7 +57,7 @@ function Sandbox() {
       <Board>
         <button onClick={() => setHandA([...handA, { id: uuidv4(), cardId: _.random(0, 2) }])}>Pick Up</button>
         <button onClick={() => setHandA(handA.length > 0 ? handA.slice(0, handA.length - 1) : [])}>Drop</button>
-        <button onClick={() => setAlert(!alert)}>Toggle</button>
+        <button onClick={() => showAlert(1000)}>Toggle</button>
         <Hand
           hand={handA}
           owner={true}
@@ -110,6 +119,7 @@ function Sandbox() {
           type={'success'}
           body={'Testing...'}
           show={alert}
+          alive={1000}
         />
       </Board>
     </React.Fragment>

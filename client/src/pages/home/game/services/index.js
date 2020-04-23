@@ -62,12 +62,66 @@ export const getGameInfo = (gameState, localState) => {
   const output = {
     phase,
     results,
-    isYourTurn: phase === 'ACTION' && players[activePlayerIndex].id === clientId,
+    isYourTurn: (phase === 'ACTION' || phase === 'TURN') && players[activePlayerIndex].id === clientId,
     youAreHost: isHost(clientId, players),
     deck
   }
 
   return output;
+}
+
+export const getAlertInfo = (gameState, localState) => {
+  const defaults = {
+    alertType: '',
+    alertTitle: '',
+    alertBody: ''
+  }
+
+  const { phase, youAreHost, results, isYourTurn, deck } = getGameInfo(gameState, localState);
+  const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(gameState, localState);
+
+  console.log({ phase, isYourTurn, you, activePlayer });
+
+  if (phase === 'START') {
+    return {
+      ...defaults,
+      alertTitle: `${playerOne.username} vs ${playerTwo.username}`,
+      alertBody: 'Game is starting soon...'
+    }
+  }
+
+  if (phase === 'TURN') {
+    return {
+      ...defaults,
+      alertTitle: isYourTurn ? 'It is your turn.' : `${opponent.username}'s turn.`,
+      alertBody: isYourTurn ? 'Make your move.' : 'Prepare yourself.',
+      alertType: isYourTurn ? 'success' : 'error',
+    }
+  }
+
+  if (phase === 'MATCH') {
+    return {
+      ...defaults,
+      alertTitle: results.message,
+      alertBody: 'The fighting continues.',
+      alertType: 'warning',
+    }
+  }
+
+  if (phase === 'RESULTS') {
+    return {
+      ...defaults,
+      alertTitle: `${results.winner} is the winner.`,
+      alertBody: 'Thanks for playing.',
+      alertType: 'info',
+    }
+  }
+
+  return {
+    alertType: '',
+    alertTitle: '',
+    alertBody: ''
+  };
 }
 
 export const getCard = (cardId) => {

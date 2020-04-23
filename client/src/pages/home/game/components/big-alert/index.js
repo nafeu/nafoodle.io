@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useTransition, animated } from 'react-spring';
@@ -42,12 +42,17 @@ const useStyles = createUseStyles(theme => ({
   }
 }));
 
-function BigAlert({ title, body, show, type }) {
+function BigAlert({ title, body, show, type, alive }) {
   const theme = useTheme();
   const classes = useStyles({ theme });
 
   const transitions = useTransition(show, null, {
     from: { opacity: 0, transform: 'translate(-50%, -60%)' },
+    // enter: item => async (next, cancel) => {
+    //   await next({ opacity: 1, transform: 'translate(-50%, -50%)' });
+    //   await new Promise(resolve => setTimeout(resolve, alive));
+    //   await next({ opacity: 0, transform: 'translate(-50%, -40%)' });
+    // },
     enter: { opacity: 1, transform: 'translate(-50%, -50%)' },
     leave: { opacity: 0, transform: 'translate(-50%, -40%)' },
   });

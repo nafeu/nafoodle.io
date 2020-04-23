@@ -1,26 +1,41 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import _ from 'lodash';
 import { SocketContext } from 'react-socket-io';
 import { MainContext } from '../../../../context/main';
-import { getPlayers, getGameInfo, getCard } from '../services';
+import { getPlayers, getGameInfo, getCard, getAlertInfo } from '../services';
 
 import Hand from '../components/hand';
 import Deck from '../components/deck';
 import Pile from '../components/pile';
 import Board from '../components/board';
+import BigAlert from '../components/big-alert';
+import PlayerInfo from '../components/player-info';
 
 const ONE_SECOND = 1000;
 const TWO_SECONDS = 2000;
 const THREE_SECONDS = 3000;
+const FIVE_SECONDS = 5000;
+const SEVEN_SECONDS = 7000;
 
 function PlayArea({
   joinedRoom
 }) {
   const { state } = useContext(MainContext);
   const socket = useContext(SocketContext);
-
   const { phase, youAreHost, results, isYourTurn, deck } = getGameInfo(joinedRoom.gameState, state);
   const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(joinedRoom.gameState, state);
+  const { alertTitle, alertBody, alertType } = getAlertInfo(joinedRoom.gameState, state);
+
+  const [alert, setAlert] = useState(false);
+
+  const showAlert = (aliveMs) => {
+    if (!alert) {
+      setAlert(true);
+      setTimeout(() => {
+        setAlert(false);
+      }, aliveMs);
+    }
+  }
 
   const goToNextPhase = () => {
     socket.emit('playerInput', {
@@ -32,26 +47,31 @@ function PlayArea({
   }
 
   useEffect(() => {
-    if (youAreHost) {
-      if (phase === 'START') {
-        setTimeout(goToNextPhase, ONE_SECOND);
-      }
+    if (phase === 'START') {
+      showAlert(FIVE_SECONDS);
+      youAreHost && setTimeout(goToNextPhase, SEVEN_SECONDS);
+    }
 
-      if (phase === 'TURN') {
-        setTimeout(goToNextPhase, ONE_SECOND);
-      }
+    if (phase === 'TURN') {
+      showAlert(TWO_SECONDS);
+      youAreHost && setTimeout(goToNextPhase, THREE_SECONDS);
+    }
 
-      if (phase === 'DRAW') {
-        setTimeout(goToNextPhase, ONE_SECOND);
-      }
+    if (phase === 'DRAW') {
+      youAreHost && setTimeout(goToNextPhase, ONE_SECOND);
+    }
 
-      if (phase === 'END') {
-        setTimeout(goToNextPhase, ONE_SECOND);
-      }
+    if (phase === 'END') {
+      youAreHost && setTimeout(goToNextPhase, ONE_SECOND);
+    }
 
-      if (phase === 'MATCH') {
-        setTimeout(goToNextPhase, THREE_SECONDS);
-      }
+    if (phase === 'MATCH') {
+      showAlert(TWO_SECONDS);
+      youAreHost && setTimeout(goToNextPhase, THREE_SECONDS);
+    }
+
+    if (phase === 'RESULTS') {
+      showAlert(SEVEN_SECONDS);
     }
   }, [phase, youAreHost]);
 
@@ -116,6 +136,22 @@ function PlayArea({
           deck={deck}
           position={'middle'}
         />
+        <PlayerInfo
+          player={you}
+        />
+        <PlayerInfo
+          player={opponent}
+          position={'top'}
+        />
+        <BigAlert
+          title={alertTitle}
+          type={alertType}
+          body={alertBody}
+          show={alert}
+        />
+        {phase === 'RESULTS' && youAreHost && (
+          <button onClick={handleNewGame}>Play again.</button>
+        )}
       </Board>
     </React.Fragment>
   );
