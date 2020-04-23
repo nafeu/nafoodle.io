@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { createUseStyles } from 'react-jss';
+import { createUseStyles, useTheme } from 'react-jss';
 
 const useStyles = createUseStyles(theme => ({
   playerInfoContainer: {
@@ -71,7 +71,8 @@ const useStyles = createUseStyles(theme => ({
 }));
 
 function PlayerInfo({ player, position, hidden, owner }) {
-  const classes = useStyles();
+  const theme = useTheme();
+  const classes = useStyles({ theme });
 
   const getPositionClass = (position) => {
     if (position === 'left') {

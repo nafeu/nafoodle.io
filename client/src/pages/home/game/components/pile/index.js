@@ -17,11 +17,11 @@ const useStyles = createUseStyles(theme => ({
   },
   pileCard: {
     width: `${theme.cardWidth}px`,
-    backgroundColor: theme.colorPrimary,
+    backgroundColor: theme.colorCard,
     height: `${theme.cardHeight}px`,
-    color: theme.colorDark,
+    color: theme.colorPrimary,
     borderRadius: "5px",
-    border: `2px solid ${theme.colorDark}`,
+    border: `2px solid ${theme.colorPrimary}`,
     position: "absolute",
     right: "0px",
     bottom: "0px",
@@ -30,20 +30,27 @@ const useStyles = createUseStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     fontWeight: "bolder",
-    fontSize: "0.75em",
+    fontSize: "1em",
     transition: "250ms ease-out transform",
     cursor: "pointer"
   },
   pileCardContent: {
     paddingBottom: "20px"
   },
+  hiddenTop: {
+    backgroundColor: theme.colorBackground
+  },
+  pileIcon: {
+    fontSize: "3em"
+  }
 }));
 
 function Pile({
   pile,
   position,
   messiness,
-  player
+  player,
+  hideTop
 }) {
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -81,23 +88,36 @@ function Pile({
           const xDisplacement = (randomNumbers[playerIndex] * maxDisplacement) * (randomNumbers[playerIndex] > 0.5 ? -1 : 1);
           const yDisplacement = (randomNumbers[playerIndex] * maxDisplacement) * (randomNumbers[playerIndex] > 0.5 ? -1 : 1);
 
+          const isHidden = item.index === pile.length - 1 && hideTop;
+
           return (
             <animated.div
               key={key}
-              className={classes.pileCard}
+              className={`${classes.pileCard} ${isHidden ? classes.hiddenTop : ''}`}
               style={{
                 transform: `rotateZ(${rotation}deg) translate(${xDisplacement}px, ${yDisplacement}px)`,
                 opacity: props.opacity,
                 bottom: props.motion,
               }}
             >
+              {isHidden ? (
                 <div
                   className={classes.pileCardContent}
                   style={{
                     transform: player && player === 'top' ? "rotateZ(180deg)" : '',
                   }}>
-                    {card.name}
+                    <div className={classes.pileIcon}>🤔</div>
                 </div>
+              ) : (
+                <div
+                  className={classes.pileCardContent}
+                  style={{
+                    transform: player && player === 'top' ? "rotateZ(180deg)" : '',
+                  }}>
+                    <div className={classes.pileIcon}>{card.icon}</div>
+                    <div>{card.name}</div>
+                </div>
+              )}
             </animated.div>
           );
         })

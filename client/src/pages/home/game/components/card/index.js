@@ -6,10 +6,10 @@ import { useSpring, animated, config, useTransition } from 'react-spring';
 const useStyles = createUseStyles(theme => ({
   card: {
     width: `${theme.cardWidth}px`,
-    backgroundColor: theme.colorPrimary,
+    backgroundColor: theme.colorCard,
     height: `${theme.cardHeight}px`,
-    color: theme.colorDark,
-    border: `2px solid ${theme.colorDark}`,
+    color: theme.colorPrimary,
+    border: `2px solid ${theme.colorPrimary}`,
     borderRadius: "5px",
     position: "relative",
     textAlign: "center",
@@ -17,15 +17,19 @@ const useStyles = createUseStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     fontWeight: "bolder",
-    fontSize: "0.75em",
+    fontSize: "1em",
     transition: "250ms ease-out transform",
     cursor: "pointer"
   },
   cardContent: {
     paddingBottom: "20px"
   },
+  cardIcon: {
+    fontSize: "3em"
+  },
   hidden: {
-    backgroundColor: theme.colorTitle
+    backgroundColor: theme.colorBackground,
+    fontSize: "3em"
   }
 }));
 
@@ -87,7 +91,15 @@ function Card({
         left: xMotion.interpolate(v => `${v}px`),
       }}
     >
-      <div className={classes.cardContent}>{hidden ? '' : card.name}</div>
+      <div className={classes.cardContent}>
+        {hidden && '🤔'}
+        {!hidden && (
+          <React.Fragment>
+            <div className={classes.cardIcon}>{card.icon}</div>
+            <div>{card.name}</div>
+          </React.Fragment>
+        )}
+      </div>
     </animated.div>
   );
 }

@@ -1,6 +1,7 @@
 const theme = {
-  colorBackground: "#182C61",
-  colorDark: "#101b39",
+  colorBackground: "#101b39",
+  colorCard: "#6D214F",
+  colorDark: "#182C61",
   colorPrimary: "#FFFFFF",
   colorSecondary: "#3B3B98",
   colorTitle: "#F8EFBA",

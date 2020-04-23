@@ -6,6 +6,7 @@ import Board from '../home/game/components/board';
 import Deck from '../home/game/components/deck';
 import Pile from '../home/game/components/pile';
 import PlayerInfo from '../home/game/components/player-info';
+import BigAlert from '../home/game/components/big-alert';
 
 function uuidv4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -21,6 +22,8 @@ function Sandbox() {
       cardId: 1
     }
   ]);
+
+  const [alert, setAlert] = useState(false);
 
   const player = {
     id: 'a',
@@ -45,6 +48,7 @@ function Sandbox() {
       <Board>
         <button onClick={() => setHandA([...handA, { id: uuidv4(), cardId: _.random(0, 2) }])}>Pick Up</button>
         <button onClick={() => setHandA(handA.length > 0 ? handA.slice(0, handA.length - 1) : [])}>Drop</button>
+        <button onClick={() => setAlert(!alert)}>Toggle</button>
         <Hand
           hand={handA}
           owner={true}
@@ -78,6 +82,7 @@ function Sandbox() {
           position={'middle'}
           player={'top'}
           messiness={5}
+          hideTop={true}
         />
         <Pile
           pile={handA}
@@ -99,6 +104,12 @@ function Sandbox() {
         <PlayerInfo
           player={player}
           position={'top'}
+        />
+        <BigAlert
+          title={'Test Big Alert'}
+          type={'success'}
+          body={'Testing...'}
+          show={alert}
         />
       </Board>
     </React.Fragment>

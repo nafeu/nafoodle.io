@@ -5,14 +5,17 @@ import _ from 'lodash';
 const deck = [
   {
     id: 0,
+    icon: '🗻',
     name: 'ROCK'
   },
   {
     id: 1,
+    icon: '📃',
     name: 'PAPER'
   },
   {
     id: 2,
+    icon: '✂️',
     name: 'SCISSORS'
   },
 ]

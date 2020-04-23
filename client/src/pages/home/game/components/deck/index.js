@@ -33,11 +33,16 @@ const useStyles = createUseStyles(theme => ({
   },
   deckCard: {
     width: `${theme.cardWidth}px`,
-    backgroundColor: theme.colorTitle,
+    backgroundColor: theme.colorBackground,
     height: `${theme.cardHeight}px`,
     borderRadius: "5px",
-    border: `2px solid ${theme.colorDark}`,
+    border: `2px solid ${theme.colorPrimary}`,
     position: "absolute",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bolder",
+    fontSize: "3em",
     cursor: "pointer"
   },
   cardContent: {
@@ -78,6 +83,7 @@ function Deck({
                 right: `${distance}px`,
                 bottom: `${distance}px`,
               }}>
+              <div className={classes.cardContent}>🤔</div>
             </div>
           );
         })
