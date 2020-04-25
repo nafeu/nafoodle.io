@@ -218,17 +218,23 @@ export const goToPhaseMatch = (gameState, input) => {
   nextGameState.phase = 'MATCH';
 
   if (nextGameState.players[0].action === nextGameState.players[1].action) {
-    nextGameState.results.message = 'no one takes any damage';
+    nextGameState.results.title = 'Tie';
+    nextGameState.results.body = 'No damage';
+    nextGameState.results.recipientId = null;
   } else if (
     (nextGameState.players[0].action === 0 && nextGameState.players[1].action === 2) ||
     (nextGameState.players[0].action === 1 && nextGameState.players[1].action === 0) ||
     (nextGameState.players[0].action === 2 && nextGameState.players[1].action === 1)
   ) {
     nextGameState.players[1].hp -= 10;
-    nextGameState.results.message = `${nextGameState.players[1].username} takes 10 damage.`;
+    nextGameState.results.recipientId = nextGameState.players[1].id;
+    nextGameState.results.title = 'Ouch';
+    nextGameState.results.body = '-10 HP';
   } else {
     nextGameState.players[0].hp -= 10;
-    nextGameState.results.message = `${nextGameState.players[0].username} takes 10 damage.`;
+    nextGameState.results.recipientId = nextGameState.players[0].id;
+    nextGameState.results.title = 'Ouch';
+    nextGameState.results.body = '-10 HP';
   }
 
   return nextGameState;

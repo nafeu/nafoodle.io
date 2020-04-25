@@ -103,9 +103,10 @@ export const getAlertInfo = (gameState, localState) => {
   if (phase === 'MATCH') {
     return {
       ...defaults,
-      alertTitle: results.message,
-      alertBody: 'The fighting continues.',
-      alertType: 'warning',
+      alertTitle: results.title,
+      alertBody: results.body,
+      alertType: results.recipientId ? 'error' : 'warning',
+      recipientId: results.recipientId
     }
   }
 

@@ -125,7 +125,7 @@ function Sandbox() {
         <SmallAlert
           title={'Nice!'}
           type={'success'}
-          position={'top'}
+          position={'left'}
           body={'+10 HP'}
           show={alert}
           alive={500}

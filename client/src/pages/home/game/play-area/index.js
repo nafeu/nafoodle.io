@@ -8,7 +8,10 @@ import Hand from '../components/hand';
 import Deck from '../components/deck';
 import Pile from '../components/pile';
 import Board from '../components/board';
+import Mat from '../components/mat';
+import Platform from '../components/platform';
 import BigAlert from '../components/big-alert';
+import SmallAlert from '../components/small-alert';
 import PlayerInfo from '../components/player-info';
 
 const ONE_SECOND = 1000;
@@ -24,15 +27,45 @@ function PlayArea({
   const socket = useContext(SocketContext);
   const { phase, youAreHost, results, isYourTurn, isOpponentsTurn, deck, opponentHiddenCount } = getGameInfo(joinedRoom.gameState, state);
   const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(joinedRoom.gameState, state);
-  const { alertTitle, alertBody, alertType } = getAlertInfo(joinedRoom.gameState, state);
+  const { alertTitle, alertBody, alertType, recipientId } = getAlertInfo(joinedRoom.gameState, state);
 
-  const [alert, setAlert] = useState(false);
+  const [bigAlert, setBigAlert] = useState(false);
+  const [neutralSmallAlert, setNeutralSmallAlert] = useState(false);
+  const [yourSmallAlert, setYourSmallAlert] = useState(false);
+  const [opponentsSmallAlert, setOpponentsSmallAlert] = useState(false);
 
-  const showAlert = (aliveMs) => {
-    if (!alert) {
-      setAlert(true);
+  const showBigAlert = (aliveMs) => {
+    if (!bigAlert) {
+      setBigAlert(true);
       setTimeout(() => {
-        setAlert(false);
+        setBigAlert(false);
+      }, aliveMs);
+    }
+  }
+
+  const showNeutralSmallAlert = (aliveMs) => {
+    if (!neutralSmallAlert) {
+      setNeutralSmallAlert(true);
+      setTimeout(() => {
+        setNeutralSmallAlert(false);
+      }, aliveMs);
+    }
+  }
+
+  const showYourSmallAlert = (aliveMs) => {
+    if (!yourSmallAlert) {
+      setYourSmallAlert(true);
+      setTimeout(() => {
+        setYourSmallAlert(false);
+      }, aliveMs);
+    }
+  }
+
+  const showOpponentsSmallAlert = (aliveMs) => {
+    if (!opponentsSmallAlert) {
+      setOpponentsSmallAlert(true);
+      setTimeout(() => {
+        setOpponentsSmallAlert(false);
       }, aliveMs);
     }
   }
@@ -48,12 +81,12 @@ function PlayArea({
 
   useEffect(() => {
     if (phase === 'START') {
-      showAlert(FIVE_SECONDS);
+      showBigAlert(FIVE_SECONDS);
       youAreHost && setTimeout(goToNextPhase, SEVEN_SECONDS);
     }
 
     if (phase === 'TURN') {
-      showAlert(TWO_SECONDS);
+      showBigAlert(TWO_SECONDS);
       youAreHost && setTimeout(goToNextPhase, THREE_SECONDS);
     }
 
@@ -66,12 +99,18 @@ function PlayArea({
     }
 
     if (phase === 'MATCH') {
-      setTimeout(showAlert(ONE_SECOND), ONE_SECOND);
+      if (recipientId === null) {
+        setTimeout(showNeutralSmallAlert(ONE_SECOND), ONE_SECOND);
+      } else if (recipientId === you.id) {
+        setTimeout(showYourSmallAlert(ONE_SECOND), ONE_SECOND);
+      } else {
+        setTimeout(showOpponentsSmallAlert(ONE_SECOND), ONE_SECOND);
+      }
       youAreHost && setTimeout(goToNextPhase, THREE_SECONDS);
     }
 
     if (phase === 'RESULTS') {
-      showAlert(SEVEN_SECONDS);
+      showBigAlert(SEVEN_SECONDS);
     }
   }, [phase, youAreHost]);
 
@@ -108,6 +147,9 @@ function PlayArea({
   return (
     <React.Fragment>
       <Board>
+        <Mat />
+        <Platform />
+        <Platform position={'top'} color={'red'}/>
         <Hand
           hand={you.hand}
           owner={true}
@@ -148,7 +190,28 @@ function PlayArea({
           title={alertTitle}
           type={alertType}
           body={alertBody}
-          show={alert}
+          show={bigAlert}
+        />
+        <SmallAlert
+          title={alertTitle}
+          type={alertType}
+          body={alertBody}
+          position={'middle'}
+          show={neutralSmallAlert}
+        />
+        <SmallAlert
+          title={alertTitle}
+          type={alertType}
+          body={alertBody}
+          position={'bottom'}
+          show={yourSmallAlert}
+        />
+        <SmallAlert
+          title={alertTitle}
+          type={alertType}
+          body={alertBody}
+          position={'top'}
+          show={opponentsSmallAlert}
         />
         {phase === 'RESULTS' && youAreHost && (
           <button onClick={handleNewGame}>Play again.</button>

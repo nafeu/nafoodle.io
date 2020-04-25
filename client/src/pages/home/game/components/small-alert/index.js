@@ -10,8 +10,6 @@ const useStyles = createUseStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    left: "75%",
-    top: "75%",
     transform: "translate(-50%, -50%)",
     width: "50%",
     height: "50%"
@@ -39,12 +37,36 @@ const useStyles = createUseStyles(theme => ({
     borderRadius: "10px",
     backgroundColor: "black",
     color: "white",
-  }
+  },
+  positionMiddle: {
+    left: "50%",
+    top: "50%",
+  },
+  positionBottom: {
+    left: "50%",
+    top: "80%",
+  },
+  positionLeft: {
+    left: "10%",
+    top: "50%",
+  },
+  positionRight: {
+    left: "90%",
+    top: "50%",
+  },
+  positionTop: {
+    left: "50%",
+    top: "18%",
+  },
 }));
 
-function SmallAlert({ title, body, show, type, alive }) {
+function SmallAlert({ title, body, show, type, alive, position }) {
   const theme = useTheme();
   const classes = useStyles({ theme });
+
+  const getPositionClass = (position) => {
+    return position ? classes[`position${_.startCase(_.toLower(position))}`] : '';
+  }
 
   const transitions = useTransition(show, null, {
     from: { opacity: 0, transform: 'translate(-50%, -40%)' },
@@ -74,8 +96,7 @@ function SmallAlert({ title, body, show, type, alive }) {
 
   return transitions.map(({ item, key, props }) => {
     return item && (
-      <animated.div className={classes.smallAlertContainer} style={props}>
-        {/*<div className={classes.smallAlertModal} style={{ backgroundColor: getTypeColor(type) }}></div>*/}
+      <animated.div className={`${classes.smallAlertContainer} ${getPositionClass(position)}`} style={props}>
         <div className={classes.smallAlertTitle} style={{ backgroundColor: getTypeColor(type) }}>
           {title}
           {body.length && <div className={classes.smallAlertBody} style={{ color: getTypeColor(type) }}>{body}</div>}
