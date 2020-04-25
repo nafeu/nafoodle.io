@@ -22,7 +22,7 @@ function PlayArea({
 }) {
   const { state } = useContext(MainContext);
   const socket = useContext(SocketContext);
-  const { phase, youAreHost, results, isYourTurn, deck } = getGameInfo(joinedRoom.gameState, state);
+  const { phase, youAreHost, results, isYourTurn, isOpponentsTurn, deck, opponentHiddenCount } = getGameInfo(joinedRoom.gameState, state);
   const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(joinedRoom.gameState, state);
   const { alertTitle, alertBody, alertType } = getAlertInfo(joinedRoom.gameState, state);
 
@@ -66,7 +66,7 @@ function PlayArea({
     }
 
     if (phase === 'MATCH') {
-      showAlert(TWO_SECONDS);
+      setTimeout(showAlert(ONE_SECOND), ONE_SECOND);
       youAreHost && setTimeout(goToNextPhase, THREE_SECONDS);
     }
 
@@ -131,6 +131,7 @@ function PlayArea({
           position={'middle'}
           player={'top'}
           messiness={5}
+          hiddenCount={opponentHiddenCount}
         />
         <Deck
           deck={deck}

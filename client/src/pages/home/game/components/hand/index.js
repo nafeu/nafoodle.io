@@ -6,20 +6,20 @@ import { getCard } from '../../services';
 
 const useStyles = createUseStyles(theme => ({
   handContainer: {
-    bottom: "5%",
+    bottom: "6.5%",
     position: "absolute",
     left: "50%",
     transform: "translateX(-50%)"
   },
   handContainerLeft: {
     top: "50%",
-    left: `${theme.cardWidth}px`,
+    left: `${theme.card.width}px`,
     position: "absolute",
     transform: "translate(-50%, -50%) rotateZ(-90deg)"
   },
   handContainerRight: {
     top: "50%",
-    left: `calc(100% - ${theme.cardWidth}px)`,
+    left: `calc(100% - ${theme.card.width}px)`,
     position: "absolute",
     transform: "translate(-50%, -50%) rotateZ(90deg)"
   },

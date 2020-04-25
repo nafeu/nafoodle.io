@@ -19,8 +19,18 @@ const theme = {
     cozy: "5px"
   },
   borderRadius: "10px",
-  cardHeight: 125 * 1.25,
-  cardWidth: 75 * 1.25
+  card: {
+    height: 125 * 0.95,
+    width: 75 * 0.95,
+    iconSize: "40px",
+    fontSize: "12px",
+    bottomPadding: "10px",
+    backColor: "#101b39",
+    frontColor: "#6D214F"
+  },
+  playerInfo: {
+    spacing: "5px"
+  }
 }
 
 export default theme;

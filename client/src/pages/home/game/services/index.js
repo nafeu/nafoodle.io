@@ -63,6 +63,7 @@ export const getGameInfo = (gameState, localState) => {
     phase,
     results,
     isYourTurn: (phase === 'ACTION' || phase === 'TURN') && players[activePlayerIndex].id === clientId,
+    isOpponentsTurn: (phase === 'ACTION' || phase === 'TURN') && players[activePlayerIndex].id !== clientId,
     youAreHost: isHost(clientId, players),
     deck
   }

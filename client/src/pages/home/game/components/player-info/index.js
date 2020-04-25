@@ -9,7 +9,7 @@ const useStyles = createUseStyles(theme => ({
     left: "50%",
     transform: "translateX(-50%)",
     backgroundColor: theme.colorDark,
-    padding: "0.5%",
+    padding: theme.playerInfo.spacing,
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
   },
@@ -18,7 +18,7 @@ const useStyles = createUseStyles(theme => ({
     top: "calc(50% + 25%)",
     transform: "translateY(-50%)",
     backgroundColor: theme.colorDark,
-    padding: "0.5%",
+    padding: theme.playerInfo.spacing,
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
   },
@@ -28,7 +28,7 @@ const useStyles = createUseStyles(theme => ({
     right: "0%",
     transform: "translateY(-50%)",
     backgroundColor: theme.colorDark,
-    padding: "0.5%",
+    padding: theme.playerInfo.spacing,
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
   },
@@ -36,9 +36,9 @@ const useStyles = createUseStyles(theme => ({
     position: "absolute",
     left: "50%",
     transform: "translateX(-50%)",
-    top: `calc(4% + ${theme.cardHeight}px)`,
+    top: `calc(4% + ${theme.card.height}px)`,
     backgroundColor: theme.colorDark,
-    padding: "0.5%",
+    padding: theme.playerInfo.spacing,
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
   },
@@ -51,10 +51,10 @@ const useStyles = createUseStyles(theme => ({
     backgroundColor: "white",
     color: "black",
     display: "inline-block",
-    padding: theme.spacing.cozy,
+    padding: theme.playerInfo.spacing,
     fontWeight: "bolder",
-    borderRadius: theme.spacing.cozy,
-    marginRight: theme.spacing.cozy,
+    borderRadius: theme.playerInfo.spacing,
+    marginRight: theme.playerInfo.spacing,
   },
   playerInfoMeta: {
     boxSizing: "border-box",
@@ -90,7 +90,7 @@ function PlayerInfo({ player, position, hidden, owner }) {
     <div className={getPositionClass(position)}>
       <div className={classes.playerInfo}>
         <div className={classes.playerInfoName}>{player.username}</div>
-        <div className={classes.playerInfoMeta}>HP: {player.hp}</div>
+        <div className={classes.playerInfoMeta}><span>❤️</span> {player.hp}</div>
       </div>
     </div>
   );

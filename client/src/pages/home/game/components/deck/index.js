@@ -28,13 +28,13 @@ const useStyles = createUseStyles(theme => ({
   },
   deckContainerMiddle: {
     position: "absolute",
-    top: `calc(50% + ${theme.cardHeight / 2}px)`,
-    left: `calc(50% + ${(theme.cardWidth / 2) + theme.cardWidth}px)`,
+    top: `calc(50% + ${theme.card.height / 2}px)`,
+    left: `calc(50% + ${(theme.card.width / 2) + theme.card.width}px)`,
   },
   deckCard: {
-    width: `${theme.cardWidth}px`,
+    width: `${theme.card.width}px`,
     backgroundColor: theme.colorBackground,
-    height: `${theme.cardHeight}px`,
+    height: `${theme.card.height}px`,
     borderRadius: "5px",
     border: `2px solid ${theme.colorPrimary}`,
     position: "absolute",
@@ -42,11 +42,11 @@ const useStyles = createUseStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     fontWeight: "bolder",
-    fontSize: "3em",
+    fontSize: theme.card.iconSize,
     cursor: "pointer"
   },
   cardContent: {
-    paddingBottom: "20px"
+    paddingBottom: theme.card.bottomPadding
   },
 }));
 

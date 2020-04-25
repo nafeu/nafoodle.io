@@ -5,9 +5,9 @@ import { useSpring, animated, config, useTransition } from 'react-spring';
 
 const useStyles = createUseStyles(theme => ({
   card: {
-    width: `${theme.cardWidth}px`,
-    backgroundColor: theme.colorCard,
-    height: `${theme.cardHeight}px`,
+    width: `${theme.card.width}px`,
+    backgroundColor: theme.card.frontColor,
+    height: `${theme.card.height}px`,
     color: theme.colorPrimary,
     border: `2px solid ${theme.colorPrimary}`,
     borderRadius: "5px",
@@ -17,19 +17,19 @@ const useStyles = createUseStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     fontWeight: "bolder",
-    fontSize: "1em",
+    fontSize: theme.card.fontSize,
     transition: "250ms ease-out transform",
     cursor: "pointer"
   },
   cardContent: {
-    paddingBottom: "20px"
+    paddingBottom: theme.card.bottomPadding
   },
   cardIcon: {
-    fontSize: "3em"
+    fontSize: theme.card.iconSize
   },
   hidden: {
-    backgroundColor: theme.colorBackground,
-    fontSize: "3em"
+    backgroundColor: theme.card.backColor,
+    fontSize: theme.card.iconSize
   }
 }));
 

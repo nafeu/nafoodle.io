@@ -166,9 +166,10 @@ export const moveFromPhaseAction = (gameState, input) => {
   if (input.action === 'PLAY_CARD') {
     nextGameState.players[gameState.activePlayerIndex].action = input.cardId;
     nextGameState.players[gameState.activePlayerIndex].actionCount += 1;
-    nextGameState.players[gameState.activePlayerIndex].pile.push(
-      nextGameState.players[gameState.activePlayerIndex].hand.splice(input.index, 1)[0]
-    );
+    nextGameState.players[gameState.activePlayerIndex].pile.push({
+      ...nextGameState.players[gameState.activePlayerIndex].hand.splice(input.index, 1)[0],
+      face: 'down'
+    });
 
     if (nextGameState.players[gameState.activePlayerIndex].actionCount === gameState.actionLimit) {
       nextGameState = goToPhaseEnd(nextGameState, input);
@@ -191,6 +192,8 @@ export const moveFromPhaseEnd = (gameState, input) => {
 
   if (input.action === 'NEXT_PHASE') {
     if (gameState.activePlayerIndex === gameState.playerCount - 1) {
+      if (nextGameState.players[0].pile.length > 0) { nextGameState.players[0].pile[nextGameState.players[0].pile.length - 1].face = 'up'; }
+      if (nextGameState.players[1].pile.length > 0) { nextGameState.players[1].pile[nextGameState.players[1].pile.length - 1].face = 'up'; }
       nextGameState.activePlayerIndex = 0;
       nextGameState = goToPhaseMatch(nextGameState, input);
     } else {

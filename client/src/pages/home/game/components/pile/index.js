@@ -12,13 +12,13 @@ const MESSINESS_DISPLACEMENT = 0.33;
 const useStyles = createUseStyles(theme => ({
   pileContainer: {
     position: "absolute",
-    top: `calc(50% + ${theme.cardHeight / 2}px)`,
-    left: `calc(50% - ${theme.cardWidth / 2}px)`,
+    top: `calc(50% + ${theme.card.height / 2}px)`,
+    left: `calc(50% - ${theme.card.width / 2}px)`,
   },
   pileCard: {
-    width: `${theme.cardWidth}px`,
-    backgroundColor: theme.colorCard,
-    height: `${theme.cardHeight}px`,
+    width: `${theme.card.width}px`,
+    backgroundColor: theme.card.frontColor,
+    height: `${theme.card.height}px`,
     color: theme.colorPrimary,
     borderRadius: "5px",
     border: `2px solid ${theme.colorPrimary}`,
@@ -30,18 +30,18 @@ const useStyles = createUseStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     fontWeight: "bolder",
-    fontSize: "1em",
+    fontSize: theme.card.fontSize,
     transition: "250ms ease-out transform",
     cursor: "pointer"
   },
   pileCardContent: {
-    paddingBottom: "20px"
+    paddingBottom: theme.card.bottomPadding
   },
   hiddenTop: {
     backgroundColor: theme.colorBackground
   },
   pileIcon: {
-    fontSize: "3em"
+    fontSize: theme.card.iconSize
   }
 }));
 
@@ -50,7 +50,6 @@ function Pile({
   position,
   messiness,
   player,
-  hideTop
 }) {
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -61,9 +60,9 @@ function Pile({
   let transform = "";
 
   if (player === 'top') {
-    transform = `translateY(${-theme.cardHeight * 0.66}px)`;
+    transform = `translateY(${-theme.card.height * 0.66}px)`;
   } else if (player === 'bottom') {
-    transform = `translateY(${theme.cardHeight * 0.66}px)`;
+    transform = `translateY(${theme.card.height * 0.66}px)`;
   }
 
   const indexedPile = _.map(pile, (card, index) => {
@@ -88,7 +87,7 @@ function Pile({
           const xDisplacement = (randomNumbers[playerIndex] * maxDisplacement) * (randomNumbers[playerIndex] > 0.5 ? -1 : 1);
           const yDisplacement = (randomNumbers[playerIndex] * maxDisplacement) * (randomNumbers[playerIndex] > 0.5 ? -1 : 1);
 
-          const isHidden = item.index === pile.length - 1 && hideTop;
+          const isHidden = item.face === 'down';
 
           return (
             <animated.div

@@ -19,7 +19,8 @@ function Sandbox() {
   const [handA, setHandA] = useState([
     {
       id: uuidv4(),
-      cardId: 1
+      cardId: 1,
+      face: 'up'
     }
   ]);
 
@@ -91,7 +92,7 @@ function Sandbox() {
           position={'middle'}
           player={'top'}
           messiness={5}
-          hideTop={true}
+          hiddenCount={2}
         />
         <Pile
           pile={handA}
