@@ -358,3 +358,7 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+
+body {
+  overflow: hidden; /* Hide scrollbars */
+}

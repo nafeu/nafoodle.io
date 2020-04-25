@@ -3,6 +3,8 @@ const theme = {
   colorCard: "#6D214F",
   colorDark: "#182C61",
   colorPrimary: "#FFFFFF",
+  colorWhite: "#FFFFFF",
+  colorBlack: "#000000",
   colorSecondary: "#3B3B98",
   colorTitle: "#F8EFBA",
   colorA: "#B33771",
@@ -30,6 +32,15 @@ const theme = {
   },
   playerInfo: {
     spacing: "5px"
+  },
+  platform: {
+    borderRadius: "20px",
+    shadowHeight: "5px"
+  },
+  mat: {
+    width: "50%",
+    height: "45%",
+    borderRadius: "0px"
   }
 }
 

@@ -3,10 +3,13 @@ import _ from 'lodash';
 
 import Hand from '../home/game/components/hand';
 import Board from '../home/game/components/board';
+import Mat from '../home/game/components/mat';
+import Platform from '../home/game/components/platform';
 import Deck from '../home/game/components/deck';
 import Pile from '../home/game/components/pile';
 import PlayerInfo from '../home/game/components/player-info';
 import BigAlert from '../home/game/components/big-alert';
+import SmallAlert from '../home/game/components/small-alert';
 
 function uuidv4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -59,6 +62,11 @@ function Sandbox() {
         <button onClick={() => setHandA([...handA, { id: uuidv4(), cardId: _.random(0, 2) }])}>Pick Up</button>
         <button onClick={() => setHandA(handA.length > 0 ? handA.slice(0, handA.length - 1) : [])}>Drop</button>
         <button onClick={() => showAlert(1000)}>Toggle</button>
+        <Mat />
+        <Platform />
+        <Platform position={'top'} color={'red'}/>
+        <Platform position={'left'} color={'blue'} />
+        <Platform position={'right'} color={'green'} />
         <Hand
           hand={handA}
           owner={true}
@@ -92,7 +100,6 @@ function Sandbox() {
           position={'middle'}
           player={'top'}
           messiness={5}
-          hiddenCount={2}
         />
         <Pile
           pile={handA}
@@ -115,12 +122,13 @@ function Sandbox() {
           player={player}
           position={'top'}
         />
-        <BigAlert
-          title={'Test Big Alert'}
+        <SmallAlert
+          title={'Nice!'}
           type={'success'}
-          body={'Testing...'}
+          position={'top'}
+          body={'+10 HP'}
           show={alert}
-          alive={1000}
+          alive={500}
         />
       </Board>
     </React.Fragment>

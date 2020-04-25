@@ -5,10 +5,10 @@ import { createUseStyles, useTheme } from 'react-jss';
 const useStyles = createUseStyles(theme => ({
   playerInfoContainer: {
     position: "absolute",
-    bottom: "0%",
+    bottom: "1%",
     left: "50%",
     transform: "translateX(-50%)",
-    backgroundColor: theme.colorDark,
+    backgroundColor: theme.colorBlack,
     padding: theme.playerInfo.spacing,
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
@@ -17,7 +17,7 @@ const useStyles = createUseStyles(theme => ({
     position: "absolute",
     top: "calc(50% + 25%)",
     transform: "translateY(-50%)",
-    backgroundColor: theme.colorDark,
+    backgroundColor: theme.colorBlack,
     padding: theme.playerInfo.spacing,
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
@@ -27,7 +27,7 @@ const useStyles = createUseStyles(theme => ({
     top: "calc(50% - 25%)",
     right: "0%",
     transform: "translateY(-50%)",
-    backgroundColor: theme.colorDark,
+    backgroundColor: theme.colorBlack,
     padding: theme.playerInfo.spacing,
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
@@ -37,7 +37,7 @@ const useStyles = createUseStyles(theme => ({
     left: "50%",
     transform: "translateX(-50%)",
     top: `calc(4% + ${theme.card.height}px)`,
-    backgroundColor: theme.colorDark,
+    backgroundColor: theme.colorBlack,
     padding: theme.playerInfo.spacing,
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
