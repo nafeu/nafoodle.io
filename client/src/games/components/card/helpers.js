@@ -1,4 +1,4 @@
-import { map, weightedAverage } from '../../../../../utils/helpers';
+import { map, weightedAverage } from '../../../utils/helpers';
 
 export const getCardStylingRules = (count) => {
   const multiplier = count - 1;

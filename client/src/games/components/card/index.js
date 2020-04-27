@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { getCardTransformation } from './helpers';
-import { useSpring, animated, config, useTransition } from 'react-spring';
+import { useSpring, animated } from 'react-spring';
 
 const useStyles = createUseStyles(theme => ({
   card: {

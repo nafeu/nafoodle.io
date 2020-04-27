@@ -1,27 +1,21 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
 
-import Hand from '../home/game/components/hand';
-import Board from '../home/game/components/board';
-import Mat from '../home/game/components/mat';
-import Platform from '../home/game/components/platform';
-import Deck from '../home/game/components/deck';
-import Pile from '../home/game/components/pile';
-import PlayerInfo from '../home/game/components/player-info';
-import BigAlert from '../home/game/components/big-alert';
-import SmallAlert from '../home/game/components/small-alert';
+import Hand from '../../games/components/hand';
+import Board from '../../games/components/board';
+import Mat from '../../games/components/mat';
+import Platform from '../../games/components/platform';
+import Deck from '../../games/components/deck';
+import Pile from '../../games/components/pile';
+import PlayerInfo from '../../games/components/player-info';
+import SmallAlert from '../../games/components/small-alert';
 
-function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
+import { getCard } from '../../games/rps/services';
 
 function Sandbox() {
   const [handA, setHandA] = useState([
     {
-      id: uuidv4(),
+      id: (new Date()).toIsoString(),
       cardId: 1,
       face: 'up'
     }
@@ -59,7 +53,7 @@ function Sandbox() {
   return (
     <React.Fragment>
       <Board>
-        <button onClick={() => setHandA([...handA, { id: uuidv4(), cardId: _.random(0, 2) }])}>Pick Up</button>
+        <button onClick={() => setHandA([...handA, { id: (new Date()).toIsoString(), cardId: _.random(0, 2) }])}>Pick Up</button>
         <button onClick={() => setHandA(handA.length > 0 ? handA.slice(0, handA.length - 1) : [])}>Drop</button>
         <button onClick={() => showAlert(1000)}>Toggle</button>
         <Mat />
@@ -71,24 +65,28 @@ function Sandbox() {
           hand={handA}
           owner={true}
           handleCardClick={handleOwnerCardClick}
+          getCard={getCard}
           canClick={true}
         />
         <Hand
           hand={handA}
           owner={false}
           position={'top'}
+          getCard={getCard}
           handleCardClick={handleOpponentCardClick}
         />
         <Hand
           hand={handA}
           owner={false}
           position={'left'}
+          getCard={getCard}
           handleCardClick={handleOpponentCardClick}
         />
         <Hand
           hand={handA}
           owner={false}
           position={'right'}
+          getCard={getCard}
           handleCardClick={handleOpponentCardClick}
         />
         <Deck
@@ -96,12 +94,14 @@ function Sandbox() {
           position={'middle'}
         />
         <Pile
+          getCard={getCard}
           pile={handA}
           position={'middle'}
           player={'top'}
           messiness={5}
         />
         <Pile
+          getCard={getCard}
           pile={handA}
           position={'middle'}
           player={'bottom'}

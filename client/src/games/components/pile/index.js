@@ -1,9 +1,8 @@
 import React from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import _ from 'lodash';
-import { getCard } from '../../services';
-import { getRandomNumbers } from '../../../../../utils/helpers';
-import { useSpring, animated, useTransition } from 'react-spring';
+import { getRandomNumbers } from '../../../utils/helpers';
+import { animated, useTransition } from 'react-spring';
 
 const randomNumbers = getRandomNumbers(1000);
 const DEFAULT_MESSINESS = 5;
@@ -50,6 +49,7 @@ function Pile({
   position,
   messiness,
   player,
+  getCard
 }) {
   const theme = useTheme();
   const classes = useStyles({ theme });
@@ -105,7 +105,9 @@ function Pile({
                   style={{
                     transform: player && player === 'top' ? "rotateZ(180deg)" : '',
                   }}>
-                    <div className={classes.pileIcon}>🤔</div>
+                    <div className={classes.pileIcon}>
+                      <span role="img" aria-label="thinking">🤔</span>
+                    </div>
                 </div>
               ) : (
                 <div

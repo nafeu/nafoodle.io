@@ -1,8 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
 import { createUseStyles } from 'react-jss';
-import Card from '../card';
-import { getCard } from '../../services';
 
 const useStyles = createUseStyles(theme => ({
   platformContainer: {

@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import _ from 'lodash';
 import { SocketContext } from 'react-socket-io';
-import { MainContext } from '../../../../context/main';
-import { getPlayers, getGameInfo, getCard, getAlertInfo } from '../services';
+import { MainContext } from '../../context/main';
+import { getPlayers, getGameInfo, getCard, getAlertInfo } from './services';
 
 import Hand from '../components/hand';
 import Deck from '../components/deck';
@@ -20,13 +19,13 @@ const THREE_SECONDS = 3000;
 const FIVE_SECONDS = 5000;
 const SEVEN_SECONDS = 7000;
 
-function PlayArea({
+function Game({
   joinedRoom
 }) {
   const { state } = useContext(MainContext);
   const socket = useContext(SocketContext);
-  const { phase, youAreHost, results, isYourTurn, isOpponentsTurn, deck, opponentHiddenCount } = getGameInfo(joinedRoom.gameState, state);
-  const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(joinedRoom.gameState, state);
+  const { phase, youAreHost, isYourTurn, deck, opponentHiddenCount } = getGameInfo(joinedRoom.gameState, state);
+  const { you, opponent } = getPlayers(joinedRoom.gameState, state);
   const { alertTitle, alertBody, alertType, recipientId } = getAlertInfo(joinedRoom.gameState, state);
 
   const [bigAlert, setBigAlert] = useState(false);
@@ -112,6 +111,8 @@ function PlayArea({
     if (phase === 'RESULTS') {
       showBigAlert(SEVEN_SECONDS);
     }
+
+    // eslint-disable-next-line
   }, [phase, youAreHost]);
 
   const handlePlayCard = (cardId, index) => {
@@ -154,6 +155,7 @@ function PlayArea({
           hand={you.hand}
           owner={true}
           handleCardClick={handleOwnerCardClick}
+          getCard={getCard}
           canClick={isYourTurn}
         />
         <Pile
@@ -161,11 +163,13 @@ function PlayArea({
           position={'middle'}
           player={'bottom'}
           messiness={5}
+          getCard={getCard}
         />
         <Hand
           hand={opponent.hand}
           owner={false}
           position={'top'}
+          getCard={getCard}
           handleCardClick={handleOpponentCardClick}
         />
         <Pile
@@ -173,6 +177,7 @@ function PlayArea({
           position={'middle'}
           player={'top'}
           messiness={5}
+          getCard={getCard}
           hiddenCount={opponentHiddenCount}
         />
         <Deck
@@ -219,39 +224,6 @@ function PlayArea({
       </Board>
     </React.Fragment>
   );
-
-  // return (
-  //   <div>
-  //     <h2>{phase}</h2>
-  //     <h3>
-  //       {phase === 'START' && ('Game will start shortly...')}
-  //       {phase === 'TURN' && (`It is ${activePlayer.username}'s turn.`)}
-  //       {phase === 'DRAW' && (`${activePlayer.username} is drawing cards.`)}
-  //       {phase === 'ACTION' && (`${activePlayer.username} is now deciding what card to play.`)}
-  //       {phase === 'END' && (`${activePlayer.username} has picked a card.`)}
-  //       {phase === 'MATCH' && (`${playerOne.username} plays ${getCard(playerOne.action).name}, ${playerTwo.username} plays ${getCard(playerTwo.action).name}, ${results.message}.`)}
-  //       {phase === 'RESULTS' && (`${results.winner}`)}
-  //     </h3>
-  //     {_.map(you.hand, (cardId, index) => {
-  //       const { name } = getCard(cardId);
-
-  //       if (isYourTurn) {
-  //         return (
-  //           <button onClick={() => handlePlayCard(cardId, index)}>{name}</button>
-  //         );
-  //       }
-
-  //       return (
-  //         <button disabled>{name}</button>
-  //       );
-  //     })}
-  //     <p>{playerOne.username}'s HP: {playerOne.hp}</p>
-  //     <p>{playerTwo.username}'s HP: {playerTwo.hp}</p>
-  //     {phase === 'RESULTS' && youAreHost && (
-  //       <button onClick={handleNewGame}>Play again.</button>
-  //     )}
-  //   </div>
-  // );
 }
 
-export default PlayArea;
+export default Game;

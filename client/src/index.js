@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './static/index.css';
 import AppContainer from './app';
 import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto-mono';

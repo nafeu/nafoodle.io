@@ -83,7 +83,9 @@ function Deck({
                 right: `${distance}px`,
                 bottom: `${distance}px`,
               }}>
-              <div className={classes.cardContent}>🤔</div>
+              <div className={classes.cardContent}>
+                <span role="img" aria-label="thinking">🤔</span>
+              </div>
             </div>
           );
         })

@@ -3,7 +3,7 @@ import { SocketContext, Event } from 'react-socket-io';
 import { MainContext } from '../../context/main';
 import toastr from 'toastr';
 
-import Game from './game';
+import PlayArea from './play-area';
 import Lobby from './lobby';
 
 function Home(props) {
@@ -91,7 +91,7 @@ function Home(props) {
   return (
     <React.Fragment>
       {joinedRoom ? (
-        <Game
+        <PlayArea
           clientId={clientId}
           joinedRoom={joinedRoom}
           leaveRoom={handleLeaveRoom}

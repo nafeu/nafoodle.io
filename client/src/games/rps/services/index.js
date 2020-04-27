@@ -1,5 +1,5 @@
 import { toWords } from 'number-to-words';
-import { capitalize } from '../../../../utils/helpers';
+import { capitalize } from '../../../utils/helpers';
 import _ from 'lodash';
 
 const deck = [
@@ -78,7 +78,7 @@ export const getAlertInfo = (gameState, localState) => {
     alertBody: ''
   }
 
-  const { phase, youAreHost, results, isYourTurn, deck } = getGameInfo(gameState, localState);
+  const { phase, results, isYourTurn } = getGameInfo(gameState, localState);
   const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(gameState, localState);
 
   console.log({ phase, isYourTurn, you, activePlayer });

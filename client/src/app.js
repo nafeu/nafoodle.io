@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import './app.css';
 import './vendor/toastr.css';
 import Home from './pages/home';
 import About from './pages/about';

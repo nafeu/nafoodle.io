@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { createUseStyles, useTheme } from 'react-jss';
 
 const useStyles = createUseStyles(theme => ({
@@ -90,7 +89,7 @@ function PlayerInfo({ player, position, hidden, owner }) {
     <div className={getPositionClass(position)}>
       <div className={classes.playerInfo}>
         <div className={classes.playerInfoName}>{player.username}</div>
-        <div className={classes.playerInfoMeta}><span>❤️</span> {player.hp}</div>
+        <div className={classes.playerInfoMeta}><span role="img" aria-label="heart">❤️</span> {player.hp}</div>
       </div>
     </div>
   );

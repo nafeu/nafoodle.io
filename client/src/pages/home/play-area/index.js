@@ -1,8 +1,8 @@
 import React from 'react';
 import WaitingArea from './waiting-area';
-import PlayArea from './play-area';
+import Game from '../../../games/rps';
 
-function Game({
+function PlayArea({
   clientId,
   joinedRoom,
   leaveRoom,
@@ -13,7 +13,7 @@ function Game({
   return (
     <React.Fragment>
       {joinedRoom.status === 'IN_GAME' ? (
-        <PlayArea
+        <Game
           joinedRoom={joinedRoom}
         />
       ) : (
@@ -28,4 +28,4 @@ function Game({
   );
 }
 
-export default Game;
+export default PlayArea;
