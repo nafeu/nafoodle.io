@@ -23,7 +23,7 @@
   "dependencies": {
     "body-parser": "1.18.3",
     "express": "4.16.4",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "morgan": "1.9.1",
     "redux": "4.0.1",
     "socket.io": "2.2.0",

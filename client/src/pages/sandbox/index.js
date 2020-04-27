@@ -12,10 +12,15 @@ import SmallAlert from '../../games/components/small-alert';
 
 import { getCard } from '../../games/rps/services';
 
+const getNewDate = () => {
+  const date = new Date();
+  return date.toISOString();
+}
+
 function Sandbox() {
   const [handA, setHandA] = useState([
     {
-      id: (new Date()).toIsoString(),
+      id: getNewDate(),
       cardId: 1,
       face: 'up'
     }
@@ -53,7 +58,7 @@ function Sandbox() {
   return (
     <React.Fragment>
       <Board>
-        <button onClick={() => setHandA([...handA, { id: (new Date()).toIsoString(), cardId: _.random(0, 2) }])}>Pick Up</button>
+        <button onClick={() => setHandA([...handA, { id: getNewDate(), cardId: _.random(0, 2) }])}>Pick Up</button>
         <button onClick={() => setHandA(handA.length > 0 ? handA.slice(0, handA.length - 1) : [])}>Drop</button>
         <button onClick={() => showAlert(1000)}>Toggle</button>
         <Mat />

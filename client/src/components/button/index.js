@@ -1,7 +1,8 @@
 import React from 'react';
-import { useSpring, animated, config } from 'react-spring';
+// import { useSpring, animated, config } from 'react-spring';
 
 export const Button = ({ className, onClick, label }) => {
+  /*
   const [{ y }, set] = useSpring(() => ({ y: 0, config: config.wobbly }));
 
   return (
@@ -16,5 +17,10 @@ export const Button = ({ className, onClick, label }) => {
     >
       {label}
     </animated.div>
+  )
+  */
+
+  return (
+    <div className={className} onClick={onClick}>{label}</div>
   )
 }
