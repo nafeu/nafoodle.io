@@ -1,5 +1,12 @@
 import _ from 'lodash';
-import { isLastPlayer, getPlayers } from '../helpers';
+import {
+  getGameStateInfo,
+  hasItems,
+  lastItem,
+  setNextPlayerActive,
+  incrementTurnCount,
+  resetActionCount
+} from '../helpers';
 import { generateDeck } from './helpers';
 
 const MIN_PLAYERS_PER_ROOM = 2;
@@ -122,9 +129,10 @@ export const moveFromPhaseStart = (gameState, input) => {
 
 export const goToPhaseTurn = (gameState, input) => {
   let nextGameState = { ...gameState };
+  const { activePlayer } = getGameStateInfo(nextGameState);
 
   nextGameState.phase = 'TURN';
-  nextGameState.players[gameState.activePlayerIndex].actionCount = 0;
+  resetActionCount(activePlayer);
 
   return nextGameState;
 }
@@ -141,9 +149,10 @@ export const moveFromPhaseTurn = (gameState, input) => {
 
 export const goToPhaseDraw = (gameState, input) => {
   let nextGameState = { ...gameState };
+  const { activePlayer } = getGameStateInfo(nextGameState);
 
   nextGameState.phase = 'DRAW';
-  nextGameState.players[gameState.activePlayerIndex].hand.push(nextGameState.deck.pop());
+  activePlayer.hand.push(nextGameState.deck.pop());
 
   return nextGameState;
 }
@@ -168,16 +177,17 @@ export const goToPhaseAction = (gameState, input) => {
 
 export const moveFromPhaseAction = (gameState, input) => {
   let nextGameState = { ...gameState };
+  const { activePlayer, activePlayerDoneActions } = getGameStateInfo(nextGameState);
 
   if (input.action === 'PLAY_CARD') {
-    nextGameState.players[gameState.activePlayerIndex].action = input.cardId;
-    nextGameState.players[gameState.activePlayerIndex].actionCount += 1;
-    nextGameState.players[gameState.activePlayerIndex].pile.push({
-      ...nextGameState.players[gameState.activePlayerIndex].hand.splice(input.index, 1)[0],
+    activePlayer.action = input.cardId;
+    activePlayer.actionCount += 1;
+    activePlayer.pile.push({
+      ...activePlayer.hand.splice(input.index, 1)[0],
       face: 'down'
     });
 
-    if (nextGameState.players[gameState.activePlayerIndex].actionCount === gameState.actionLimit) {
+    if (activePlayerDoneActions) {
       nextGameState = goToPhaseEnd(nextGameState, input);
     }
   }
@@ -195,15 +205,16 @@ export const goToPhaseEnd = (gameState, input) => {
 
 export const moveFromPhaseEnd = (gameState, input) => {
   let nextGameState = { ...gameState };
+  const { playerOne, playerTwo, isLastPlayer } = getGameStateInfo(nextGameState);
 
   if (input.action === 'NEXT_PHASE') {
-    if (gameState.activePlayerIndex === gameState.playerCount - 1) {
-      if (nextGameState.players[0].pile.length > 0) { nextGameState.players[0].pile[nextGameState.players[0].pile.length - 1].face = 'up'; }
-      if (nextGameState.players[1].pile.length > 0) { nextGameState.players[1].pile[nextGameState.players[1].pile.length - 1].face = 'up'; }
-      nextGameState.activePlayerIndex = 0;
+    if (isLastPlayer) {
+      if (hasItems(playerOne.pile)) { lastItem(playerOne.pile).face = 'up'; }
+      if (hasItems(playerTwo.pile)) { lastItem(playerTwo.pile).face = 'up'; }
+      setNextPlayerActive(nextGameState);
       nextGameState = goToPhaseMatch(nextGameState, input);
     } else {
-      nextGameState.activePlayerIndex += 1;
+      setNextPlayerActive(nextGameState);
       nextGameState = goToPhaseTurn(nextGameState, input);
     }
   }
@@ -219,25 +230,26 @@ export const moveFromPhaseReaction = (gameState, input) => {
 
 export const goToPhaseMatch = (gameState, input) => {
   let nextGameState = { ...gameState };
+  const { playerOne, playerTwo } = getGameStateInfo(nextGameState);
 
   nextGameState.phase = 'MATCH';
 
-  if (nextGameState.players[0].action === nextGameState.players[1].action) {
+  if (playerOne.action === playerTwo.action) {
     nextGameState.results.title = 'Tie';
     nextGameState.results.body = 'No damage';
     nextGameState.results.recipientId = null;
   } else if (
-    (nextGameState.players[0].action === 0 && nextGameState.players[1].action === 2) ||
-    (nextGameState.players[0].action === 1 && nextGameState.players[1].action === 0) ||
-    (nextGameState.players[0].action === 2 && nextGameState.players[1].action === 1)
+    (playerOne.action === 0 && playerTwo.action === 2) ||
+    (playerOne.action === 1 && playerTwo.action === 0) ||
+    (playerOne.action === 2 && playerTwo.action === 1)
   ) {
-    nextGameState.players[1].hp -= 10;
-    nextGameState.results.recipientId = nextGameState.players[1].id;
+    playerTwo.hp -= 10;
+    nextGameState.results.recipientId = playerTwo.id;
     nextGameState.results.title = 'Ouch';
     nextGameState.results.body = '-10 HP';
   } else {
-    nextGameState.players[0].hp -= 10;
-    nextGameState.results.recipientId = nextGameState.players[0].id;
+    playerOne.hp -= 10;
+    nextGameState.results.recipientId = playerOne.id;
     nextGameState.results.title = 'Ouch';
     nextGameState.results.body = '-10 HP';
   }
@@ -247,12 +259,13 @@ export const goToPhaseMatch = (gameState, input) => {
 
 export const moveFromPhaseMatch = (gameState, input) => {
   let nextGameState = { ...gameState };
+  const { playerOne, playerTwo } = getGameStateInfo(nextGameState);
 
   if (input.action === 'NEXT_PHASE') {
-    if (nextGameState.players[0].hp <= 0 || nextGameState.players[1].hp <= 0) {
+    if (playerOne.hp <= 0 || playerTwo.hp <= 0) {
       nextGameState = goToPhaseResults(nextGameState, input);
     } else {
-      nextGameState.turnCount += 1;
+      incrementTurnCount(nextGameState);
       nextGameState = goToPhaseTurn(nextGameState, input);
     }
   }
@@ -262,11 +275,12 @@ export const moveFromPhaseMatch = (gameState, input) => {
 
 export const goToPhaseResults = (gameState, input) => {
   let nextGameState = { ...gameState };
+  const { playerOne, playerTwo } = getGameStateInfo(nextGameState);
 
   nextGameState.phase = 'RESULTS';
-  nextGameState.results.winner = (nextGameState.players[0].hp > nextGameState.players[1].hp)
-    ? nextGameState.players[0].username
-    : nextGameState.players[1].username;
+  nextGameState.results.winner = (playerOne.hp > playerTwo.hp)
+    ? playerOne.username
+    : playerTwo.username;
 
   return nextGameState;
 }

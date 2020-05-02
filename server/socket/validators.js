@@ -73,8 +73,6 @@ export const validateCreateRoom = ({ username, store, socket }) => {
 export const validateStartGame = ({ username, roomId, store, socket }) => {
   const { minPlayersPerRoom } = getLobbyInfo(store, roomId);
 
-  console.log({ lobby: getLobbyInfo(store, roomId), minPlayersPerRoom });
-
   if (!roomHasMinPlayers(store, roomId)) {
     return `Need at least ${minPlayersPerRoom} players to start game.`
   }

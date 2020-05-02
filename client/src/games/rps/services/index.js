@@ -81,8 +81,6 @@ export const getAlertInfo = (gameState, localState) => {
   const { phase, results, isYourTurn } = getGameInfo(gameState, localState);
   const { playerOne, playerTwo, activePlayer, you, opponent } = getPlayers(gameState, localState);
 
-  console.log({ phase, isYourTurn, you, activePlayer });
-
   if (phase === 'START') {
     return {
       ...defaults,
