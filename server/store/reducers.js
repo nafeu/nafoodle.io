@@ -1,12 +1,9 @@
 import _ from 'lodash';
 import { combineReducers } from 'redux';
 
-import {
-  roomStatus,
-  getRoomStatus,
-  getNextGameState,
-  getDefaultGameState
-} from '../game';
+import { getGame } from '../games';
+
+import rps from '../games/rps';
 
 function rooms(state = [], action) {
   switch (action.type) {
@@ -23,6 +20,7 @@ function rooms(state = [], action) {
               host: true,
             },
           ],
+          game: 'rps',
           gameState: {}
         },
       ];
@@ -34,7 +32,7 @@ function rooms(state = [], action) {
             id: action.clientId,
             username: action.username,
           });
-          room.status = getRoomStatus(room);
+          room.status = getGame(room.game).getRoomStatus(room);
         }
       });
       return state;
@@ -42,7 +40,7 @@ function rooms(state = [], action) {
     case 'LEAVE_ROOM': {
       state.forEach((room) => {
         if (_.includes(room.users.map(u => u.id), action.id)) {
-          room.status = getRoomStatus(room);
+          room.status = getGame(room.game).getRoomStatus(room);
         }
         _.remove(room.users, (user) => {
           return user.id === action.id;
@@ -56,7 +54,7 @@ function rooms(state = [], action) {
     case 'REMOVE_CLIENT':
       state.forEach((room) => {
         if (_.includes(room.users.map(u => u.id), action.id)) {
-          room.status = getRoomStatus(room);
+          room.status = getGame(room.game).getRoomStatus(room);
         }
         _.remove(room.users, (user) => {
           return user.id === action.id;
@@ -70,14 +68,14 @@ function rooms(state = [], action) {
       state.forEach((room) => {
         if (room.id === action.roomId) {
           room.status = 'IN_GAME';
-          room.gameState = getDefaultGameState(room.users);
+          room.gameState = getGame(room.game).getDefaultGameState(room.users);
         }
       });
       return state;
     case 'PLAYER_INPUT':
       state.forEach((room) => {
         if (room.id === action.roomId) {
-          room.gameState = getNextGameState(room.gameState, action.input);
+          room.gameState = getGame(room.game).getNextGameState(room.gameState, action.input);
         }
       });
       return state;

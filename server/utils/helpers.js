@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { getGame } from '../games';
 
 export const generateUID = (ids) => {
   const uid = (`0000${(Math.random() * (36 ** 4) << 0).toString(36)}`).slice(-4);
@@ -90,15 +91,14 @@ export const roomHasPlayers = (store, roomId, count) => {
   return null;
 }
 
-export const roomHasMinPlayers = (store, roomId, count) => {
-  const room = getRoomById(store, roomId);
-  if (room) {
-    if (count) {
-      return room.users.length >= count;
-    }
-    return room.users.length > 0;
-  }
-  return false;
+export const roomHasMinPlayers = (store, roomId) => {
+  const { playerCount, minPlayersPerRoom } = getLobbyInfo(store, roomId);
+  return (playerCount >= minPlayersPerRoom);
+}
+
+export const roomHasMaxPlayers = (store, roomId) => {
+  const { playerCount, maxPlayersPerRoom } = getLobbyInfo(store, roomId);
+  return (playerCount === maxPlayersPerRoom);
 }
 
 export const roomInGame = (store, roomId) => {
@@ -114,4 +114,19 @@ export const uuidv4 = () => {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
+}
+
+export const getLobbyInfo = (store, roomId) => {
+  const { users, game } = getRoomById(store, roomId);
+
+  const {
+    MIN_PLAYERS_PER_ROOM,
+    MAX_PLAYERS_PER_ROOM
+  } = getGame(game);
+
+  return {
+    playerCount: users.length,
+    minPlayersPerRoom: MIN_PLAYERS_PER_ROOM,
+    maxPlayersPerRoom: MAX_PLAYERS_PER_ROOM
+  }
 }

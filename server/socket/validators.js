@@ -4,15 +4,12 @@ import {
   roomNotExists,
   usernameInUse,
   roomHasPlayers,
+  roomHasMaxPlayers,
   roomHasMinPlayers,
   roomInGame,
-  clientIsHostOfRoom
+  clientIsHostOfRoom,
+  getLobbyInfo
 } from '../utils/helpers';
-
-import {
-  MAX_PLAYERS_PER_MATCH,
-  MIN_PLAYERS_PER_MATCH
-} from '../game';
 
 const MIN_USERNAME_LENGTH = 4;
 const MAX_USERNAME_LENGTH = 15;
@@ -46,7 +43,7 @@ export const validateJoinRoom = ({ roomId, store, username, socket }) => {
     return 'User already in a room.';
   }
 
-  if (roomHasPlayers(store, roomId, MAX_PLAYERS_PER_MATCH)) {
+  if (roomHasMaxPlayers(store, roomId)) {
     return 'Room is full.';
   }
 
@@ -61,11 +58,11 @@ export const validateCreateRoom = ({ username, store, socket }) => {
   }
 
   if (username.length < MIN_USERNAME_LENGTH) {
-    return 'Please enter a valid username (at least 4 characters long).';
+    return `Please enter a valid username (at least ${MIN_USERNAME_LENGTH} characters long).`;
   }
 
   if (username.length > MAX_USERNAME_LENGTH) {
-    return 'Username is too long (max 15 characters long).';
+    return `Username is too long (max ${MAX_USERNAME_LENGTH} characters long).`;
   }
 
   if (clientIsInARoom(store, socket.id)) {
@@ -74,8 +71,12 @@ export const validateCreateRoom = ({ username, store, socket }) => {
 }
 
 export const validateStartGame = ({ username, roomId, store, socket }) => {
-  if (!roomHasMinPlayers(store, roomId, MIN_PLAYERS_PER_MATCH)) {
-    return `Need at least ${MIN_PLAYERS_PER_MATCH} players to start game.`
+  const { minPlayersPerRoom } = getLobbyInfo(store, roomId);
+
+  console.log({ lobby: getLobbyInfo(store, roomId), minPlayersPerRoom });
+
+  if (!roomHasMinPlayers(store, roomId)) {
+    return `Need at least ${minPlayersPerRoom} players to start game.`
   }
 
   if (!clientIsHostOfRoom(store, roomId, socket.id)) {

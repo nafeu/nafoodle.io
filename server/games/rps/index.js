@@ -1,105 +1,111 @@
 import _ from 'lodash';
-import { isLastPlayer, getPlayers, generateDeck } from './helpers';
+import { isLastPlayer, getPlayers } from '../helpers';
+import { generateDeck } from './helpers';
 
-export const MIN_PLAYERS_PER_MATCH = 2;
-export const MAX_PLAYERS_PER_MATCH = 2;
+const MIN_PLAYERS_PER_ROOM = 2;
+const MAX_PLAYERS_PER_ROOM = 2;
 
-export const getRoomStatus = (room) => {
-  if (room.status === 'WAITING') {
-    if (room.users.length >= MIN_PLAYERS_PER_MATCH
-        && room.users.length <= MAX_PLAYERS_PER_MATCH) {
-      return 'READY';
+const game = {
+  MIN_PLAYERS_PER_ROOM,
+  MAX_PLAYERS_PER_ROOM,
+
+  getRoomStatus: (room) => {
+    if (room.status === 'WAITING') {
+      if (room.users.length >= MIN_PLAYERS_PER_ROOM
+          && room.users.length <= MAX_PLAYERS_PER_ROOM) {
+        return 'READY';
+      }
     }
-  }
-  if (room.status === 'READY') {
-    if (room.users.length < MIN_PLAYERS_PER_MATCH) {
-      return 'WAITING';
+    if (room.status === 'READY') {
+      if (room.users.length < MIN_PLAYERS_PER_ROOM) {
+        return 'WAITING';
+      }
     }
-  }
-  return room.status;
-}
+    return room.status;
+  },
 
-export const getDefaultGameState = (users) => {
-  const phase = 'START';
+  getDefaultGameState: (users) => {
+    const phase = 'START';
 
-  const players = _.map(users, user => {
-    return {
-      ...user,
-      action: null,
-      actionCount: 0,
-      hp: 20,
-      hand: [],
-      pile: []
-    };
-  });
-
-  const playerCount = players.length;
-
-  const deck = generateDeck(20);
-  const handStart = 3;
-
-  players.forEach(player => {
-    _.each(_.range(handStart), iteration => {
-      player.hand.push(deck.pop());
+    const players = _.map(users, user => {
+      return {
+        ...user,
+        action: null,
+        actionCount: 0,
+        hp: 20,
+        hand: [],
+        pile: []
+      };
     });
-  });
 
-  const results = {};
+    const playerCount = players.length;
 
-  return {
-    phase,
-    players,
-    playerCount,
-    activePlayerIndex: 0,
-    turnDirection: 1,
-    turnCount: 0,
-    deck,
-    handLimit: 5,
-    handStart,
-    actionLimit: 1,
-    results
+    const deck = generateDeck(20);
+    const handStart = 3;
+
+    players.forEach(player => {
+      _.each(_.range(handStart), iteration => {
+        player.hand.push(deck.pop());
+      });
+    });
+
+    const results = {};
+
+    return {
+      phase,
+      players,
+      playerCount,
+      activePlayerIndex: 0,
+      turnDirection: 1,
+      turnCount: 0,
+      deck,
+      handLimit: 5,
+      handStart,
+      actionLimit: 1,
+      results
+    }
+  },
+
+  getNextGameState: (gameState, input) => {
+    let nextGameState = { ...gameState };
+
+    switch(gameState.phase) {
+      case 'START':
+        nextGameState = moveFromPhaseStart(gameState, input);
+        break;
+      case 'TURN':
+        nextGameState = moveFromPhaseTurn(gameState, input);
+        break;
+      case 'DRAW':
+        nextGameState = moveFromPhaseDraw(gameState, input);
+        break;
+      case 'ACTION':
+        nextGameState = moveFromPhaseAction(gameState, input);
+        break;
+      case 'REACTION':
+        nextGameState = moveFromPhaseReaction(gameState, input);
+        break;
+      case 'END':
+        nextGameState = moveFromPhaseEnd(gameState, input);
+        break;
+      case 'MATCH':
+        nextGameState = moveFromPhaseMatch(gameState, input);
+        break;
+      case 'RESULTS':
+        nextGameState = moveFromPhaseResults(gameState, input);
+        break;
+      default:
+        break;
+    }
+
+    return nextGameState;
   }
-}
-
-export const getNextGameState = (gameState, input) => {
-  let nextGameState = { ...gameState };
-
-  switch(gameState.phase) {
-    case 'START':
-      nextGameState = moveFromPhaseStart(gameState, input);
-      break;
-    case 'TURN':
-      nextGameState = moveFromPhaseTurn(gameState, input);
-      break;
-    case 'DRAW':
-      nextGameState = moveFromPhaseDraw(gameState, input);
-      break;
-    case 'ACTION':
-      nextGameState = moveFromPhaseAction(gameState, input);
-      break;
-    case 'REACTION':
-      nextGameState = moveFromPhaseReaction(gameState, input);
-      break;
-    case 'END':
-      nextGameState = moveFromPhaseEnd(gameState, input);
-      break;
-    case 'MATCH':
-      nextGameState = moveFromPhaseMatch(gameState, input);
-      break;
-    case 'RESULTS':
-      nextGameState = moveFromPhaseResults(gameState, input);
-      break;
-    default:
-      break;
-  }
-
-  return nextGameState;
 }
 
 export const goToPhaseStart = (gameState, input) => {
   let nextGameState = { ...gameState };
 
-  nextGameState = getDefaultGameState(gameState.players);
+  nextGameState = game.getDefaultGameState(gameState.players);
 
   return nextGameState;
 }
@@ -205,7 +211,6 @@ export const moveFromPhaseEnd = (gameState, input) => {
   return nextGameState;
 }
 
-// Unused in Rock Paper Scissors Example
 export const moveFromPhaseReaction = (gameState, input) => {
   let nextGameState = { ...gameState };
 
@@ -275,3 +280,5 @@ export const moveFromPhaseResults = (gameState, input) => {
 
   return nextGameState;
 }
+
+export default game;
