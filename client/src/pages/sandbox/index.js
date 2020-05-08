@@ -3,10 +3,9 @@ import _ from 'lodash';
 
 import Hand from '../../games/components/hand';
 import Board from '../../games/components/board';
-import Mat from '../../games/components/mat';
-import Platform from '../../games/components/platform';
 import Deck from '../../games/components/deck';
-import Pile from '../../games/components/pile';
+import Role from '../../games/components/role';
+import Inbox from '../../games/components/inbox';
 import PlayerInfo from '../../games/components/player-info';
 import SmallAlert from '../../games/components/small-alert';
 
@@ -51,21 +50,11 @@ function Sandbox() {
     console.log(`Card is ${JSON.stringify(card)} with index of ${index}`)
   }
 
-  const handleOpponentCardClick = (card, index) => {
-    console.log(`Opponents card with index of ${index}`)
-  }
-
   return (
     <React.Fragment>
       <Board>
         <button onClick={() => setHandA([...handA, { id: getNewDate(), cardId: _.random(0, 2) }])}>Pick Up</button>
         <button onClick={() => setHandA(handA.length > 0 ? handA.slice(0, handA.length - 1) : [])}>Drop</button>
-        <button onClick={() => showAlert(1000)}>Toggle</button>
-        <Mat />
-        <Platform />
-        <Platform position={'top'} color={'red'}/>
-        <Platform position={'left'} color={'blue'} />
-        <Platform position={'right'} color={'green'} />
         <Hand
           hand={handA}
           owner={true}
@@ -73,59 +62,29 @@ function Sandbox() {
           getCard={getCard}
           canClick={true}
         />
-        <Hand
-          hand={handA}
-          owner={false}
-          position={'top'}
-          getCard={getCard}
-          handleCardClick={handleOpponentCardClick}
-        />
-        <Hand
-          hand={handA}
-          owner={false}
-          position={'left'}
-          getCard={getCard}
-          handleCardClick={handleOpponentCardClick}
-        />
-        <Hand
-          hand={handA}
-          owner={false}
-          position={'right'}
-          getCard={getCard}
-          handleCardClick={handleOpponentCardClick}
-        />
         <Deck
           deck={handA}
           position={'middle'}
         />
-        <Pile
-          getCard={getCard}
-          pile={handA}
-          position={'middle'}
-          player={'top'}
-          messiness={5}
+        <Inbox
+          messages={[
+            { sender: '1', text: 'I think %TARGET% is innocent', target: '3' },
+            { sender: '2', text: 'Lets protect %TARGET%', target: '1'},
+            { sender: '1', text: 'Lets protect %TARGET%', target: '3'},
+          ]}
+          players={[
+            { id: '1', username: 'nafeu', color: 'blue'},
+            { id: '2', username: 'mariam', color: 'green'},
+            { id: '3', username: 'saba', color: 'orange'}
+          ]}
         />
-        <Pile
-          getCard={getCard}
-          pile={handA}
-          position={'middle'}
-          player={'bottom'}
-          messiness={5}
-        />
-        <PlayerInfo
-          player={player}
-        />
-        <PlayerInfo
-          player={player}
-          position={'left'}
+        <Role
+          gamerole={'traitor'}
+          codeword={'pickle'}
+          color={'red'}
         />
         <PlayerInfo
           player={player}
-          position={'right'}
-        />
-        <PlayerInfo
-          player={player}
-          position={'top'}
         />
         <SmallAlert
           title={'Nice!'}
