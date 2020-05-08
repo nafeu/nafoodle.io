@@ -5,6 +5,7 @@ import Hand from '../../games/components/hand';
 import Board from '../../games/components/board';
 import Deck from '../../games/components/deck';
 import Role from '../../games/components/role';
+import Actions from '../../games/components/actions';
 import Inbox from '../../games/components/inbox';
 import PlayerInfo from '../../games/components/player-info';
 import SmallAlert from '../../games/components/small-alert';
@@ -77,6 +78,32 @@ function Sandbox() {
             { id: '2', username: 'mariam', color: 'green'},
             { id: '3', username: 'saba', color: 'orange'}
           ]}
+        />
+        <Actions
+          actions={[
+            {
+              id: 1,
+              name: 'Send Private Message',
+              desc: 'Send another villager a private message.'
+            },
+            {
+              id: 2,
+              name: 'Switch Target',
+              desc: 'Switch targets if needed during a standoff.'
+            },
+            {
+              id: 3,
+              name: 'Silent Protection',
+              desc: 'Save someone or yourself from taking 1 dmg.'
+            },
+            {
+              id: 4,
+              name: 'Check Body',
+              desc: 'Check a dead body to confirm their role.'
+            },
+          ]}
+          handleClick={(item) => console.log(`Perform action: ${item}`)}
+          disabled={true}
         />
         <Role
           gamerole={'traitor'}

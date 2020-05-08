@@ -6,25 +6,22 @@ import _ from 'lodash';
 const useStyles = createUseStyles(theme => ({
   inboxContainer: {
     position: "absolute",
-    bottom: "10%",
+    bottom: "9%",
     left: "0%",
-    width: "15%",
-    height: "30%"
+    width: "20%",
+    height: "26%"
   },
   inbox: {
     position: "relative",
-    width: "100%",
-    padding: "5%",
+    width: "98%",
     height: "100%",
     fontSize: "0.75em",
+    overflowY: "scroll",
     backgroundColor: "black",
-    overflowY: "scroll"
   },
-  roleName: {
-    fontWeight: "bold"
-  },
-  codeword: {
-    fontWeight: "bold"
+  message: {
+    backgroundColor: "black",
+    margin: "5px",
   }
 }));
 
@@ -48,7 +45,9 @@ function Inbox({ players, messages }) {
         {messages.map(({ sender, text, target }) => {
           const { username, color } = getPlayer(players, sender);
           return (
-            <div><span style={{ color }}>{username}</span>: {getTargetText(players, text, target)}</div>
+            <div className={classes.message}>
+              <span style={{ color }}>{username}</span>: {getTargetText(players, text, target)}
+            </div>
           );
         })}
       </div>

@@ -6,16 +6,13 @@ const useStyles = createUseStyles(theme => ({
     position: "absolute",
     bottom: "0%",
     left: "0%",
-    width: "15%",
+    width: "20%",
   },
   role: {
     position: "relative",
-    width: "100%",
-    padding: "5%",
-    height: "100%",
+    width: "98%",
     fontWeight: "100",
     backgroundColor: theme.colorDark,
-    borderRadius: theme.mat.borderRadius
   },
   roleName: {
     fontWeight: "bold"
