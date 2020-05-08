@@ -31,6 +31,11 @@ const useStyles = createUseStyles(theme => ({
     top: `calc(50% + ${theme.card.height / 2}px)`,
     left: `calc(50% + ${(theme.card.width / 2) + theme.card.width}px)`,
   },
+  deckContainerBottomRight: {
+    position: "absolute",
+    bottom: "7%",
+    right: "1%",
+  },
   deckCard: {
     width: `${theme.card.width}px`,
     backgroundColor: theme.colorBackground,
@@ -66,6 +71,8 @@ function Deck({
       return classes.deckContainerTop;
     } else if (position === 'middle') {
       return classes.deckContainerMiddle;
+    } else if (position === 'bottom-right') {
+      return classes.deckContainerBottomRight;
     } else {
       return classes.deckContainer;
     }

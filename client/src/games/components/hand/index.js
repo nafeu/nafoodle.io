@@ -27,6 +27,12 @@ const useStyles = createUseStyles(theme => ({
     position: "absolute",
     transform: "translateX(-50%)"
   },
+  handContainerBottomMiddleRight: {
+    bottom: "8%",
+    position: "absolute",
+    left: "55%",
+    transform: "translateX(-45%)"
+  },
   hand: {
     display: "inline-block"
   },
@@ -45,6 +51,8 @@ function Hand({ hand, position, hidden, owner, handleCardClick, canClick, getCar
       return classes.handContainerRight;
     } else if (position === 'top') {
       return classes.handContainerTop;
+    } else if (position === 'bottom-middle-right') {
+      return classes.handContainerBottomMiddleRight;
     } else {
       return classes.handContainer;
     }

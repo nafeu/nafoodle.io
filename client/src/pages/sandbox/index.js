@@ -5,6 +5,7 @@ import Hand from '../../games/components/hand';
 import Board from '../../games/components/board';
 import Deck from '../../games/components/deck';
 import Role from '../../games/components/role';
+import Help from '../../games/components/help';
 import Actions from '../../games/components/actions';
 import Inbox from '../../games/components/inbox';
 import PlayerInfo from '../../games/components/player-info';
@@ -62,10 +63,11 @@ function Sandbox() {
           handleCardClick={handleOwnerCardClick}
           getCard={getCard}
           canClick={true}
+          position={'bottom-middle-right'}
         />
         <Deck
           deck={handA}
-          position={'middle'}
+          position={'bottom-right'}
         />
         <Inbox
           messages={[
@@ -105,6 +107,7 @@ function Sandbox() {
           handleClick={(item) => console.log(`Perform action: ${item}`)}
           disabled={true}
         />
+        <Help />
         <Role
           gamerole={'traitor'}
           codeword={'pickle'}
@@ -112,6 +115,7 @@ function Sandbox() {
         />
         <PlayerInfo
           player={player}
+          position={'bottom-middle-right'}
         />
         <SmallAlert
           title={'Nice!'}

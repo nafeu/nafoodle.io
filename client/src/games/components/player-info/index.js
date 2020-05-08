@@ -41,6 +41,16 @@ const useStyles = createUseStyles(theme => ({
     borderRadius: theme.borderRadius,
     fontSize: "0.75em"
   },
+  playerInfoContainerBottomMiddleRight: {
+    position: "absolute",
+    bottom: "1%",
+    left: "55%",
+    transform: "translateX(-45%)",
+    backgroundColor: theme.colorBlack,
+    padding: theme.playerInfo.spacing,
+    borderRadius: theme.borderRadius,
+    fontSize: "0.75em"
+  },
   playerInfo: {
     width: "100%",
     wordWrap: "break-word"
@@ -80,6 +90,8 @@ function PlayerInfo({ player, position, hidden, owner }) {
       return classes.playerInfoContainerRight;
     } else if (position === 'top') {
       return classes.playerInfoContainerTop;
+    } else if (position === 'bottom-middle-right') {
+      return classes.playerInfoContainerBottomMiddleRight;
     } else {
       return classes.playerInfoContainer;
     }
