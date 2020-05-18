@@ -13,8 +13,10 @@ const useStyles = createUseStyles(theme => ({
     textAlign: "center",
   },
   container: {
-    marginTop: "10%",
-    position: "relative"
+    width: "50%",
+    height: "50%",
+    transform: "translate(50%, 50%)",
+    position: "absolute",
   },
   title: {
     fontWeight: "100",

@@ -10,9 +10,13 @@ const useStyles = createUseStyles(theme => ({
   },
   role: {
     position: "relative",
-    width: "98%",
+    width: "100%",
     fontWeight: "100",
     backgroundColor: theme.colorDark,
+  },
+  infoContainer: {
+    width: "auto",
+    padding: "5px"
   },
   roleName: {
     fontWeight: "bold"
@@ -28,9 +32,11 @@ function Role({ gamerole, codeword, color }) {
   return (
     <div className={classes.roleContainer}>
       <div className={classes.role}>
-        Role: <span className={classes.roleName} style={{ color }}>{gamerole}</span>
-        <br/>
-        Codeword: <span className={classes.codeword} style={{ color }}>{codeword}</span>
+        <div className={classes.infoContainer}>
+          Role: <span className={classes.roleName} style={{ color }}>{gamerole}</span>
+          <br/>
+          Codeword: <span className={classes.codeword} style={{ color }}>{codeword}</span>
+        </div>
       </div>
     </div>
   );

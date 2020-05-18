@@ -4,17 +4,16 @@ import { createUseStyles } from 'react-jss';
 const useStyles = createUseStyles(theme => ({
   actionsContainer: {
     position: "absolute",
-    bottom: "2%",
-    left: "20%",
+    bottom: "0vh",
+    left: "calc(20% + 5px)",
     width: "20%",
-    height: "33%"
+    height: "30vh"
   },
   actions: {
     position: "relative",
     width: "100%",
     height: "auto",
     fontSize: "0.75em",
-    overflowY: "scroll"
   },
   action: {
     padding: "5px",

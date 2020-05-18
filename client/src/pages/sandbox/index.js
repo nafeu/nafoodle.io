@@ -10,6 +10,7 @@ import Actions from '../../games/components/actions';
 import Inbox from '../../games/components/inbox';
 import PlayerInfo from '../../games/components/player-info';
 import SmallAlert from '../../games/components/small-alert';
+import MessageBuilder from '../../games/components/message-builder';
 
 import { getCard } from '../../games/rps/services';
 
@@ -28,6 +29,7 @@ function Sandbox() {
   ]);
 
   const [alert, setAlert] = useState(false);
+  const [showBuilder, setShowBuilder] = useState(false);
 
   const showAlert = (aliveMs) => {
     if (!alert) {
@@ -48,8 +50,20 @@ function Sandbox() {
     pile: []
   }
 
+  const players = [
+    { id: '1', username: 'nafeu', color: 'blue'},
+    { id: '2', username: 'mariam', color: 'green'},
+    { id: '3', username: 'saba', color: 'orange'}
+  ];
+
   const handleOwnerCardClick = (card, index) => {
     console.log(`Card is ${JSON.stringify(card)} with index of ${index}`)
+  }
+
+  const handleAction = action => {
+    if (action === 1) {
+      setShowBuilder(true);
+    }
   }
 
   return (
@@ -75,11 +89,7 @@ function Sandbox() {
             { sender: '2', text: 'Lets protect %TARGET%', target: '1'},
             { sender: '1', text: 'Lets protect %TARGET%', target: '3'},
           ]}
-          players={[
-            { id: '1', username: 'nafeu', color: 'blue'},
-            { id: '2', username: 'mariam', color: 'green'},
-            { id: '3', username: 'saba', color: 'orange'}
-          ]}
+          players={players}
         />
         <Actions
           actions={[
@@ -104,10 +114,26 @@ function Sandbox() {
               desc: 'Check a dead body to confirm their role.'
             },
           ]}
-          handleClick={(item) => console.log(`Perform action: ${item}`)}
+          handleClick={(item) => handleAction(item)}
           disabled={true}
         />
         <Help />
+        <MessageBuilder
+          messageOptions={[
+            'I\'m with you',
+            'Lets kill ______.',
+            'I think ______ is a traitor.',
+            'I think ______ is innocent.',
+            'You can\'t fool me.',
+            'Let\'s do that again.',
+            'Lets protect ______',
+            'I need you to protect me.'
+          ]}
+          players={players}
+          handleConfirm={message => console.log({ message })}
+          handleCancel={message => setShowBuilder(false)}
+          show={showBuilder}
+        />
         <Role
           gamerole={'traitor'}
           codeword={'pickle'}

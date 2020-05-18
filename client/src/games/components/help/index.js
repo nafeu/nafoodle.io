@@ -4,25 +4,24 @@ import { createUseStyles } from 'react-jss';
 const useStyles = createUseStyles(theme => ({
   helpContainer: {
     position: "absolute",
-    bottom: "2%",
+    bottom: "0vh",
     left: "72%",
-    width: "19%",
-    height: "33%"
+    width: "20%",
+    height: "25vh"
   },
   help: {
     position: "relative",
     width: "100%",
-    height: "auto",
+    height: "100%",
     fontSize: "0.75em",
-    overflowY: "scroll"
   },
 }));
 
-function Help({ title, header, body }) {
+function Help({ title, header, body, onHover }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.helpContainer}>
+    <div onHover={onHover} className={classes.helpContainer}>
       <div className={classes.help}>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,

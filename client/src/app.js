@@ -28,6 +28,8 @@ const style = {
       backgroundColor: theme.colorBackground,
       margin: "0",
       padding: "0",
+      minWidth: "1440px",
+      minHeight: "900px"
     },
     '#toast-container > div': {
         backgroundColor: "none",
