@@ -11,6 +11,7 @@ import Inbox from '../../games/components/inbox';
 import PlayerInfo from '../../games/components/player-info';
 import SmallAlert from '../../games/components/small-alert';
 import MessageBuilder from '../../games/components/message-builder';
+import ResultsTable from '../../games/components/results-table';
 
 import { getCard } from '../../games/rps/services';
 
@@ -30,6 +31,7 @@ function Sandbox() {
 
   const [alert, setAlert] = useState(false);
   const [showBuilder, setShowBuilder] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   const showAlert = (aliveMs) => {
     if (!alert) {
@@ -71,6 +73,7 @@ function Sandbox() {
       <Board>
         <button onClick={() => setHandA([...handA, { id: getNewDate(), cardId: _.random(0, 2) }])}>Pick Up</button>
         <button onClick={() => setHandA(handA.length > 0 ? handA.slice(0, handA.length - 1) : [])}>Drop</button>
+        <button onClick={() => setShowResults(!showResults)}>Drop</button>
         <Hand
           hand={handA}
           owner={true}
@@ -133,6 +136,26 @@ function Sandbox() {
           onConfirm={({ recipient, message }) => { setShowBuilder(false); console.log({ recipient, message }); }}
           onCancel={() => setShowBuilder(false)}
           show={showBuilder}
+        />
+        <ResultsTable
+          results={[
+            {
+              title: 'Something happened',
+              desc: 'It was not as good as expected.',
+              icon: '😡'
+            },
+            {
+              title: 'Something else happened',
+              desc: 'It was alright.',
+              icon: '🙁'
+            },
+            {
+              title: 'Espionage Detected',
+              desc: 'I promise this isn\'t some lame cashgrab',
+              icon: '🙏'
+            },
+          ]}
+          show={showResults}
         />
         <Role
           gamerole={'traitor'}
