@@ -120,18 +120,18 @@ function Sandbox() {
         <Help />
         <MessageBuilder
           messageOptions={[
-            'I\'m with you',
+            'I\'m with you.',
             'Lets kill ______.',
             'I think ______ is a traitor.',
             'I think ______ is innocent.',
             'You can\'t fool me.',
             'Let\'s do that again.',
-            'Lets protect ______',
+            'Lets protect ______.',
             'I need you to protect me.'
           ]}
           players={players}
-          handleConfirm={message => console.log({ message })}
-          handleCancel={message => setShowBuilder(false)}
+          onConfirm={({ recipient, message }) => { setShowBuilder(false); console.log({ recipient, message }); }}
+          onCancel={() => setShowBuilder(false)}
           show={showBuilder}
         />
         <Role

@@ -22,7 +22,6 @@ const useStyles = createUseStyles(theme => ({
     width: "100%",
   },
   finalMessagePreview: {
-    backgroundColor: "blue",
     position: "absolute",
     bottom: "0px",
     width: "70%",
@@ -33,7 +32,6 @@ const useStyles = createUseStyles(theme => ({
     alignItems: "center"
   },
   recipientPreview: {
-    backgroundColor: "green",
     position: "absolute",
     bottom: "0px",
     left: "0px",
@@ -44,7 +42,6 @@ const useStyles = createUseStyles(theme => ({
     alignItems: "center"
   },
   cancelButton: {
-    backgroundColor: "red",
     position: "absolute",
     bottom: "0px",
     left: "85%",
@@ -52,29 +49,100 @@ const useStyles = createUseStyles(theme => ({
     height: "5vh",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    cursor: "pointer",
+    '&:active': { opacity: "0.2" },
+    '&:hover': { opacity: "0.5" },
   },
   recipientOptions: {
-    backgroundColor: "orange",
     position: "absolute",
     top: "0px",
     width: "100%",
-    height: "45vh"
+    height: "45vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  recipientOption: {
+    fontSize: "2em",
+    padding: "10px",
+    cursor: "pointer",
+    '&:active': { opacity: "0.2" },
+    '&:hover': { opacity: "0.5" },
   },
   messageOptions: {
-    backgroundColor: "pink",
     position: "absolute",
     top: "0px",
     width: "100%",
-    height: "45vh"
+    height: "45vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  messageOption: {
+    fontSize: "1.4em",
+    padding: "5px",
+    cursor: "pointer",
+    '&:active': { opacity: "0.2" },
+    '&:hover': { opacity: "0.5" },
   },
   targetOptions: {
-    backgroundColor: "black",
     position: "absolute",
     top: "0px",
     width: "100%",
-    height: "45vh"
+    height: "45vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column"
   },
+  targetOption: {
+    fontSize: "2em",
+    padding: "5px",
+    cursor: "pointer",
+    '&:active': { opacity: "0.2" },
+    '&:hover': { opacity: "0.5" },
+  },
+  stepTitle: {
+    padding: "20px",
+    fontSize: "1.5em"
+  },
+  finalStep: {
+    position: "absolute",
+    top: "0px",
+    width: "100%",
+    height: "45vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column"
+  },
+  finalRecipient: {
+    fontSize: "1.7em",
+    padding: "5px",
+  },
+  finalMessage: {
+    fontSize: "1.7em",
+    padding: "5px",
+  },
+  finalCancel: {
+    display: "inline-block",
+    fontSize: "1.7em",
+    cursor: "pointer",
+    padding: "15px",
+    '&:active': { opacity: "0.2" },
+    '&:hover': { opacity: "0.5" },
+  },
+  finalConfirm: {
+    display: "inline-block",
+    fontSize: "1.7em",
+    cursor: "pointer",
+    padding: "15px",
+    '&:active': { opacity: "0.2" },
+    '&:hover': { opacity: "0.5" },
+  }
 }));
 
 const insertTargetMacro = (message, target) => {
@@ -107,7 +175,7 @@ const getPlayerName = (players, id) => {
   return getPlayer(players, id).username;
 }
 
-function MessageBuilder({ players, messageOptions, handleConfirm, handleCancel, show }) {
+function MessageBuilder({ players, messageOptions, onConfirm, onCancel, show }) {
   const classes = useStyles();
 
   const initState = {
@@ -136,6 +204,16 @@ function MessageBuilder({ players, messageOptions, handleConfirm, handleCancel, 
     setState({ ...state, message: insertTargetMacro(state.message, selection), step: 'finalize' });
   }
 
+  const handleCancel = () => {
+    setState(initState);
+    onCancel();
+  }
+
+  const handleConfirm = ({ recipient, message }) => {
+    setState(initState);
+    onConfirm({ recipient, message });
+  }
+
   let options;
 
   if (step === 'recipient') {
@@ -147,8 +225,9 @@ function MessageBuilder({ players, messageOptions, handleConfirm, handleCancel, 
   } else {
     options = <FinalizeMessage
       players={players}
+      recipient={recipient}
       message={message}
-      handleCancel={() => { setState(initState); handleCancel(); }}
+      handleCancel={handleCancel}
       handleConfirm={handleConfirm}
     />
   }
@@ -177,7 +256,7 @@ function RecipientPreview({ players, recipient }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.recipientPreview}>{getPlayerName(players, recipient)}</div>
+    <div className={classes.recipientPreview}>TO: {recipient ? getPlayerName(players, recipient) : '___'}</div>
   );
 }
 
@@ -185,7 +264,7 @@ function FinalMessagePreview({ players, message }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.finalMessagePreview}>{interpolateTargetMacro(players, message)}</div>
+    <div className={classes.finalMessagePreview}>MESSAGE: {message ? interpolateTargetMacro(players, message) : '...'}</div>
   );
 }
 
@@ -193,7 +272,7 @@ function CancelButton({ handleCancel }) {
   const classes = useStyles();
 
   return (
-    <div onClick={handleCancel} className={classes.cancelButton}>Cancel</div>
+    <div onClick={handleCancel} className={classes.cancelButton}>CANCEL</div>
   );
 }
 
@@ -201,13 +280,16 @@ function RecipientOptions({ recipientOptions, handleSelectRecipient }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.recipientOptions}>
-      {recipientOptions.map(({ id, username }) => {
-        return (
-          <div onClick={() => handleSelectRecipient(id)}>{username}</div>
-        );
-      })}
-    </div>
+    <React.Fragment>
+      <div className={classes.stepTitle}>Select recipient:</div>
+      <div className={classes.recipientOptions}>
+        {recipientOptions.map(({ id, username }) => {
+          return (
+            <div className={classes.recipientOption} onClick={() => handleSelectRecipient(id)}>{username}</div>
+          );
+        })}
+      </div>
+    </React.Fragment>
   )
 }
 
@@ -215,13 +297,16 @@ function MessageOptions({ messageOptions, handleSelectMessage }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.messageOptions}>
-      {messageOptions.map(option => {
-        return (
-          <div onClick={() => handleSelectMessage(option)}>{option}</div>
-        );
-      })}
-    </div>
+    <React.Fragment>
+      <div className={classes.stepTitle}>Select your message:</div>
+      <div className={classes.messageOptions}>
+        {messageOptions.map(option => {
+          return (
+            <div className={classes.messageOption} onClick={() => handleSelectMessage(option)}>{option}</div>
+          );
+        })}
+      </div>
+    </React.Fragment>
   )
 }
 
@@ -229,21 +314,40 @@ function TargetOptions({ targetOptions, handleSelectTarget }) {
   const classes = useStyles();
 
   return (
-    <div className={classes.targetOptions}>
-      {targetOptions.map(({ id, username }) => {
-        return (
-          <div onClick={() => handleSelectTarget(id)}>{username}</div>
-        );
-      })}
-    </div>
+    <React.Fragment>
+      <div className={classes.stepTitle}>Select your target:</div>
+      <div className={classes.targetOptions}>
+        {targetOptions.map(({ id, username }) => {
+          return (
+            <div className={classes.targetOption} onClick={() => handleSelectTarget(id)}>{username}</div>
+          );
+        })}
+      </div>
+    </React.Fragment>
   );
 }
 
-function FinalizeMessage({ players, message, handleCancel, handleConfirm }) {
+function FinalizeMessage({
+  players,
+  message,
+  recipient,
+  handleCancel,
+  handleConfirm
+}) {
   const classes = useStyles();
 
+  const interpolatedMessage = interpolateTargetMacro(players, message);
+  const { username } = getPlayer(players, recipient);
+
   return (
-    <div class={classes.finalMessage}>{interpolateTargetMacro(players, message)}</div>
+    <div className={classes.finalStep}>
+      <div className={classes.finalRecipient}>TO: {username}</div>
+      <div className={classes.finalMessage}>MESSAGE: {interpolatedMessage}</div>
+      <div>
+        <div className={classes.finalConfirm} onClick={() => handleConfirm({ recipient, message: interpolatedMessage })}>CONFIRM</div>
+        <div className={classes.finalCancel} onClick={handleCancel}>CANCEL</div>
+      </div>
+    </div>
   );
 }
 
