@@ -344,7 +344,7 @@ function FinalizeMessage({
       <div className={classes.finalRecipient}>TO: {username}</div>
       <div className={classes.finalMessage}>MESSAGE: {interpolatedMessage}</div>
       <div>
-        <div className={classes.finalConfirm} onClick={() => handleConfirm({ recipient, message: interpolatedMessage })}>CONFIRM</div>
+        <div className={classes.finalConfirm} onClick={() => handleConfirm({ recipient, message: interpolatedMessage })}>SEND</div>
         <div className={classes.finalCancel} onClick={handleCancel}>CANCEL</div>
       </div>
     </div>

@@ -37,6 +37,8 @@ const useStyles = createUseStyles(theme => ({
   }
 }));
 
+const ONE_SECOND = 1000;
+
 function ResultsTable({ results, show }) {
   const classes = useStyles();
 
@@ -47,13 +49,17 @@ function ResultsTable({ results, show }) {
       setTimeout(() => {
         setDisplayResults(_.take(results, index));
         updateResults(index + 1);
-      }, 1000);
+      }, ONE_SECOND);
     }
   }
 
   useEffect(() => {
-    updateResults(0);
-  }, [0])
+    if (show) {
+      updateResults(0);
+    } else {
+      setDisplayResults([]);
+    }
+  }, [show])
 
 
   if (!show) {
@@ -68,7 +74,7 @@ function ResultsTable({ results, show }) {
             const { title, desc, icon } = result;
             return (
               <Result title={title} desc={desc} icon={icon} />
-            )
+            );
           })}
         </div>
       </div>

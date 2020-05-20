@@ -151,8 +151,23 @@ function Sandbox() {
             },
             {
               title: 'Espionage Detected',
-              desc: 'I promise this isn\'t some lame cashgrab',
+              desc: 'I promise this isn\'t some lame cashgrab.',
               icon: '🙏'
+            },
+            {
+              title: 'Test Notes',
+              desc: 'This is for testing.',
+              icon: '👀'
+            },
+            {
+              title: 'Someone Did Silent Damage',
+              desc: 'Someone took damage from a traitor.',
+              icon: '👺'
+            },
+            {
+              title: 'Finish Game',
+              desc: 'Lets just get this over with.',
+              icon: '💻'
             },
           ]}
           show={showResults}
