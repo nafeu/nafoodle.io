@@ -11,6 +11,7 @@ import Inbox from '../../games/components/inbox';
 import PlayerInfo from '../../games/components/player-info';
 import SmallAlert from '../../games/components/small-alert';
 import MessageBuilder from '../../games/components/message-builder';
+import TargetSelector from '../../games/components/target-selector';
 import ResultsTable from '../../games/components/results-table';
 
 import { getCard } from '../../games/rps/services';
@@ -32,6 +33,12 @@ function Sandbox() {
   const [alert, setAlert] = useState(false);
   const [showBuilder, setShowBuilder] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showTargetSelector, setShowTargetSelector] = useState(false);
+  const [targetSelector, setTargetSelector] = useState({
+    action: '',
+    actionDesc: '',
+    actionPrompt: ''
+  });
 
   const showAlert = (aliveMs) => {
     if (!alert) {
@@ -65,6 +72,22 @@ function Sandbox() {
   const handleAction = action => {
     if (action === 1) {
       setShowBuilder(true);
+    }
+    if (action === 3) {
+      setTargetSelector({
+        'action': 'SILENT_PROTECTION',
+        'actionDesc': 'Protect %TARGET% from recieving 1 damage',
+        'actionPrompt': 'Select a player to anonymously protect from 1 damage:'
+      });
+      setShowTargetSelector(true);
+    }
+    if (action === 4) {
+      setTargetSelector({
+        'action': 'CHECK_BODY',
+        'actionDesc': 'Check %TARGET%\'s body to reveal their role',
+        'actionPrompt': 'Select a dead body to check their role:'
+      });
+      setShowTargetSelector(true);
     }
   }
 
@@ -133,7 +156,7 @@ function Sandbox() {
             'I need you to protect me.'
           ]}
           players={players}
-          onConfirm={({ recipient, message }) => { setShowBuilder(false); console.log({ recipient, message }); }}
+          onConfirm={({ recipient, message }) => { setShowBuilder(false); console.log({ type: 'SEND_MESSAGE', payload: { recipient, message } }); }}
           onCancel={() => setShowBuilder(false)}
           show={showBuilder}
         />
@@ -171,6 +194,15 @@ function Sandbox() {
             },
           ]}
           show={showResults}
+        />
+        <TargetSelector
+          players={players}
+          action={targetSelector.action}
+          actionDesc={targetSelector.actionDesc}
+          actionPrompt={targetSelector.actionPrompt}
+          onConfirm={({ action, target }) => { setShowTargetSelector(false); console.log({ type: 'PERFORM_ACTION', payload: { action, target } }); }}
+          onCancel={() => setShowTargetSelector(false)}
+          show={showTargetSelector}
         />
         <Role
           gamerole={'traitor'}
