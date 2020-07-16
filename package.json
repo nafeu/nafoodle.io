@@ -23,7 +23,7 @@
   "dependencies": {
     "body-parser": "1.18.3",
     "express": "4.16.4",
-    "lodash": "4.17.13",
+    "lodash": "4.17.19",
     "morgan": "1.9.1",
     "number-to-words": "1.2.4",
     "redux": "4.0.1",
