@@ -1,22 +1,31 @@
-# Party Game Starter
+# nafoodle.io
 
-Multiplayer party game starter
+Experimental multiplayer party game starter built with React, NodeJs, and Socket.io.
 
-### Development
+## Development
 
-#### Server
+- This project is an early work-in-progress...
 
 ```
-nodemon index.js
+git clone https://github.com/nafeu/nafoodle.io.git
+cd nafoodle.io
+nvm use v12.14.1
+npm install
 ```
 
-#### Client
+### Run Server
+
+```
+npm run dev
+```
+
+### Client
 
 ```
 cd client
 npm start
 ```
 
-### Deployment
+## License
 
-...
+[MIT](https://choosealicense.com/licenses/mit/)
